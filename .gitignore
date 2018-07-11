@@ -1,8 +1,8 @@
 
 ###> symfony/framework-bundle ###
-###/.env ###
-###/public/undles/ ###
-###/var/ ###
-###/vendor/ ###
-###/.idea ###
+/.env
+/public/undles/
+/var/
+/vendor/
+/.idea
 ###< symfony/framework-bundle ###
