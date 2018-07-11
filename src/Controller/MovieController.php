@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Repository\MovieRepository;
+use App\Entity\Movie;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -13,9 +13,9 @@ class MovieController extends Controller
      */
     public function movies()
     {
-        $rep = $this->getDoctrine()->getRepository(MovieRepository::class);
+        $rep = $this->getDoctrine()->getRepository(Movie::class);
         $movies = $rep->findAll();
-
+        //dump($movies);
         return $this->render('movie/list.html.twig',compact("movies"));
     }
 
