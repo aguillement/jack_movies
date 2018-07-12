@@ -20,6 +20,10 @@ class UserType extends AbstractType
             ->add('password', PasswordType::class);
     }
 
+    public function getBlockPrefix() {
+        return null;
+    }
+
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
