@@ -1,9 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Movies{% endblock %}
+
+{% block body %}
 <div class="shadow  p-3 mb-5 bg-white rounded container col-3" style="margin-top: 50px">
 
     {{ form_start(registerForm) }}
 
+    {{ form_label(registerForm.email) }}
+    {{ form_widget(registerForm.email, {'attr': {'onblur': 'checkEmail();'} }) }}
+
     {{ form_widget(registerForm) }}
 
-    {{ form_end(registerForm) }}
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary">Sign in</button>
+    </div>
 
+    {{ form_end(registerForm) }}
 </div>
+{% endblock %}
