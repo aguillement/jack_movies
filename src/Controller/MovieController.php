@@ -15,7 +15,6 @@ class MovieController extends Controller
     {
         $rep = $this->getDoctrine()->getRepository(Movie::class);
         $movies = $rep->findAll();
-        dump($movies);
         return $this->render('movie/index.html.twig',compact("movies"));
     }
 
@@ -28,5 +27,23 @@ class MovieController extends Controller
         $movie = $rep->find($id);
         dump($movie);
         return $this->render('movie/movie.html.twig',compact("movie"));
+    }
+
+    /**
+     * @Route("/movie/search", name="search_movie")
+     */
+    public function searchMovie($search){
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $movie = $entityManager->getRepository("Movie")->createQueryBuilder('m')
+            ->where('m.title LIKE :product')
+            ->setParameter('product', ''.$search .'%'.'')
+            ->getQuery()
+            ->getResult();
+
+        dump($movie);
+
+        return $this->render('movie/index.html.twig',compact("movie"));
     }
 }
