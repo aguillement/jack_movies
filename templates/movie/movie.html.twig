@@ -3,9 +3,35 @@
 {% block title %}Movie{% endblock %}
 
 {% block body %}
-{{ movie.title }}
-    <blockquote class="blockquote">
-        <p class="mb-0">{{ movie.synopsis }}</p>
-        <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
-    </blockquote>
+    <br>
+    <div class="container">
+        <div class="row">
+            <div class="col-8">
+                <div class="jumbotron">
+                    <h1>{{ movie.title }}</h1>
+                    <h3>{{ movie.releaseDate|date('d-m-Y') }}</h3>
+                    <hr>
+                    <p>{{ movie.synopsis }}</p>
+
+                    <p>Duration : {{ movie.duration }} minutes</p>
+                    <p>Director : {{ movie.director }}</p>
+                </div>
+            </div>
+            <div class="col-4">
+                <p>
+                    <a class="btn btn-secondary btn-sm" href="#" role="button">
+                        <i class="fa fa-check" aria-hidden="true"></i>
+                        I have seen this movie
+                    </a>
+                </p>
+                <p>
+                    <a class="btn btn-secondary btn-sm" href="#" role="button">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                        Add to my wishlist
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
