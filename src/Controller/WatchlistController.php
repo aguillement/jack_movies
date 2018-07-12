@@ -15,9 +15,8 @@ class WatchlistController extends Controller
         $watchlist = $this->getUser()->getWatchlist();
         $watchlist->getMovies();
 
-        dump($watchlist);
 
-        return $this->render('watchlist/index.html.twig', [
+        return $this->render('watchlist/watchlist.html.twig', [
             "watchlist" => $watchlist,
         ]);
     }

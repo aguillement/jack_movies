@@ -1,3 +1,4 @@
-function checkEmail(){
-    alert("oui");
-}
+
+$(document).ready( function () {
+    $('#table').DataTable();
+} );

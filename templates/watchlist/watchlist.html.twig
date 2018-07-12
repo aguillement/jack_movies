@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Watchlist{% endblock %}
+
+{% block body %}
+    <br>
+    <table class="table" id="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Title</th>
+            <th scope="col">Date</th>
+            <th scope="col">Director</th>
+            <th scope="col">Category</th>
+            <th scope="col">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for movie in watchlist.movies %}
+            <tr>
+                <td>{{ movie.id }}</td>
+                <td>{{ movie.title }}</td>
+                <td>{{ movie.releaseDate|date('d-m-Y') }}</td>
+                <td>{{ movie.director }}</td>
+                <td>
+                {% for category in movie.categories %}
+                    {{ category.libelle }}<br>
+                {% endfor %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
