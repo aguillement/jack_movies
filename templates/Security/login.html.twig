@@ -1,9 +1,26 @@
-{% if error %}
-    <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-{% endif %}
+{% extends 'base.html.twig' %}
 
-<div class="shadow  p-3 mb-5 bg-white rounded container col-3" style="margin-top: 50px">
+{% block title %}Movies{% endblock %}
 
-    {{ form(loginForm)}}
+{% block body %}
 
-</div>
+    <div class="shadow  p-3 mb-5 bg-white rounded container col-3" style="margin-top: 50px">
+
+        {{ form_start(loginForm) }}
+
+        {% if error %}
+            <div class="alert alert-dismissible alert-danger">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Oh snap!</strong> {{ error.messageKey|trans(error.messageData, 'security') }}
+            </div>
+        {% endif %}
+
+        {{ form_widget(loginForm) }}
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Sign in</button>
+        </div>
+
+        {{ form_end(loginForm) }}
+    </div>
+{% endblock %}

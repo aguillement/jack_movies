@@ -72,7 +72,6 @@ class UserController extends Controller
         $form = $this->createFormBuilder()
             ->add('_username')
             ->add('_password', PasswordType::class)
-            ->add('submit', SubmitType::class)
             ->getForm();
 
         // get the login error if there is one
