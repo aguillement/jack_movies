@@ -39,6 +39,8 @@ class UserController extends Controller
 
             $entityManager = $this->getDoctrine()->getManager();
 
+            $user = new User();
+
             $profile = new Profile();
             $entityManager->persist($profile);
             //update the profile id
@@ -68,9 +70,8 @@ class UserController extends Controller
     public function login(Request $request, AuthenticationUtils $authenticationUtils)
     {
         $form = $this->createFormBuilder()
-            ->add('_username', EmailType::class)
+            ->add('_username')
             ->add('_password', PasswordType::class)
-            ->add('submit', SubmitType::class)
             ->getForm();
 
         // get the login error if there is one
