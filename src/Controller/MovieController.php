@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Movie;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -36,21 +37,27 @@ class MovieController extends Controller
     }
 
     /**
-     * @Route("/movie/search", name="search_movie")
+     * @Route("/movies/search", name="search_movie")
      */
-    public function searchMovie(){
+    public function searchMovie(Request $request){
 
-        $search = 'Para';
-        $entityManager = $this->getDoctrine()->getManager();
+        $em = $this->container->get('doctrine')->getEntityManager();
 
-        $movie = $entityManager->getRepository("Movie")->createQueryBuilder('m')
-            ->where('m.title LIKE :movie')
-            ->setParameter('movie', 'Para')
-            ->getQuery()
-            ->getResult();
+        if ('POST' === $request->getMethod()) {
 
-        dump($movie);
+            $search = $request->get('search');
 
-        return $this->render('movie/index.html.twig',compact("movie"));
+            dump($request);
+
+            $movies = $em->getRepository("App\Entity\Movie")->createQueryBuilder('m')
+                ->where('m.title LIKE :title')
+                ->setParameter('title', '%'.$search.'%')
+                ->getQuery()
+                ->getResult();
+
+            dump($movies);
+        }
+
+        return $this->render('movie/index.html.twig',compact("movies"));
     }
 }
