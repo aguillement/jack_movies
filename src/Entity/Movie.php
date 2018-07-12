@@ -51,11 +51,7 @@ class Movie
     private $picture;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Category", inversedBy="movies", cascade={"persist"})
-     * @ORM\JoinTable(name="movie_category",
-     *      joinColumns={@ORM\JoinColumn(name="movie_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="category_id", referencedColumnName="id")}
-     *      )
+     * @ORM\ManyToMany(targetEntity="App\Entity\Category")
      */
     private $categories;
 
