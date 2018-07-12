@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MovieRepository")
  * @ORM\Table(name="Movie")
@@ -23,6 +24,11 @@ class Movie
      * @ORM\Column(type="string", length=255)
      */
     private $title;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $synopsis;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -45,7 +51,11 @@ class Movie
     private $picture;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Category", inversedBy="movies")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Category", inversedBy="movies", cascade={"persist"})
+     * @ORM\JoinTable(name="movie_category",
+     *      joinColumns={@ORM\JoinColumn(name="movie_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="category_id", referencedColumnName="id")}
+     *      )
      */
     private $categories;
 
@@ -69,6 +79,22 @@ class Movie
         $this->title = $title;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSynopsis()
+    {
+        return $this->synopsis;
+    }
+
+    /**
+     * @param mixed $synopsis
+     */
+    public function setSynopsis($synopsis): void
+    {
+        $this->synopsis = $synopsis;
     }
 
     public function getDirector(): ?string
