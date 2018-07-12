@@ -23,14 +23,9 @@ class Category
      */
     private $libelle;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Movie", mappedBy="categories")
-     */
-    private $movies;
-
     public function __construct()
     {
-        $this->movies = new ArrayCollection();
+        $this->categoryMovies = new ArrayCollection();
     }
 
     public function getId()
@@ -50,31 +45,4 @@ class Category
         return $this;
     }
 
-    /**
-     * @return Collection|Movie[]
-     */
-    public function getMovies(): Collection
-    {
-        return $this->movies;
-    }
-
-    public function addMovie(Movie $movie): self
-    {
-        if (!$this->movies->contains($movie)) {
-            $this->movies[] = $movie;
-            $movie->addCategory($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMovie(Movie $movie): self
-    {
-        if ($this->movies->contains($movie)) {
-            $this->movies->removeElement($movie);
-            $movie->removeCategory($this);
-        }
-
-        return $this;
-    }
 }
