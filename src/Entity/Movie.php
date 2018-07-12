@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MovieRepository")
+ * @ORM\Table(name="Movie")
  */
 class Movie
 {
@@ -34,7 +35,7 @@ class Movie
     private $releaseDate;
 
     /**
-     * @ORM\Column(type="time")
+     * @ORM\Column(type="integer")
      */
     private $duration;
 
@@ -94,12 +95,12 @@ class Movie
         return $this;
     }
 
-    public function getDuration(): ?\DateTimeInterface
+    public function getDuration()
     {
         return $this->duration;
     }
 
-    public function setDuration(\DateTimeInterface $duration): self
+    public function setDuration($duration): self
     {
         $this->duration = $duration;
 

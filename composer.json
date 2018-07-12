@@ -7,6 +7,7 @@
         "ext-iconv": "*",
         "symfony/annotations-pack": "^1.0",
         "symfony/apache-pack": "^1.0",
+        "symfony/asset": "^4.1",
         "symfony/console": "^4.1",
         "symfony/flex": "^1.0",
         "symfony/form": "^4.1",
