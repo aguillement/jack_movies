@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\HistoryRepository")
@@ -22,9 +24,19 @@ class History
     private $date;
 
     /**
-     * @ORM\Column(type="string", length=250, nullable=true)
+     * @ORM\OneToOne(targetEntity="App\Entity\User", inversedBy="history", cascade={"persist", "remove"})
      */
-    private $note;
+    private $user;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\HistoryMovie", mappedBy="history")
+     */
+    private $historyMovies;
+
+    public function __construct()
+    {
+        $this->historyMovies = new ArrayCollection();
+    }
 
     public function getId()
     {
@@ -43,14 +55,45 @@ class History
         return $this;
     }
 
-    public function getNote(): ?string
+    public function getUser(): ?User
     {
-        return $this->note;
+        return $this->user;
     }
 
-    public function setNote(?string $note): self
+    public function setUser(?User $user): self
     {
-        $this->note = $note;
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|HistoryMovie[]
+     */
+    public function getHistoryMovies(): Collection
+    {
+        return $this->historyMovies;
+    }
+
+    public function addHistoryMovie(HistoryMovie $historyMovie): self
+    {
+        if (!$this->historyMovies->contains($historyMovie)) {
+            $this->historyMovies[] = $historyMovie;
+            $historyMovie->setHistory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHistoryMovie(HistoryMovie $historyMovie): self
+    {
+        if ($this->historyMovies->contains($historyMovie)) {
+            $this->historyMovies->removeElement($historyMovie);
+            // set the owning side to null (unless already changed)
+            if ($historyMovie->getHistory() === $this) {
+                $historyMovie->setHistory(null);
+            }
+        }
 
         return $this;
     }
