@@ -9,6 +9,7 @@
 namespace App\Controller;
 
 
+use App\Entity\History;
 use App\Entity\Profile;
 use App\Entity\Watchlist;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -42,11 +43,12 @@ class UserController extends Controller
 
             $entityManager = $this->getDoctrine()->getManager();
 
+            //Create profile
             $profile = new Profile();
             $entityManager->persist($profile);
-            //update the profile id
             $entityManager->flush();
 
+            //Create user
             $user->setProfile($profile);
             $entityManager->persist($user);
             $entityManager->flush();
@@ -56,6 +58,13 @@ class UserController extends Controller
             $watchlist->setUser($user);
             $watchlist->setDateCreate(new \DateTime());
             $entityManager->persist($watchlist);
+            $entityManager->flush();
+
+            //Create history
+            $history = new History();
+            $history->setUser($user);
+            $history->setDate(new \DateTime());
+            $entityManager->persist($history);
             $entityManager->flush();
 
             // auto connect

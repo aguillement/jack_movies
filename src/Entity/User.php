@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -48,11 +47,6 @@ class User implements UserInterface
      * @ORM\OneToOne(targetEntity="App\Entity\History", cascade={"persist", "remove"})
      */
     private $history;
-
-    public function __construct()
-    {
-        $this->history = new ArrayCollection();
-    }
 
     public function getId()
     {
@@ -141,12 +135,12 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getHistory(): ArrayCollection
+    public function getHistory(): ?History
     {
         return $this->history;
     }
 
-    public function setHistory(?ArrayCollection $history): self
+    public function setHistory(?History $history): self
     {
         $this->history = $history;
 
