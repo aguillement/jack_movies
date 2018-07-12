@@ -6,10 +6,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MovieRepository")
- * @ORM\Table(name="Movie")
  */
 class Movie
 {
@@ -26,19 +24,14 @@ class Movie
     private $title;
 
     /**
-     * @ORM\Column(type="string")
-     */
-    private $synopsis;
-
-    /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=30)
      */
     private $director;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $releaseDate;
+    private $release_date;
 
     /**
      * @ORM\Column(type="integer")
@@ -51,9 +44,14 @@ class Movie
     private $picture;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Category")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Category", inversedBy="movies")
      */
     private $categories;
+
+    /**
+     * @ORM\Column(type="string", length=455, nullable=true)
+     */
+    private $synopsis;
 
     public function __construct()
     {
@@ -77,22 +75,6 @@ class Movie
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSynopsis()
-    {
-        return $this->synopsis;
-    }
-
-    /**
-     * @param mixed $synopsis
-     */
-    public function setSynopsis($synopsis): void
-    {
-        $this->synopsis = $synopsis;
-    }
-
     public function getDirector(): ?string
     {
         return $this->director;
@@ -107,22 +89,22 @@ class Movie
 
     public function getReleaseDate(): ?\DateTimeInterface
     {
-        return $this->releaseDate;
+        return $this->release_date;
     }
 
-    public function setReleaseDate(\DateTimeInterface $releaseDate): self
+    public function setReleaseDate(\DateTimeInterface $release_date): self
     {
-        $this->releaseDate = $releaseDate;
+        $this->release_date = $release_date;
 
         return $this;
     }
 
-    public function getDuration()
+    public function getDuration(): ?int
     {
         return $this->duration;
     }
 
-    public function setDuration($duration): self
+    public function setDuration(int $duration): self
     {
         $this->duration = $duration;
 
@@ -163,6 +145,18 @@ class Movie
         if ($this->categories->contains($category)) {
             $this->categories->removeElement($category);
         }
+
+        return $this;
+    }
+
+    public function getSynopsis(): ?string
+    {
+        return $this->synopsis;
+    }
+
+    public function setSynopsis(?string $synopsis): self
+    {
+        $this->synopsis = $synopsis;
 
         return $this;
     }

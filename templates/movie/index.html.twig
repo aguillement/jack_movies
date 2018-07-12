@@ -8,18 +8,27 @@
     <div class="container">
         <div class="row">
             {% for movie in movies %}
-                <div class="col-12 col-sm-3">
+                <div class="col-12 col-sm-3" onclick="location.href='{{ path("movie", {"id": movie.id }) }}'" style="cursor: pointer">
                     <div class="card text-white bg-primary mb-3" style="max-width: 20rem;">
                         <div class="card-header">{{ movie.title }}</div>
                         <div class="card-body">
                             <h4 class="card-title">{{ movie.title }}<h6></h6></h4>
                             ({{ movie.releaseDate|date('Y-m-d') }})
                             <p class="card-text">{{ movie.director }}</p>
+                            -
+                            <p class="card-text">
+                                {% for category in movie.categories %}
+                                    {# Separator between categories #}
+                                    {% if not loop.first %}
+                                        -
+                                    {% endif %}
+                                    {{ category.libelle }}
+                                {% endfor %}
+                            </p>
                         </div>
                     </div>
                 </div>
             {% endfor %}
         </div>
     </div>
-
 {% endblock %}

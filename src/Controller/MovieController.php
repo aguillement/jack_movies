@@ -15,7 +15,11 @@ class MovieController extends Controller
     {
         $rep = $this->getDoctrine()->getRepository(Movie::class);
         $movies = $rep->findAll();
-        dump($movies);
+
+        foreach($movies as $movie){
+            $movie->getCategories();
+        }
+
         return $this->render('movie/index.html.twig',compact("movies"));
     }
 
@@ -26,7 +30,8 @@ class MovieController extends Controller
     {
         $rep = $this->getDoctrine()->getRepository(Movie::class);
         $movie = $rep->find($id);
-        dump($movie);
-        return $this->render('movie/movie.html.twig',compact("movie"));
+        return $this->render('movie/movie.html.twig', [
+            "movie" => $movie,
+        ]);
     }
 }
