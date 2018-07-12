@@ -10,6 +10,7 @@ namespace App\Controller;
 
 
 use App\Entity\Profile;
+use App\Entity\Watchlist;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use App\Entity\User;
 use App\Form\UserType;
@@ -48,6 +49,13 @@ class UserController extends Controller
 
             $user->setProfile($profile);
             $entityManager->persist($user);
+            $entityManager->flush();
+
+            //Create watchlist
+            $watchlist = new Watchlist();
+            $watchlist->setUser($user);
+            $watchlist->setDateCreate(new \DateTime());
+            $entityManager->persist($watchlist);
             $entityManager->flush();
 
             // auto connect

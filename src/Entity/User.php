@@ -37,6 +37,11 @@ class User implements UserInterface
      */
     private $profile;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Watchlist", mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $watchlist;
+
     public function getId()
     {
         return $this->id;
@@ -103,5 +108,23 @@ class User implements UserInterface
     public function eraseCredentials()
     {
         // TODO: Implement eraseCredentials() method.
+    }
+
+    public function getWatchlist(): ?Watchlist
+    {
+        return $this->watchlist;
+    }
+
+    public function setWatchlist(?Watchlist $watchlist): self
+    {
+        $this->watchlist = $watchlist;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newUser = $watchlist === null ? null : $this;
+        if ($newUser !== $watchlist->getUser()) {
+            $watchlist->setUser($newUser);
+        }
+
+        return $this;
     }
 }
