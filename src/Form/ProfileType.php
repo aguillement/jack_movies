@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Profile;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -15,7 +16,7 @@ class ProfileType extends AbstractType
         $builder
             ->add('firstname')
             ->add('lastname')
-            ->add('picture')->add('submit', SubmitType::class)
+            ->add('picture', FileType::class)
             ->add('submit', SubmitType::class)
         ;
     }
