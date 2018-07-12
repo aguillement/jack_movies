@@ -1,9 +1,17 @@
-<div class="container col-3">
+{% extends 'base.html.twig' %}
 
-    {{ form_start(addProfileForm) }}
+{% block title %}Login{% endblock %}
 
-    {{ form_widget(addProfileForm) }}
+{% block body %}
 
-    {{ form_end(addProfileForm) }}
+    <div class="shadow  p-3 mb-5 bg-white rounded container col-3" style="margin-top: 50px">
 
-</div>
+        {{ form_start(addProfileForm) }}
+
+        {{ form_widget(addProfileForm) }}
+
+        {{ form_end(addProfileForm) }}
+
+    </div>
+
+{% endblock %}

@@ -16,7 +16,7 @@ class ProfileType extends AbstractType
         $builder
             ->add('firstname')
             ->add('lastname')
-            ->add('picture', FileType::class)
+            ->add('picture', FileType::class, array('data_class' => null))
             ->add('submit', SubmitType::class)
         ;
     }

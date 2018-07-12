@@ -14,14 +14,14 @@ use App\Form\ProfileType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class ProfileController extends Controller
 {
     /**
-     * Affiche la page add-idea du site
-     * @Route ("/profile/add", name="profile_add")
+     * @Route ("/profile/modify", name="profile_modify")
      */
-    public function addProfile(Request $request){
+    public function modifyProfile(Request $request){
 
         $user = $this->getUser();
 
@@ -61,6 +61,32 @@ class ProfileController extends Controller
 
         return $this->render('profile/modify.html.twig',
             array('addProfileForm' => $form->createView()));
+    }
+
+    /**
+     * @Route("/profile/myprofile", name="my_profile")
+     */
+    public function getMyProfile(){
+
+        $user = $this->getUser();
+
+        $idProfile = $user->getProfile()->getId();
+        $pathImage = null;
+
+        $profile = $this->getDoctrine()
+        ->getRepository(Profile::class)
+        ->findOneById(1);
+
+        dump($profile);
+
+        $pathImage = "img/profile/" .$profile->getPicture();
+
+        dump($pathImage);
+
+        return $this->render('profile/my-profile.html.twig', [
+            'user' => $user,
+            'pathImage' => $pathImage,
+        ]);
     }
 
     /**
