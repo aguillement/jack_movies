@@ -44,7 +44,7 @@ class User implements UserInterface
     private $watchlist;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\History", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\History", mappedBy="user", cascade={"persist", "remove"})
      */
     private $history;
 
@@ -143,6 +143,12 @@ class User implements UserInterface
     public function setHistory(?History $history): self
     {
         $this->history = $history;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newUser = $history === null ? null : $this;
+        if ($newUser !== $history->getUser()) {
+            $history->setUser($newUser);
+        }
 
         return $this;
     }

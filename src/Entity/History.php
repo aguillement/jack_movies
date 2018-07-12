@@ -29,7 +29,7 @@ class History
     private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\HistoryMovie", mappedBy="history")
+     * @ORM\OneToMany(targetEntity="App\Entity\HistoryMovie", mappedBy="history", cascade={"persist", "remove"})
      */
     private $historyMovies;
 

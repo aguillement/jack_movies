@@ -18,7 +18,6 @@ class HistoryMovie
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\History", inversedBy="historyMovies")
-     * @ORM\JoinColumn(nullable=false)
      */
     private $history;
 
