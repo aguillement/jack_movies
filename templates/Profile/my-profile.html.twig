@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ app.user.username }}{% endblock %}
+
+{% block body %}
+
+    <div class="shadow  p-3 mb-5 bg-white rounded container col-4" style="margin-top: 50px">
+
+        <div class="card">
+            <div style="text-align: center">
+                <img class="rounded-circle" src="{{ asset(pathImage) }}" alt="image" style="width:35%; margin-bottom: 20px">
+            </div>
+            <div style="text-align: center">
+                <div class="row">
+                    <div style="margin: 0 auto;">
+                        <label style="text-align: center; display:inline-block"> Username: </label>
+                        <p style="text-align: center; display:inline-block">{{ user.username }}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div style="margin: 0 auto;">
+                        <label style="text-align: center; display:inline-block"> Email: </label>
+                        <p style="text-align: center; display:inline-block">{{ user.email }}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div style="margin: 0 auto;">
+                        <label style="text-align: center; display:inline-block"> First name: </label>
+                        <p style="text-align: center; display:inline-block">{{ user.profile.firstname }}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div style="margin: 0 auto;">
+                        <label style="text-align: center; display:inline-block"> Last name: </label>
+                        <p style="text-align: center; display:inline-block">{{ user.profile.lastname }}</p>
+                    </div>
+                </div>
+                <a href="{{ url('profile_modify') }}" style="margin-top: 20px;margin-bottom: 50px" class="btn btn-primary">Modify my profile</a>
+            </div>
+
+
+
+        </div>
+
+
+    </div>
+
+{% endblock %}
