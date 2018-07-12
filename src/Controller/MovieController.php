@@ -34,4 +34,23 @@ class MovieController extends Controller
             "movie" => $movie,
         ]);
     }
+
+    /**
+     * @Route("/movie/search", name="search_movie")
+     */
+    public function searchMovie(){
+
+        $search = 'Para';
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $movie = $entityManager->getRepository("Movie")->createQueryBuilder('m')
+            ->where('m.title LIKE :movie')
+            ->setParameter('movie', 'Para')
+            ->getQuery()
+            ->getResult();
+
+        dump($movie);
+
+        return $this->render('movie/index.html.twig',compact("movie"));
+    }
 }
