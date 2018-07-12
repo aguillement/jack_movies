@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Movie{% endblock %}
+
+{% block body %}
+{{ movie.title }}
+    <blockquote class="blockquote">
+        <p class="mb-0">{{ movie.synopsis }}</p>
+        <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
+    </blockquote>
+{% endblock %}
