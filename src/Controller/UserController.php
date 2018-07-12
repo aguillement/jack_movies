@@ -17,6 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -33,13 +34,12 @@ class UserController extends Controller
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
+            // récupération des données du formulaire
+            $user = $form->getData();
             $password = $passwordEncoder->encodePassword($user, $user->getPassword());
             $user->setPassword($password);
 
             $entityManager = $this->getDoctrine()->getManager();
-
-            $user = new User();
 
             $profile = new Profile();
             $entityManager->persist($profile);
@@ -48,11 +48,22 @@ class UserController extends Controller
 
             $user->setProfile($profile);
             $entityManager->persist($user);
-
-            dump($user);
             $entityManager->flush();
 
-            return $this->redirectToRoute('user_registration');
+            // auto connect
+            $token = new UsernamePasswordToken(
+                $user,
+                $user->getPassword(),
+                'main',
+                $user->getRoles()
+            );
+
+            $this->get('security.token_storage')->setToken($token);
+            $this->get('session')->set('_security_main', serialize($token));
+
+            $this->addFlash('success', 'You are now successfully registered!');
+
+            return $this->redirect($this->generateUrl('home'));
         }
 
         return $this->render(
@@ -93,5 +104,4 @@ class UserController extends Controller
     public function logout(){
 
     }
-
 }
