@@ -17,6 +17,8 @@ class WatchlistController extends Controller
 
         dump($watchlist);
 
-        return $this->render('watchlist/index.html.twig');
+        return $this->render('watchlist/index.html.twig', [
+            "watchlist" => $watchlist,
+        ]);
     }
 }
