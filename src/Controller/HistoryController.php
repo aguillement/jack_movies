@@ -8,7 +8,8 @@
 
 namespace App\Controller;
 
-
+use App\Entity\HistoryMovie;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -17,12 +18,21 @@ class HistoryController extends Controller
     /**
      * @Route("/history", name="history")
      */
-    public function getHistory(){
+    public function history(){
+
+        $em = $this->container->get('doctrine')->getEntityManager();
 
         $history = $this->getUser()->getHistory();
-        $history->getHistoryMovies();
 
-        dump($history);
+        $historyMovies = $history->getHistoryMovies();
+        foreach ($historyMovies as $row ){
+            $movie = $em->getRepository("App\Entity\Movie")->createQueryBuilder('m')
+                ->where('m.id = :id')
+                ->setParameter('id', $row->getMovie()->getId())
+                ->getQuery()
+                ->getSingleResult();
+            $row->setMovie($movie);
+        }
 
         return $this->render('History/history.html.twig',compact("history"));
     }
