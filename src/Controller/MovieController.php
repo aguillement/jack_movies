@@ -69,7 +69,7 @@ class MovieController extends Controller
             dump($movies);
         }
 
-        return $this->render('movie/index.html.twig',compact("movies"));
+        return $this->render('movie/add.html.twig',compact("movies"));
     }
 
     /**
