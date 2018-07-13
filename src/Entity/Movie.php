@@ -71,10 +71,15 @@ class Movie
     {
         $this->pathPicture = $pathPicture;
     }
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\HistoryMovie", mappedBy="movie")
+     */
+    private $historyMovies;
 
     public function __construct()
     {
         $this->categories = new ArrayCollection();
+        $this->historyMovies = new ArrayCollection();
     }
 
     public function getId()
@@ -176,6 +181,37 @@ class Movie
     public function setSynopsis(?string $synopsis): self
     {
         $this->synopsis = $synopsis;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|HistoryMovie[]
+     */
+    public function getHistoryMovies(): Collection
+    {
+        return $this->historyMovies;
+    }
+
+    public function addHistoryMovie(HistoryMovie $historyMovie): self
+    {
+        if (!$this->historyMovies->contains($historyMovie)) {
+            $this->historyMovies[] = $historyMovie;
+            $historyMovie->setMovie($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHistoryMovie(HistoryMovie $historyMovie): self
+    {
+        if ($this->historyMovies->contains($historyMovie)) {
+            $this->historyMovies->removeElement($historyMovie);
+            // set the owning side to null (unless already changed)
+            if ($historyMovie->getMovie() === $this) {
+                $historyMovie->setMovie(null);
+            }
+        }
 
         return $this;
     }

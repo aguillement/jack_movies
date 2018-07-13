@@ -19,6 +19,12 @@ class HistoryController extends Controller
      */
     public function getHistory(){
 
+        $history = $this->getUser()->getHistory();
+        dump($this->getUser());
+        //$history->getMovies();
+
+        dump($history);
+
         return $this->render('History/history.html.twig');
     }
 
