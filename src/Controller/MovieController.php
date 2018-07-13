@@ -63,7 +63,7 @@ class MovieController extends Controller
             $url = $this->generateUrl('home');
             foreach($movies as $movie) {
                 $pathImage = "img/movie/" . $movie->getPicture();
-                $movie->setPathPicture($url.$pathImage);
+                $movie->setPathPicture($pathImage);
             }
 
             dump($movies);
