@@ -23,6 +23,7 @@
         </thead>
         <tbody>
         {% for movie in watchlist.movies %}
+            {# MODAL #}
             <div class="modal" id="confirmModal">
                 <div class="modal-dialog" role="dialog">
                     <div class="modal-content">
@@ -42,6 +43,7 @@
                     </div>
                 </div>
             </div>
+            {# END MODAL#}
             <tr>
                 <td>{{ movie.id }}</td>
                 <td>{{ movie.title }}</td>

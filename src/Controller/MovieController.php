@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Movie;
+use App\IMDbapi;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -47,15 +49,29 @@ class MovieController extends Controller
 
             $search = $request->get('search');
 
-            dump($request);
-
             $movies = $em->getRepository("App\Entity\Movie")->createQueryBuilder('m')
                 ->where('m.title LIKE :title')
                 ->setParameter('title', '%'.$search.'%')
                 ->getQuery()
                 ->getResult();
+            if(empty($movies)){
+                $imdb = new IMDbapi('B3achrpjvkBkRsQChsPs5vtgXPHUXd');
+                $data = $imdb->title($search,'json');
+                $data = json_decode($data);
 
-            dump($movies);
+                $newMovie = new Movie();
+                $newMovie->setTitle($data->{'title'});
+                $newMovie->setDirector($data->{'director'});
+                $newMovie->setReleaseDate(new \DateTime($data->{'year'}."-01-01"));
+
+                preg_match_all('!\d+!', $data->{'runtime'}, $duration);
+                $newMovie->setDuration($duration[0][0]);
+                $newMovie->setSynopsis($data->{'plot'});
+
+                $newMovie->setPicture($data->{'poster'});
+                
+            }
+            dump($data);
         }
 
         return $this->render('movie/index.html.twig',compact("movies"));
