@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Movie;
 use App\IMDbapi;
+use App\Form\MovieType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,8 +20,13 @@ class MovieController extends Controller
         $rep = $this->getDoctrine()->getRepository(Movie::class);
         $movies = $rep->findAll();
 
+
+
         foreach($movies as $movie){
             $movie->getCategories();
+
+            $pathImage = "img/movie/" . $movie->getPicture();
+            $movie->setPathPicture($pathImage);
         }
 
         return $this->render('movie/index.html.twig',compact("movies"));
@@ -68,12 +74,97 @@ class MovieController extends Controller
                 $newMovie->setDuration($duration[0][0]);
                 $newMovie->setSynopsis($data->{'plot'});
 
+
                 $newMovie->setPicture($data->{'poster'});
                 
             }
-            dump($data);
+
+            foreach($movies as $movie) {
+                $pathImage = "img/movie/" . $movie->getPicture();
+                $movie->setPathPicture($pathImage);
+            }
+
+            dump($movies);
         }
 
         return $this->render('movie/index.html.twig',compact("movies"));
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/movies/add", name="add_movie")
+     */
+    public function addMovie(Request $request){
+
+        $movie = new Movie();
+
+        $form = $this->CreateForm(MovieType::class, $movie);
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+
+            /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
+
+            $file = $form->get('picture')->getData();
+
+            $fileName = md5(uniqid()).'.'.$file->guessExtension();
+
+            $file->move($this->getParameter('pictures_movie_directory'), $fileName);
+
+            // updates the 'picture' property to store the PDF file name
+            // instead of its contents
+            $movie->setPicture($fileName);
+
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $entityManager->persist($movie);
+
+            $entityManager->flush();
+
+            return $this->redirectToRoute('movies');
+        }
+
+
+        return $this->render('movie/add-movie.html.twig', [
+                'addMovieForm' => $form->createView()
+            ]);
+    }
+
+    /**
+     * @Route("/movie/modify/{id}", name="modify_movie")
+     */
+    public function modifyMovie(Request $request, $id){
+
+        $rep = $this->getDoctrine()->getRepository(Movie::class);
+        $movie = $rep->find($id);
+
+        $form = $this->CreateForm(MovieType::class, $movie);
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+
+            /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
+
+            $file = $form->get('picture')->getData();
+
+            $fileName = md5(uniqid()).'.'.$file->guessExtension();
+
+            $file->move($this->getParameter('pictures_movie_directory'), $fileName);
+
+            $movie->setPicture($fileName);
+
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $entityManager->persist($movie);
+
+            $entityManager->flush();
+
+            return $this->redirectToRoute('movies');
+        }
+
+
+        return $this->render('movie/modify-movie.html.twig', [
+            'modifyMovieForm' => $form->createView()
+        ]);
     }
 }

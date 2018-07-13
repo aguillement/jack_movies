@@ -5,7 +5,8 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: 'en'
-    pictures_directory: '%kernel.project_dir%/public/img/profile'
+    pictures_profile_directory: '%kernel.project_dir%/public/img/profile'
+    pictures_movie_directory: '%kernel.project_dir%/public/img/movie'
 
 services:
     # default configuration for services in *this* file
