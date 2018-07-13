@@ -61,11 +61,11 @@ class UserController extends Controller
             $entityManager->flush();
 
             //Create history
-            /*$history = new History();
+            $history = new History();
             $history->setUser($user);
             $history->setDate(new \DateTime());
             $entityManager->persist($history);
-            $entityManager->flush();*/
+            $entityManager->flush();
 
             // auto connect
             $token = new UsernamePasswordToken(
