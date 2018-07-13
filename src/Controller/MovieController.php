@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 class MovieController extends Controller
 {
@@ -25,7 +26,7 @@ class MovieController extends Controller
         foreach($movies as $movie){
             $movie->getCategories();
 
-            $pathImage = "img/movie/" . $movie->getPicture();
+            $pathImage = $movie->getPicture();
             $movie->setPathPicture($pathImage);
         }
 
@@ -61,14 +62,32 @@ class MovieController extends Controller
                 ->getQuery()
                 ->getResult();
             if(empty($movies)){
-                $imdb = new IMDbapi('B3achrpjvkBkRsQChsPs5vtgXPHUXd');
-                $data = $imdb->title($search,'json');
-                $data = json_decode($data);
 
+                $client = new \GuzzleHttp\Client();
+                $res = $client->request('POST', 'http://api.themoviedb.org/3/search/movie', [
+                    'proxy' => 'https://proxy-sh.ad.campus-eni.fr:8080',
+                    'query' => $search,
+                    'api_key' => "bfff8381b65e5601a54e534afd05b540",
+                ]);
+                dump($res->getBody()->getContents());
+                $res = $client->request('POST', 'http://imdbapi.net/api', [
+                    'key' => 'S53G64acNvXFgLfyBFpdEYYJKBcFoR',
+                    'title' => $search,
+                    'type' => 'json',
+                ]);
+                $data = $res->getBody();
+                dump($res);
+                dump($res->getBody()->getContents());
                 $newMovie = new Movie();
                 $newMovie->setTitle($data->{'title'});
                 $newMovie->setDirector($data->{'director'});
-                $newMovie->setReleaseDate(new \DateTime($data->{'year'}."-01-01"));
+
+                $date = explode(" ", $data->{'released'});
+                $date = $date[2]."-".$date[1]."-".$date[0];
+
+                $date = new \DateTime($date);
+                dump($date);
+                $newMovie->setReleaseDate($date->format('Y-m-d'));
 
                 preg_match_all('!\d+!', $data->{'runtime'}, $duration);
                 $newMovie->setDuration($duration[0][0]);
@@ -82,11 +101,11 @@ class MovieController extends Controller
                 $entityManager->persist($newMovie);
 
                 $entityManager->flush();
-                
+                dump($data);
             }
 
             foreach($movies as $movie) {
-                $pathImage = "img/movie/" . $movie->getPicture();
+                $pathImage = $movie->getPicture();
                 $movie->setPathPicture($pathImage);
             }
         }
