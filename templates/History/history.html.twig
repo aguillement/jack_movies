@@ -3,11 +3,37 @@
 {% block title %}History{% endblock %}
 
 {% block body %}
-
-    <div class="shadow  p-3 mb-5 bg-white rounded container col-3" style="margin-top: 50px">
-
-
-
-    </div>
-
+    <br>
+    <table class="table table-striped table-bordered dataTable" id="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Title</th>
+            <th scope="col">Date</th>
+            <th scope="col">Director</th>
+            <th scope="col">Category</th>
+            <th scope="col">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in history.historyMovies %}
+            <tr>
+                <td>{{ row.movie.id }}</td>
+                <td>{{ row.movie.title }}</td>
+                <td>{{ row.movie.releaseDate|date('d-m-Y') }}</td>
+                <td>{{ row.movie.director }}</td>
+                <td>
+                    {% for category in row.movie.categories %}
+                        {{ category.libelle }}<br>
+                    {% endfor %}
+                </td>
+                <td>
+                    <a href="{{ path("removeHistoryRow", {'id': row.id}) }}">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
