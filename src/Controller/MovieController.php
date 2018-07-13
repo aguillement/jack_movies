@@ -60,10 +60,10 @@ class MovieController extends Controller
                 ->setParameter('title', '%'.$search.'%')
                 ->getQuery()
                 ->getResult();
-
+            $url = $this->generateUrl('home');
             foreach($movies as $movie) {
                 $pathImage = "img/movie/" . $movie->getPicture();
-                $movie->setPathPicture($pathImage);
+                $movie->setPathPicture($url.$pathImage);
             }
 
             dump($movies);
