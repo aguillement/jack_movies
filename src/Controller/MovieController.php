@@ -74,8 +74,9 @@ class MovieController extends Controller
                 $newMovie->setDuration($duration[0][0]);
                 $newMovie->setSynopsis($data->{'plot'});
 
-
                 $newMovie->setPicture($data->{'poster'});
+
+
                 
             }
 

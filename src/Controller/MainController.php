@@ -18,6 +18,6 @@ class MainController extends Controller
      * @Route("/", name="home")
      */
     public function getHome(){
-        return $this->render('home.html.twig');
+        return $this->render('base.html.twig');
     }
 }
