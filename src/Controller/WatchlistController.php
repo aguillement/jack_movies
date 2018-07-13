@@ -24,7 +24,7 @@ class WatchlistController extends Controller
     }
 
     /**
-     * @Route("/watchlist/{id}", name="add_watchlist")
+     * @Route("/watchlist/insert/{id}", name="add_watchlist")
      */
     public function add_watchlist($id){
         $watchlist = $this->getUser()->getWatchlist();
@@ -38,7 +38,25 @@ class WatchlistController extends Controller
         $entityManager->persist($watchlist);
         $entityManager->flush();
 
+        return $this->render('watchlist/watchlist.html.twig', [
+            "watchlist" => $watchlist,
+        ]);
+    }
 
+    /**
+     * @Route("/watchlist/remove/{id}", name="remove_watchlist")
+     */
+    public function remove_watchlist($id){
+        $watchlist = $this->getUser()->getWatchlist();
+        $watchlist->getMovies();
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $rep = $this->getDoctrine()->getRepository(Movie::class);
+
+        $watchlist->removeMovie($rep->find($id));
+
+        $entityManager->persist($watchlist);
+        $entityManager->flush();
 
         return $this->render('watchlist/watchlist.html.twig', [
             "watchlist" => $watchlist,
