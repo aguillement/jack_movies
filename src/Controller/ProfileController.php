@@ -31,10 +31,6 @@ class ProfileController extends Controller
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
 
-            $profile->setFirstname($profile->getFirstname());
-            $profile->setLastname($profile->getLastname());
-            //$profile->setPicture($profile->getPicture());
-
             /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
 
             //$file = $profile->getPicture();
@@ -42,7 +38,7 @@ class ProfileController extends Controller
 
             $fileName = md5(uniqid()).'.'.$file->guessExtension();
 
-            $file->move($this->getParameter('pictures_directory'), $fileName);
+            $file->move($this->getParameter('pictures_profile_directory'), $fileName);
 
             // updates the 'picture' property to store the PDF file name
             // instead of its contents
