@@ -32,7 +32,9 @@
     </style>
 </head>
 <body>
-    {% if app.user %}
+    {% if is_granted('ROLE_ADMIN') %}
+        {% include('base/navbar_admin.html.twig') %}
+    {% elseif is_granted('ROLE_USER')%}
         {% include('base/navbar_user.html.twig') %}
     {% else %}
         {% include('base/navbar_offline.html.twig') %}
