@@ -18,13 +18,11 @@ class HistoryMovie
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\History", inversedBy="historyMovies")
-     * @ORM\JoinColumn(nullable=false)
      */
     private $history;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Movie", inversedBy="historyMovies")
-     * @ORM\JoinColumn(nullable=false)
      */
     private $movie;
 
@@ -55,7 +53,7 @@ class HistoryMovie
         return $this->movie;
     }
 
-    public function setMovie(?Movie $movie): self
+    public function setMovie(Movie $movie): self
     {
         $this->movie = $movie;
 
