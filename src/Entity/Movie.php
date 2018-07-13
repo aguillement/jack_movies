@@ -44,6 +44,7 @@ class Movie
     private $picture;
 
     /**
+     *
      * @ORM\ManyToMany(targetEntity="App\Entity\Category", inversedBy="movies")
      */
     private $categories;
@@ -52,6 +53,24 @@ class Movie
      * @ORM\Column(type="string", length=455, nullable=true)
      */
     private $synopsis;
+
+    private $pathPicture;
+
+    /**
+     * @return mixed
+     */
+    public function getPathPicture(): ?string
+    {
+        return $this->pathPicture;
+    }
+
+    /**
+     * @param mixed $pathPicture
+     */
+    public function setPathPicture(?string $pathPicture): void
+    {
+        $this->pathPicture = $pathPicture;
+    }
 
     public function __construct()
     {
