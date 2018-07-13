@@ -50,7 +50,7 @@ class Movie
     private $categories;
 
     /**
-     * @ORM\Column(type="string", length=455, nullable=true)
+     * @ORM\Column(type="string", length=1000, nullable=true)
      */
     private $synopsis;
 

@@ -77,6 +77,11 @@ class MovieController extends Controller
                 $newMovie->setPicture($data->{'poster'});
 
 
+                $entityManager = $this->getDoctrine()->getManager();
+
+                $entityManager->persist($newMovie);
+
+                $entityManager->flush();
                 
             }
 
@@ -84,8 +89,6 @@ class MovieController extends Controller
                 $pathImage = "img/movie/" . $movie->getPicture();
                 $movie->setPathPicture($pathImage);
             }
-
-            dump($movies);
         }
 
         return $this->render('movie/index.html.twig',compact("movies"));
