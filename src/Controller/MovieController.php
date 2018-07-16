@@ -3,8 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\HistoryMovie;
+use App\Entity\Category;
 use App\Entity\Movie;
-use App\IMDbapi;
 use App\Form\MovieType;
 use App\Form\RateMovieFormType;
 use App\Service\MovieAPI;
@@ -83,12 +83,17 @@ class MovieController extends Controller
                     $newMovie->setSynopsis($movie->{'synopsis'});
                     $newMovie->setPicture('http://image.tmdb.org/t/p/w185/'.$movie->{'picture'});
 
+                    foreach($movie->{'category'} as $categoryOfMovie){
+                        $category = new Category();
+                        dump($categoryOfMovie);
+                        $category->setLibelle($categoryOfMovie);
+                        $newMovie->addCategory($category);
+                    }
+
                     $entityManager->persist($newMovie);
                 }
                 $entityManager->flush();
-
                 return $this->render('movie/index.html.twig',compact("movies"));
-
             }
 
             foreach($movies as $movie) {
