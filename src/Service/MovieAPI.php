@@ -71,6 +71,11 @@ class MovieAPI
             $synopsis = ($res->{'overview'}) ? $res->{'overview'} : "overview";
             $picture = ($res->{'poster_path'}) ? $res->{'poster_path'} : null;
 
+            $genres = [];
+            foreach($res->{'genres'} as $genre){
+                $genres[] = $genre->{'name'};
+            }
+
             $movie = [
                 'title' => $movie->{'title'},
                 'director' => $director,
@@ -78,6 +83,7 @@ class MovieAPI
                 'releaseDate' => $releaseDate,
                 'synopsis' => $synopsis,
                 'picture' => $picture,
+                'category' => $genres,
             ];
             $moviesList[] = $movie;
         }
