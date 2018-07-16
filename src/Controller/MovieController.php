@@ -21,8 +21,6 @@ class MovieController extends Controller
         $rep = $this->getDoctrine()->getRepository(Movie::class);
         $movies = $rep->findAll();
 
-
-
         foreach($movies as $movie){
             $movie->getCategories();
 
@@ -53,43 +51,77 @@ class MovieController extends Controller
         $em = $this->container->get('doctrine')->getEntityManager();
 
         if ('POST' === $request->getMethod()) {
-
             $search = $request->get('search');
-
             $movies = $em->getRepository("App\Entity\Movie")->createQueryBuilder('m')
                 ->where('m.title LIKE :title')
                 ->setParameter('title', '%'.$search.'%')
                 ->getQuery()
                 ->getResult();
             if(empty($movies)){
-                $imdb = new IMDbapi('S53G64acNvXFgLfyBFpdEYYJKBcFoR');
-                $data = $imdb->title($search,'json');
-                $data = json_decode($data);
 
-                $newMovie = new Movie();
-                $newMovie->setTitle($data->{'title'});
-                $newMovie->setDirector($data->{'director'});
-
-                // Format release date
-                $date = explode(" ", $data->{'released'});
-                dump($data);
-                $date = $date[2]."-".$date[1]."-".$date[0];
-                dump($data);
-                $newMovie->setReleaseDate(\DateTime::createFromFormat('Y-M-d', $date));
-
-                preg_match_all('!\d+!', $data->{'runtime'}, $duration);
-                $newMovie->setDuration($duration[0][0]);
-                $newMovie->setSynopsis($data->{'plot'});
-
-                $newMovie->setPicture($data->{'poster'});
-
-                $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->persist($newMovie);
-                $entityManager->flush();
-
-                return $this->render('movie/movie.html.twig', [
-                    "movie" => $newMovie,
+                $client = new \GuzzleHttp\Client();
+                $res = $client->request('POST', 'http://api.themoviedb.org/3/search/movie', [
+                        'form_params' => [
+                            'query' => $search,
+                            'api_key' => "bfff8381b65e5601a54e534afd05b540",
+                        ],
+                        'curl'  => [
+                            CURLOPT_PROXY => 'proxy-sh.ad.campus-eni.fr:8080',
+                        ],
                 ]);
+                $movies = $res->getBody()->getContents();
+                $movies = json_decode($movies)->{'results'};
+                foreach($movies as $movie){
+                    try{
+                        //GET DIRECTOR NAME
+                        $res = $client->request('GET', 'https://api.themoviedb.org/3/movie/'.$movie->{'id'}.'/credits', [
+                            'form_params' => [
+                                'api_key' => "bfff8381b65e5601a54e534afd05b540",
+                            ],
+                            'curl'  => [
+                                CURLOPT_PROXY => 'proxy-sh.ad.campus-eni.fr:8080',
+                            ],
+                        ]);
+
+                        $res = json_decode($res->getBody()->getContents());
+                        $director = $res->{'crew'}[0]->{'name'};
+
+                        //GET DURATION
+                        $res = $client->request('GET', 'https://api.themoviedb.org/3/movie/'.$movie->{'id'}, [
+                            'form_params' => [
+                                'api_key' => "bfff8381b65e5601a54e534afd05b540",
+                            ],
+                            'curl'  => [
+                                CURLOPT_PROXY => 'proxy-sh.ad.campus-eni.fr:8080',
+                            ],
+                        ]);
+                        dump($res);
+                        dump($movie);
+
+                        $res = json_decode($res->getBody()->getContents());
+                        $duration = $res->{'runtime'};
+                        $releaseDate = $res->{'release_date'};
+                        $synopsis = $res->{'overview'};
+                        $picture = $res->{'poster_path'};
+
+                        $newMovie = new Movie();
+                        $newMovie->setTitle($movie->{'title'});
+                        $newMovie->setDirector($director);
+                        $newMovie->setDuration($duration);
+                        $newMovie->setReleaseDate(\DateTime::createFromFormat('Y-m-d', $releaseDate));
+                        $newMovie->setSynopsis($synopsis);
+                        $newMovie->setPicture('http://image.tmdb.org/t/p/w185/'.$picture);
+
+                        $entityManager = $this->getDoctrine()->getManager();
+                        $entityManager->persist($newMovie);
+                        $entityManager->flush();
+
+                    } catch(\Exception $e){
+                        dump($e);
+                    }
+
+                }
+                return $this->render('movie/index.html.twig',compact("movies"));
             }
 
             foreach($movies as $movie) {
