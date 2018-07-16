@@ -17,6 +17,9 @@ class ProfileType extends AbstractType
             ->add('firstname')
             ->add('lastname')
             ->add('picture', FileType::class, array('data_class' => null))
+            ->add('rating', RatingType::class, [
+                'label' => 'Rating'
+            ]);
         ;
     }
 
