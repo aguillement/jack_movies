@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+
 use App\Entity\HistoryMovie;
 use App\Entity\Category;
 use App\Entity\Movie;
@@ -22,14 +23,14 @@ class MovieController extends Controller
         $rep = $this->getDoctrine()->getRepository(Movie::class);
         $movies = $rep->findAll();
 
-        foreach($movies as $movie){
+        foreach ($movies as $movie) {
             $movie->getCategories();
 
             $pathImage = $movie->getPicture();
             $movie->setPathPicture($pathImage);
         }
 
-        return $this->render('movie/index.html.twig',compact("movies"));
+        return $this->render('movie/index.html.twig', compact("movies"));
     }
 
     /**
@@ -58,8 +59,8 @@ class MovieController extends Controller
     /**
      * @Route("/movies/search", name="search_movie")
      */
-    public function searchMovie(Request $request){
-
+    public function searchMovie(Request $request)
+    {
         $entityManager = $this->getDoctrine()->getManager();
 
         if ('POST' === $request->getMethod()) {
@@ -69,12 +70,12 @@ class MovieController extends Controller
                 ->setParameter('title', '%'.$search.'%')
                 ->getQuery()
                 ->getResult();
-            if(empty($movies)){
+            if (empty($movies)) {
                 $movies = new MovieAPI();
                 $movies = $movies->searchMovie($search);
                 $movies = json_decode($movies);
 
-                foreach($movies as $movie){
+                foreach ($movies as $movie) {
                     $newMovie = new Movie();
                     $newMovie->setTitle($movie->{'title'});
                     $newMovie->setDirector($movie->{'director'});
@@ -83,7 +84,7 @@ class MovieController extends Controller
                     $newMovie->setSynopsis($movie->{'synopsis'});
                     $newMovie->setPicture('http://image.tmdb.org/t/p/w185/'.$movie->{'picture'});
 
-                    foreach($movie->{'category'} as $categoryOfMovie){
+                    foreach ($movie->{'category'} as $categoryOfMovie) {
                         $category = new Category();
                         dump($categoryOfMovie);
                         $category->setLibelle($categoryOfMovie);
@@ -93,30 +94,30 @@ class MovieController extends Controller
                     $entityManager->persist($newMovie);
                 }
                 $entityManager->flush();
-                return $this->render('movie/index.html.twig',compact("movies"));
+                return $this->render('movie/index.html.twig', compact("movies"));
             }
 
-            foreach($movies as $movie) {
+            foreach ($movies as $movie) {
                 $pathImage = $movie->getPicture();
                 $movie->setPathPicture($pathImage);
             }
         }
 
-        return $this->render('movie/add.html.twig',compact("movies"));
+        return $this->render('movie/add.html.twig', compact("movies"));
     }
 
     /**
      * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/movies/add", name="add_movie")
      */
-    public function addMovie(Request $request){
-
+    public function addMovie(Request $request)
+    {
         $movie = new Movie();
 
         $form = $this->CreateForm(MovieType::class, $movie);
 
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
 
             /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
 
@@ -148,15 +149,15 @@ class MovieController extends Controller
     /**
      * @Route("/movie/modify/{id}", name="modify_movie")
      */
-    public function modifyMovie(Request $request, $id){
-
+    public function modifyMovie(Request $request, $id)
+    {
         $rep = $this->getDoctrine()->getRepository(Movie::class);
         $movie = $rep->find($id);
 
         $form = $this->CreateForm(MovieType::class, $movie);
 
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
 
             /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
 
