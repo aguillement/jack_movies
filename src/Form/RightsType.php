@@ -27,7 +27,19 @@ class RightsType extends AbstractType
                     'Admin' => 'ROLE_ADMIN',
                     'User' => 'ROLE_USER',
                 ),
+            ))
+            ->get('roles')
+            ->addModelTransformer(new CallbackTransformer(
+                function ($tagsAsArray) {
+                    // transform the array to a string
+                    return implode(', ', $tagsAsArray);
+                },
+                function ($tagsAsString) {
+                    // transform the string back to an array
+                    return explode(', ', $tagsAsString);
+                }
             ));
+
     }
 
     public function getBlockPrefix() {

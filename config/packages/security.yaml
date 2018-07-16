@@ -45,7 +45,7 @@ security:
          - { path: ^/movie/modify/, roles: ROLE_ADMIN }
          - { path: ^/profile/modify, roles: ROLE_ADMIN }
          - { path: ^/profile/myprofile, roles: ROLE_USER }
-         - { path: ^/user/modifyrights, roles: ROLE_ADMIN }
+         - { path: ^/user/modifyrights, roles: ROLE_USER }
          - { path: ^/watchlist, roles: ROLE_USER }
          - { path: ^/watchlist/insert/, roles: ROLE_USER }
          - { path: ^/watchlist/remove/, roles: ROLE_USER }
