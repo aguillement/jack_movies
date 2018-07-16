@@ -17,7 +17,7 @@ security:
           check_path: login
           username_parameter: "form[_username]"
           password_parameter: "form[_password]"
-          default_target_path: home
+          default_target_path: movies
         logout_on_user_change: true
         logout:
           path: logout
