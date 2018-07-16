@@ -11,7 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class CategoryController extends Controller
 {
     /**
-     * @Route("/category/add", name="addCategory")
+     * @Route("/admin/category/add", name="addCategory")
      */
     public function addCategory(Request $request)
     {
@@ -28,6 +28,7 @@ class CategoryController extends Controller
 
             $entityManager->flush();
 
+            $this->addFlash('success', 'The category has been created!');
             return $this->redirectToRoute('categories');
         }
 
@@ -38,7 +39,7 @@ class CategoryController extends Controller
     }
 
     /**
-     * @Route("/categories", name="categories")
+     * @Route("/admin/categories", name="categories")
      */
     public function categories()
     {
