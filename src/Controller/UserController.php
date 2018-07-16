@@ -121,4 +121,23 @@ class UserController extends Controller
     public function logout(){
 
     }
+
+    /**
+     * @Route("/deleteAccount", name="deleteAccount")
+     */
+    public function deleteAccount(){
+        $user = $this->getUser();
+
+        $this->get('security.token_storage')->setToken(null);
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $entityManager->remove($user);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'You have delete your account!');
+
+        return $this->redirect($this->generateUrl('home'));
+        //return $this->render('base.html.twig');
+    }
 }

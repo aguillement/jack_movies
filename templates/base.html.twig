@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
     <link rel="shortcut icon" href="{{ asset('img/logo.ico') }}">
-    <title>{% block title %} Title {% endblock %}</title>
+    <title>{% block title %} Home {% endblock %}</title>
     <style>
         td,th {
             padding: 20px!important;
@@ -41,6 +41,22 @@
     {% endif %}
 
     {% block body %}
+    <div class="container-fluid mt-5">
+        <div class="row">
+            <div class="col-4"></div>
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="col-4 alert alert-{{ label }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            <div class="col-4"></div>
+        </div>
+    </div>
     {% endblock %}
 
     <script src="{{ asset('js/jquery.min.js') }}"></script>
