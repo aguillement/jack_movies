@@ -1,10 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Movie{% endblock %}
-{% block script %}
-    $('#dropdownMenuButton').dropdown();
-    $('#dropdownMenuButton').show();
-{% endblock %}
+
 {% block body %}
     {% if(movie != null)  %}
     <br>

@@ -15,12 +15,8 @@ class RateMovieFormType extends AbstractType
     {
         $builder
             ->add('note', NumberType::class,array('label' => 'Rate :'))
-            ->add('history', HiddenType::class, array(
-                'data' => null,
-            ))
-            ->add('movie', HiddenType::class, array(
-                'data' => null,
-            ))
+            ->add('history', HiddenType::class)
+            ->add('movie', HiddenType::class)
         ;
     }
 

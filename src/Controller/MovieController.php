@@ -66,8 +66,6 @@ class MovieController extends Controller
 
             $search = $request->get('search');
 
-            dump($request);
-
             $movies = $em->getRepository("App\Entity\Movie")->createQueryBuilder('m')
                 ->where('m.title LIKE :title')
                 ->setParameter('title', '%'.$search.'%')
