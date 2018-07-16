@@ -166,6 +166,5 @@ class UserController extends Controller
         return $this->render('User/rights.html.twig', [
             'rightsForm' => $form->createView()
         ]);
-
     }
 }

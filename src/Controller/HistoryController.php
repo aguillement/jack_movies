@@ -20,14 +20,14 @@ class HistoryController extends Controller
     /**
      * @Route("/history", name="history")
      */
-    public function history(){
-
+    public function history()
+    {
         $em = $this->container->get('doctrine')->getEntityManager();
 
         $history = $this->getUser()->getHistory();
 
         $historyMovies = $history->getHistoryMovies();
-        foreach ($historyMovies as $row ){
+        foreach ($historyMovies as $row) {
             $movie = $em->getRepository("App\Entity\Movie")->createQueryBuilder('m')
                 ->where('m.id = :id')
                 ->setParameter('id', $row->getMovie()->getId())
@@ -36,13 +36,14 @@ class HistoryController extends Controller
             $row->setMovie($movie);
         }
 
-        return $this->render('History/history.html.twig',compact("history"));
+        return $this->render('History/history.html.twig', compact("history"));
     }
 
     /**
      * @Route("/history/insert/{id}", name="addHistoryRow")
      */
-    public function addHistoryRow(Request $request, $id){
+    public function addHistoryRow(Request $request, $id)
+    {
         $newRow = new HistoryMovie();
         $form = $this->createForm(RateMovieFormType::class, $newRow);
         $form->handleRequest($request);
@@ -68,7 +69,8 @@ class HistoryController extends Controller
     /**
      * @Route("/history/remove/{id}", name="removeHistoryRow")
      */
-    public function removeHistoryRow($id){
+    public function removeHistoryRow($id)
+    {
         $entityManager = $this->getDoctrine()->getManager();
 
         // Delete history row
@@ -78,5 +80,4 @@ class HistoryController extends Controller
 
         return $this->redirectToRoute("history");
     }
-
 }

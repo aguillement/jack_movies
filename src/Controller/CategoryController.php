@@ -20,8 +20,7 @@ class CategoryController extends Controller
         $form = $this->CreateForm(CategoryType::class, $category);
 
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()) {
-
+        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
 
             $entityManager->persist($category);
@@ -43,7 +42,6 @@ class CategoryController extends Controller
      */
     public function categories()
     {
-
         $rep = $this->getDoctrine()->getRepository(Category::class);
         $categories = $rep->findAll();
 

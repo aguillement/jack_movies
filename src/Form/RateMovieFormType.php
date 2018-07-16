@@ -14,7 +14,7 @@ class RateMovieFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('note', NumberType::class,array('label' => 'Rate :'))
+            ->add('note', NumberType::class, array('label' => 'Rate :'))
             ->add('history', HiddenType::class)
             ->add('movie', HiddenType::class)
         ;
