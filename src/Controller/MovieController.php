@@ -3,10 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Movie;
+use App\IMDbapi;
 use App\Form\MovieType;
+use App\Service\MovieAPI;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 class MovieController extends Controller
 {
@@ -18,12 +22,10 @@ class MovieController extends Controller
         $rep = $this->getDoctrine()->getRepository(Movie::class);
         $movies = $rep->findAll();
 
-
-
         foreach($movies as $movie){
             $movie->getCategories();
 
-            $pathImage = "img/movie/" . $movie->getPicture();
+            $pathImage = $movie->getPicture();
             $movie->setPathPicture($pathImage);
         }
 
@@ -47,26 +49,41 @@ class MovieController extends Controller
      */
     public function searchMovie(Request $request){
 
-        $em = $this->container->get('doctrine')->getEntityManager();
+        $entityManager = $this->getDoctrine()->getManager();
 
         if ('POST' === $request->getMethod()) {
-
             $search = $request->get('search');
-
-            dump($request);
-
-            $movies = $em->getRepository("App\Entity\Movie")->createQueryBuilder('m')
+            $movies = $entityManager->getRepository("App\Entity\Movie")->createQueryBuilder('m')
                 ->where('m.title LIKE :title')
                 ->setParameter('title', '%'.$search.'%')
                 ->getQuery()
                 ->getResult();
+            if(empty($movies)){
+                $movies = new MovieAPI();
+                $movies = $movies->searchMovie($search);
+                $movies = json_decode($movies);
 
-            foreach($movies as $movie) {
-                $pathImage = "img/movie/" . $movie->getPicture();
-                $movie->setPathPicture($pathImage);
+                foreach($movies as $movie){
+                    $newMovie = new Movie();
+                    $newMovie->setTitle($movie->{'title'});
+                    $newMovie->setDirector($movie->{'director'});
+                    $newMovie->setDuration($movie->{'duration'});
+                    $newMovie->setReleaseDate(\DateTime::createFromFormat('Y-m-d', $movie->{'releaseDate'}));
+                    $newMovie->setSynopsis($movie->{'synopsis'});
+                    $newMovie->setPicture('http://image.tmdb.org/t/p/w185/'.$movie->{'picture'});
+
+                    $entityManager->persist($newMovie);
+                }
+                $entityManager->flush();
+
+                return $this->render('movie/index.html.twig',compact("movies"));
+
             }
 
-            dump($movies);
+            foreach($movies as $movie) {
+                $pathImage = $movie->getPicture();
+                $movie->setPathPicture($pathImage);
+            }
         }
 
         return $this->render('movie/index.html.twig',compact("movies"));

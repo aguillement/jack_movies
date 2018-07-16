@@ -3,6 +3,13 @@
 {% block title %}Watchlist{% endblock %}
 
 {% block body %}
+    <style>
+        .modal-backdrop.in {
+            opacity: 0.4;
+        }
+    </style>
+
+    <br>
 <div class="container-fluid mt-5">
     <div class="row">
         <div class="col-sm-1"></div>
@@ -20,6 +27,27 @@
                 </thead>
                 <tbody>
                 {% for movie in watchlist.movies %}
+                    {# MODAL #}
+                    <div class="modal" id="confirmModal">
+                        <div class="modal-dialog" role="dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Remove</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Are you sure to remove this movie from your watchlist ?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" onclick="location.href='{{ url("remove_watchlist", {"id": movie.id}) }}'">Yes</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {# END MODAL#}
                     <tr>
                         <td>{{ movie.id }}</td>
                         <td>{{ movie.title }}</td>
