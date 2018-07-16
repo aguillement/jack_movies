@@ -7,7 +7,10 @@
     <br>
     <div class="container">
         <div class="row">
-            <div class="col-8">
+            <div class="col-3">
+                <img src="{{ movie.picture }}" alt="{{ movie.title }}" style="width: 100%;">
+            </div>
+            <div class="col-7">
                 <div class="jumbotron">
                     <h1>{{ movie.title }}</h1>
                     <h3>{{ movie.releaseDate|date('d-m-Y') }}</h3>
@@ -18,7 +21,7 @@
                     <p>Director : {{ movie.director }}</p>
                 </div>
             </div>
-            <div class="col-4">
+            <div class="col-2">
                 <p>
                     <a class="btn btn-secondary" href="{{ path("addHistoryRow", {'id': movie.id}) }}" role="button">
                         <i class="fa fa-check" aria-hidden="true"></i>
@@ -32,8 +35,8 @@
                     </a>
                 </p>
                 <p>
-                    <a class="btn btn-secondary btn-sm" href="{{ url('modify_movie', {'id': movie.id}) }}" role="button">
-                        <i class="fa fa-plus" aria-hidden="true"></i>
+                    <a class="btn btn-secondary" href="{{ url('modify_movie', {'id': movie.id}) }}" role="button">
+                        <i class="fas fa-file-signature" aria-hidden="true"></i>
                         Modify
                     </a>
                 </p>
