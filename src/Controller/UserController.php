@@ -8,7 +8,6 @@
 
 namespace App\Controller;
 
-
 use App\Entity\History;
 use App\Entity\Profile;
 use App\Entity\Watchlist;
@@ -118,23 +117,22 @@ class UserController extends Controller
     /**
      * @Route("/logout", name="logout")
      */
-    public function logout(){
-
+    public function logout()
+    {
     }
 
     /**
      * @Route("/user/modifyrights", name="modify_user_rights")
      */
-    public function setRights(Request $request){
-
+    public function setRights(Request $request)
+    {
         $id = 1;
         $rep = $this->getDoctrine()->getRepository(User::class);
         $user = $rep->find($id);
         $form = $this->CreateForm(RightsType::class, $user);
 
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()) {
-
+        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
 
             $entityManager->persist($user);

@@ -30,7 +30,8 @@ class RightsType extends AbstractType
             ));
     }
 
-    public function getBlockPrefix() {
+    public function getBlockPrefix()
+    {
         return null;
     }
 

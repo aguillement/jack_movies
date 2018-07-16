@@ -2,7 +2,6 @@
 
 namespace App\Service;
 
-
 use Psr\Log\LoggerInterface;
 
 class MovieAPI
@@ -12,12 +11,14 @@ class MovieAPI
     private $api_key = 'bfff8381b65e5601a54e534afd05b540';
     private $client;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->client = new \GuzzleHttp\Client();
     }
 
-    public function searchMovie(string $search){
-        try{
+    public function searchMovie(string $search)
+    {
+        try {
             $res = $this->client->request('POST', 'https://api.themoviedb.org/3/search/movie', [
                 'form_params' => [
                     'query' => $search,
@@ -32,18 +33,16 @@ class MovieAPI
 
             $res = $this->formatMovie($res);
             return $res;
-
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             return $e;
         }
     }
 
-    public function formatMovie($movies){
-
+    public function formatMovie($movies)
+    {
         $moviesList = [];
 
-        foreach($movies as $movie){
-
+        foreach ($movies as $movie) {
             $res = $this->client->request('GET', 'https://api.themoviedb.org/3/movie/'.$movie->{'id'}.'/credits', [
                 'form_params' => [
                     'api_key' => $this->api_key,
@@ -72,7 +71,7 @@ class MovieAPI
             $picture = ($res->{'poster_path'}) ? $res->{'poster_path'} : null;
 
             $genres = [];
-            foreach($res->{'genres'} as $genre){
+            foreach ($res->{'genres'} as $genre) {
                 $genres[] = $genre->{'name'};
             }
 
