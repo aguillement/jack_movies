@@ -9,27 +9,9 @@
     <link rel="stylesheet" href="{{ asset("css/datatable.min.css") }}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/default.css') }}" rel="stylesheet">
     <link rel="shortcut icon" href="{{ asset('img/logo.ico') }}">
     <title>{% block title %} Home {% endblock %}</title>
-    <style>
-        td,th {
-            padding: 20px!important;
-            text-align: center;
-        }
-        th:hover{
-            /*background: #1a1a1a;*/
-            color: #1a1a1a;
-        }
-        tbody tr:hover{
-            background: #d6d6d6!important;
-        }
-        #table_wrapper input, #table_wrapper select{
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            height: 30px;
-            padding: 5px 10px;
-        }
-    </style>
 </head>
 <body>
     {% if is_granted('ROLE_ADMIN') %}

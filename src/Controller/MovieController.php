@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\HistoryMovie;
 use App\Entity\Movie;
 use App\Form\MovieType;
+use App\Form\RateMovieFormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -33,12 +35,23 @@ class MovieController extends Controller
     /**
      * @Route("/movie/{id}", name="movie")
      */
-    public function movie($id)
+    public function movie(Request $request, $id)
     {
+        $newRow = new HistoryMovie();
+        $form = $this->createForm(RateMovieFormType::class, $newRow);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            return $this->redirectToRoute('addHistoryRow', [
+                'request' => $request,
+                'id' => $id
+            ], 307);
+        }
+
         $rep = $this->getDoctrine()->getRepository(Movie::class);
         $movie = $rep->find($id);
         return $this->render('movie/movie.html.twig', [
             "movie" => $movie,
+            "rateForm" => $form->createView(),
         ]);
     }
 

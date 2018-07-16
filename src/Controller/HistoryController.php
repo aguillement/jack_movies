@@ -10,7 +10,9 @@ namespace App\Controller;
 
 use App\Entity\HistoryMovie;
 use App\Entity\Movie;
+use App\Form\RateMovieFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class HistoryController extends Controller
@@ -32,7 +34,6 @@ class HistoryController extends Controller
                 ->getQuery()
                 ->getSingleResult();
             $row->setMovie($movie);
-            dump($row);
         }
 
         return $this->render('History/history.html.twig',compact("history"));
@@ -41,19 +42,13 @@ class HistoryController extends Controller
     /**
      * @Route("/history/insert/{id}", name="addHistoryRow")
      */
-    public function addHistoryRow($id){
-        $em = $this->container->get('doctrine')->getEntityManager();
+    public function addHistoryRow(Request $request, $id){
+        $newRow = new HistoryMovie();
+        $form = $this->createForm(RateMovieFormType::class, $newRow);
+        $form->handleRequest($request);
+        $newRow = $form->getData();
 
         $history = $this->getUser()->getHistory();
-        $historyMovies = $history->getHistoryMovies();
-        foreach ($historyMovies as $row ){
-            $movie = $em->getRepository("App\Entity\Movie")->createQueryBuilder('m')
-                ->where('m.id = :id')
-                ->setParameter('id', $row->getMovie()->getId())
-                ->getQuery()
-                ->getSingleResult();
-            $row->setMovie($movie);
-        }
 
         $entityManager = $this->getDoctrine()->getManager();
 
@@ -61,16 +56,10 @@ class HistoryController extends Controller
         $repMovie = $this->getDoctrine()->getRepository(Movie::class);
 
         // create new history row
-        $newRow = new HistoryMovie();
         $newRow->setHistory($history);
         $newRow->setMovie($repMovie->find($id));
-        $newRow->setNote(null);
 
         $entityManager->persist($newRow);
-        $entityManager->flush();
-
-        $history->addHistoryMovie($newRow);
-        $entityManager->persist($history);
         $entityManager->flush();
 
         return $this->redirectToRoute("history");

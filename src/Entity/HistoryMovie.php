@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\HistoryMovieRepository")
@@ -27,6 +28,12 @@ class HistoryMovie
     private $movie;
 
     /**
+     * @Assert\Range(
+     *      min = 0,
+     *      max = 10,
+     *      minMessage = "You must be at least {{ limit }} rate to enter",
+     *      maxMessage = "You're rate can't be taller than {{ limit }} to enter"
+     * )
      * @ORM\Column(type="integer", nullable=true)
      */
     private $note;

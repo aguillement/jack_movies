@@ -15,13 +15,14 @@
                         <th scope="col">Date</th>
                         <th scope="col">Director</th>
                         <th scope="col">Category</th>
+                        <th scope="col">Rate</th>
                         <th scope="col">Action</th>
                     </tr>
                     </thead>
                     <tbody>
                     {% for row in history.historyMovies %}
                         <tr>
-                            <td>{{ row.movie.id }}</td>
+                            <td>{{ row.id }}</td>
                             <td>{{ row.movie.title }}</td>
                             <td>{{ row.movie.releaseDate|date('d-m-Y') }}</td>
                             <td>{{ row.movie.director }}</td>
@@ -30,6 +31,7 @@
                                     {{ category.libelle }}<br>
                                 {% endfor %}
                             </td>
+                            <td>{{ row.note }}</td>
                             <td>
                                 <a href="{{ path("removeHistoryRow", {'id': row.id}) }}">
                                     <i class="fa fa-trash" aria-hidden="true"></i>
