@@ -80,7 +80,7 @@ class UserController extends Controller
 
             $this->addFlash('success', 'You are now successfully registered!');
 
-            return $this->redirect($this->generateUrl('home'));
+            return $this->redirect($this->generateUrl('movies'));
         }
 
         return $this->render(
