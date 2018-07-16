@@ -45,7 +45,7 @@ class Movie
 
     /**
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Category", inversedBy="movies")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Category", inversedBy="movies", cascade={"persist"})
      */
     private $categories;
 
