@@ -12,12 +12,11 @@ namespace App\Controller;
 use App\Entity\History;
 use App\Entity\Profile;
 use App\Entity\Watchlist;
+use App\Form\RightsType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use App\Entity\User;
 use App\Form\UserType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -49,6 +48,7 @@ class UserController extends Controller
             $entityManager->flush();
 
             //Create user
+            $user->setRoles(['ROLE_USER']);
             $user->setProfile($profile);
             $entityManager->persist($user);
             $entityManager->flush();
@@ -80,7 +80,7 @@ class UserController extends Controller
 
             $this->addFlash('success', 'You are now successfully registered!');
 
-            return $this->redirect($this->generateUrl('home'));
+            return $this->redirect($this->generateUrl('movies'));
         }
 
         return $this->render(
@@ -120,5 +120,34 @@ class UserController extends Controller
      */
     public function logout(){
 
+    }
+
+    /**
+     * @Route("/user/modifyrights", name="modify_user_rights")
+     */
+    public function setRights(Request $request){
+
+        $id = 1;
+        $rep = $this->getDoctrine()->getRepository(User::class);
+        $user = $rep->find($id);
+        $form = $this->CreateForm(RightsType::class, $user);
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $entityManager->persist($user);
+
+            dump($user);
+
+            $entityManager->flush();
+
+            $this->redirect('movies');
+        }
+
+        return $this->render('User/rights.html.twig', [
+            'rightsForm' => $form->createView()
+        ]);
     }
 }

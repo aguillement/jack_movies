@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Rights{% endblock %}
+
+{% block body %}
+    <div class="shadow  p-3 mb-5 bg-white rounded container col-3" style="margin-top: 50px">
+
+        {{ form_start(rightsForm) }}
+
+        {{ form_widget(rightsForm) }}
+
+        <div class="text-center" style="margin-top: 35px">
+            <button type="submit" class="btn btn-primary">Modify</button>
+        </div>
+
+        {{ form_end(rightsForm) }}
+
+    </div>
+{% endblock %}
