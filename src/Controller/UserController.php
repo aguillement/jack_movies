@@ -122,6 +122,25 @@ class UserController extends Controller
     }
 
     /**
+     * @Route("/deleteAccount", name="deleteAccount")
+     */
+    public function deleteAccount()
+    {
+        $user = $this->getUser();
+
+        $this->get('security.token_storage')->setToken(null);
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $entityManager->remove($user);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'You have delete your account!');
+
+        return $this->redirect($this->generateUrl('home'));
+    }
+
+    /**
      * @Route("/user/modifyrights", name="modify_user_rights")
      */
     public function setRights(Request $request)
@@ -147,5 +166,6 @@ class UserController extends Controller
         return $this->render('User/rights.html.twig', [
             'rightsForm' => $form->createView()
         ]);
+
     }
 }

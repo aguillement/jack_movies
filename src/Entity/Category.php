@@ -23,11 +23,6 @@ class Category
      */
     private $libelle;
 
-    public function __construct()
-    {
-        $this->categoryMovies = new ArrayCollection();
-    }
-
     public function getId()
     {
         return $this->id;

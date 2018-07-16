@@ -69,17 +69,12 @@ class ProfileController extends Controller
         $user = $this->getUser();
 
         $idProfile = $user->getProfile()->getId();
-        $pathImage = null;
 
         $profile = $this->getDoctrine()
             ->getRepository(Profile::class)
-            ->findOneById(1);
-
-        dump($profile);
+            ->findOneById($idProfile);
 
         $pathImage = "img/profile/" . $profile->getPicture();
-
-        dump($pathImage);
 
         return $this->render('profile/my-profile.html.twig', [
             'user' => $user,

@@ -10,6 +10,13 @@
     </style>
     <br>
     <div class="container">
+        {% if is_granted('ROLE_ADMIN') %}
+            <div class="row">
+                <div style="margin: 0 auto 20px;">
+                    <a href="{{ path("add_movie") }}" class="btn btn-primary">Add a movie</a>
+                </div>
+            </div>
+        {% endif %}
         <div class="row">
             {% for movie in movies %}
                 <div class="col-lg-3 col-sm-1 col-md-5 card text-white bg-primary mb-3" onclick="location.href='{{ path("movie", {"id": movie.id }) }}'" style="cursor: pointer; margin-left: 5%;">

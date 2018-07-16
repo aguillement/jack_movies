@@ -35,7 +35,12 @@
                         <p style="text-align: center; display:inline-block">{{ user.profile.lastname }}</p>
                     </div>
                 </div>
-                <a href="{{ url('profile_modify') }}" style="margin-top: 20px;margin-bottom: 50px" class="btn btn-primary">Modify my profile</a>
+                <a style="margin: 10px;" href="{{ url('profile_modify') }}" style="margin-top: 20px;margin-bottom: 50px" class="btn btn-primary">Modify my profile</a>
+                <div class="row">
+                    <div style="margin: 10px auto;">
+                        <a style="margin: 0;" href="{{ url('deleteAccount') }}" style="margin-top: 20px;margin-bottom: 50px" class="btn btn-sm btn-outline-danger">Delete my account</a>
+                    </div>
+                </div>
             </div>
 
 
