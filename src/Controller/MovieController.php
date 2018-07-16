@@ -70,6 +70,7 @@ class MovieController extends Controller
                 ->setParameter('title', '%'.$search.'%')
                 ->getQuery()
                 ->getResult();
+            dump($movies);
             if (empty($movies)) {
                 $movies = new MovieAPI();
                 $movies = $movies->searchMovie($search);
@@ -103,7 +104,7 @@ class MovieController extends Controller
             }
         }
 
-        return $this->render('movie/add.html.twig', compact("movies"));
+        return $this->render('movie/index.html.twig', compact("movies"));
     }
 
     /**
@@ -143,7 +144,7 @@ class MovieController extends Controller
 
         return $this->render('movie/add-movie.html.twig', [
                 'addMovieForm' => $form->createView()
-            ]);
+        ]);
     }
 
     /**
