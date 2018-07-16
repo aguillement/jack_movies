@@ -162,12 +162,10 @@ final class Version20180713075525 extends AbstractMigration
                               ADD CONSTRAINT `FK_8D93D6491E058452` FOREIGN KEY (`history_id`) REFERENCES `history` (`id`),
                               ADD CONSTRAINT `FK_8D93D649CCFA12B8` FOREIGN KEY (`profile_id`) REFERENCES `profile` (`id`);
                             COMMIT;");
-
     }
 
     public function down(Schema $schema) : void
     {
         // this down() migration is auto-generated, please modify it to your needs
-
     }
 }

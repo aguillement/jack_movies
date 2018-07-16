@@ -5,6 +5,7 @@
         "php": "^7.2.4",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "friendsofphp/php-cs-fixer": "^2.12",
         "guzzlehttp/guzzle": "^6.3",
         "symfony/annotations-pack": "^1.0",
         "symfony/apache-pack": "^1.0",

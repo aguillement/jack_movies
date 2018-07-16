@@ -6,6 +6,7 @@
     {% if(movie != null)  %}
     <br>
     <div class="container">
+
         <div class="row">
             <div class="col-3">
                 <img src="{{ movie.picture }}" alt="{{ movie.title }}" style="width: 100%;">
@@ -22,12 +23,22 @@
                 </div>
             </div>
             <div class="col-2">
+
+                {{ form_start(rateForm) }}
+                <div style="text-align: center;">
+                    {{ form_label(rateForm.note) }}
+                </div>
                 <p>
-                    <a class="btn btn-secondary" href="{{ path("addHistoryRow", {'id': movie.id}) }}" role="button">
+                    {{ form_widget(rateForm.note) }}
+                </p>
+                <p>
+                    <button type="submit" class="btn btn-secondary">
                         <i class="fa fa-check" aria-hidden="true"></i>
                         I have seen this movie
-                    </a>
+                    </button>
                 </p>
+                {{ form_end(rateForm) }}
+
                 <p>
                     <a class="btn btn-secondary" href='{{ path("add_watchlist", {"id": movie.id }) }}' role="button">
                         <i class="fa fa-plus" aria-hidden="true"></i>
@@ -46,5 +57,4 @@
         </div>
     </div>
     {% endif %}
-
 {% endblock %}

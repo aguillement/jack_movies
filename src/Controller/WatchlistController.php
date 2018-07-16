@@ -26,7 +26,8 @@ class WatchlistController extends Controller
     /**
      * @Route("/watchlist/insert/{id}", name="add_watchlist")
      */
-    public function add_watchlist($id){
+    public function add_watchlist($id)
+    {
         $watchlist = $this->getUser()->getWatchlist();
         $watchlist->getMovies();
 
@@ -46,7 +47,8 @@ class WatchlistController extends Controller
     /**
      * @Route("/watchlist/remove/{id}", name="remove_watchlist")
      */
-    public function remove_watchlist($id){
+    public function remove_watchlist($id)
+    {
         $watchlist = $this->getUser()->getWatchlist();
         $watchlist->getMovies();
 

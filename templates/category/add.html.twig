@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add Category{% endblock %}
+
+{% block body %}
+
+
+    <div class="shadow  p-3 mb-5 bg-white rounded container col-3" style="margin-top: 50px">
+
+        {{ form_start(addCategoryForm) }}
+
+        {{ form_widget(addCategoryForm) }}
+
+        <div class="text-center" style="margin-top: 35px">
+            <button type="submit" class="btn btn-primary">Add</button>
+        </div>
+
+        {{ form_end(addCategoryForm) }}
+
+    </div>
+
+{% endblock %}

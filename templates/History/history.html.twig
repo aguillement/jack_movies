@@ -23,6 +23,7 @@
                             <th scope="col">Date</th>
                             <th scope="col">Director</th>
                             <th scope="col">Category</th>
+                            <th scope="col">Rate</th>
                             <th scope="col">Action</th>
                         </tr>
                         </thead>
@@ -57,6 +58,7 @@
                                         {{ category.libelle }}<br>
                                     {% endfor %}
                                 </td>
+                                <td>{{ row.note }}</td>
                                 <td>
                                     <a href="#" data-toggle="modal" data-target="#confirmModal">
                                         <i class="fa fa-trash" aria-hidden="true"></i>

@@ -8,7 +8,6 @@
 
 namespace App\Controller;
 
-
 use App\Entity\Profile;
 use App\Form\ProfileType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -21,15 +20,15 @@ class ProfileController extends Controller
     /**
      * @Route ("/profile/modify", name="profile_modify")
      */
-    public function modifyProfile(Request $request){
-
+    public function modifyProfile(Request $request)
+    {
         $user = $this->getUser();
 
         $profile = $user->getProfile();
         $form = $this->CreateForm(ProfileType::class, $profile);
 
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
 
             /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
 
@@ -55,8 +54,10 @@ class ProfileController extends Controller
             return $this->redirectToRoute('movies');
         }
 
-        return $this->render('profile/modify.html.twig',
-            array('addProfileForm' => $form->createView()));
+        return $this->render(
+            'profile/modify.html.twig',
+            array('addProfileForm' => $form->createView())
+        );
     }
 
     /**
@@ -65,21 +66,15 @@ class ProfileController extends Controller
      */
     public function getMyProfile()
     {
-
         $user = $this->getUser();
 
         $idProfile = $user->getProfile()->getId();
-        $pathImage = null;
 
         $profile = $this->getDoctrine()
             ->getRepository(Profile::class)
-            ->findOneById(1);
-
-        dump($profile);
+            ->findOneById($idProfile);
 
         $pathImage = "img/profile/" . $profile->getPicture();
-
-        dump($pathImage);
 
         return $this->render('profile/my-profile.html.twig', [
             'user' => $user,

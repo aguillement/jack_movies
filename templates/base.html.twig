@@ -9,36 +9,36 @@
     <link rel="stylesheet" href="{{ asset("css/datatable.min.css") }}">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/default.css') }}" rel="stylesheet">
     <link rel="shortcut icon" href="{{ asset('img/logo.ico') }}">
-    <title>{% block title %} Title {% endblock %}</title>
-    <style>
-        td,th {
-            padding: 20px!important;
-            text-align: center;
-        }
-        th:hover{
-            /*background: #1a1a1a;*/
-            color: #1a1a1a;
-        }
-        tbody tr:hover{
-            background: #d6d6d6!important;
-        }
-        #table_wrapper input, #table_wrapper select{
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            height: 30px;
-            padding: 5px 10px;
-        }
-    </style>
+    <title>{% block title %} Home {% endblock %}</title>
 </head>
 <body>
-    {% if app.user %}
+    {% if is_granted('ROLE_ADMIN') %}
+        {% include('base/navbar_admin.html.twig') %}
+    {% elseif is_granted('ROLE_USER')%}
         {% include('base/navbar_user.html.twig') %}
     {% else %}
         {% include('base/navbar_offline.html.twig') %}
     {% endif %}
 
     {% block body %}
+    <div class="container-fluid mt-5">
+        <div class="row">
+            <div class="col-4"></div>
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="col-4 alert alert-{{ label }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            <div class="col-4"></div>
+        </div>
+    </div>
     {% endblock %}
 
     <script src="{{ asset('js/jquery.min.js') }}"></script>
