@@ -1,29 +1,27 @@
 security:
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
-        in_memory: { memory: ~ }
         our_db_provider:
-          entity:
-            class: App\Entity\User
-            property: username
+          entity: { class: App\Entity\User, property: username }
+
     firewalls:
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
-        main:
-            pattern: ^/
-            provider: our_db_provider
-            anonymous: ~
-            form_login:
-              login_path: login
-              check_path: login
-              username_parameter: "form[_username]"
-              password_parameter: "form[_password]"
-              default_target_path: home
-            logout_on_user_change: true
-            logout:
-              path: logout
-              target: home
+      dev:
+        pattern: ^/(_(profiler|wdt)|css|images|js)/
+        security: false
+      main:
+        pattern: ^/
+        provider: our_db_provider
+        anonymous: ~
+        form_login:
+          login_path: login
+          check_path: login
+          username_parameter: "form[_username]"
+          password_parameter: "form[_password]"
+          default_target_path: movies
+        logout_on_user_change: true
+        logout:
+          path: logout
+          target: home
 
     encoders:
         App\Entity\User:
@@ -40,12 +38,15 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-         - { path: ^/admin, roles: ROLE_ADMIN }
-         - { path: ^/admin/category, roles: ROLE_ADMIN }
-         - { path: ^/watchlist, roles: ROLE_USER }
          - { path: ^/history, roles: ROLE_USER }
-         - { path: ^/profile/modify, roles: ROLE_USER }
-         - { path: ^/profile/myprofile, roles: ROLE_USER }
          - { path: ^/deleteAccount, roles: ROLE_USER }
-
-
+         - { path: ^/history/insert/, roles: ROLE_USER }
+         - { path: ^/history/remove/, roles: ROLE_USER }
+         - { path: ^/movies/add, roles: ROLE_ADMIN }
+         - { path: ^/movie/modify/, roles: ROLE_ADMIN }
+         - { path: ^/profile/modify, roles: ROLE_ADMIN }
+         - { path: ^/profile/myprofile, roles: ROLE_USER }
+         - { path: ^/user/modifyrights, roles: ROLE_ADMIN }
+         - { path: ^/watchlist, roles: ROLE_USER }
+         - { path: ^/watchlist/insert/, roles: ROLE_USER }
+         - { path: ^/watchlist/remove/, roles: ROLE_USER }

@@ -52,7 +52,7 @@ class ProfileController extends Controller
 
             $entityManager->flush();
 
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('movies');
         }
 
         return $this->render('profile/modify.html.twig',

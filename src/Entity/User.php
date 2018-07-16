@@ -48,6 +48,11 @@ class User implements UserInterface
      */
     private $history;
 
+    /**
+     * @ORM\Column(type="array", length=200, nullable=false)
+     */
+    private $roles;
+
     public function getId()
     {
         return $this->id;
@@ -101,10 +106,18 @@ class User implements UserInterface
         return $this;
     }
 
+
     public function getRoles()
     {
-        return array('ROLE_USER');
+        return $this->roles;
     }
+
+    public function setRoles($roles): void
+    {
+        $this->roles = $roles;
+    }
+
+
 
     public function getSalt()
     {

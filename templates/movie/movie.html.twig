@@ -46,10 +46,12 @@
                     </a>
                 </p>
                 <p>
-                    <a class="btn btn-secondary" href="{{ url('modify_movie', {'id': movie.id}) }}" role="button">
-                        <i class="fas fa-file-signature" aria-hidden="true"></i>
-                        Modify
-                    </a>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a class="btn btn-secondary" href="{{ url('modify_movie', {'id': movie.id}) }}" role="button">
+                            <i class="fas fa-file-signature" aria-hidden="true"></i>
+                            Modify
+                        </a>
+                    {% endif %}
                 </p>
             </div>
         </div>

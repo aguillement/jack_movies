@@ -39,7 +39,7 @@ class Movie
     private $duration;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=2000, nullable=true)
      */
     private $picture;
 
@@ -50,7 +50,7 @@ class Movie
     private $categories;
 
     /**
-     * @ORM\Column(type="string", length=455, nullable=true)
+     * @ORM\Column(type="string", length=1000, nullable=true)
      */
     private $synopsis;
 
@@ -128,7 +128,7 @@ class Movie
         return $this->duration;
     }
 
-    public function setDuration(int $duration): self
+    public function setDuration(?int $duration): self
     {
         $this->duration = $duration;
 
