@@ -49,7 +49,7 @@ class User implements UserInterface
     private $history;
 
     /**
-     * @ORM\Column(type="array", length=200, nullable=false)
+     * @ORM\Column(type="json_array", length=200, nullable=true)
      */
     private $roles;
 
@@ -106,10 +106,15 @@ class User implements UserInterface
         return $this;
     }
 
-
     public function getRoles()
     {
-        return $this->roles;
+        $roles = $this->roles;
+
+        if (!in_array('ROLE_USER', $roles)) {
+            $roles[] = 'ROLE_USER';
+        }
+
+        return $roles;
     }
 
     public function setRoles($roles): void
