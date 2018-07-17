@@ -8,7 +8,6 @@
 
 namespace App\Controller;
 
-
 use App\Entity\History;
 use App\Entity\Profile;
 use App\Entity\Watchlist;
@@ -118,22 +117,42 @@ class UserController extends Controller
     /**
      * @Route("/logout", name="logout")
      */
-    public function logout(){
+    public function logout()
+    {
+    }
 
+    /**
+     * @Route("/deleteAccount", name="deleteAccount")
+     */
+    public function deleteAccount()
+    {
+        $user = $this->getUser();
+
+        $this->get('security.token_storage')->setToken(null);
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+        $entityManager->remove($user);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'You have delete your account!');
+
+        return $this->redirect($this->generateUrl('home'));
     }
 
     /**
      * @Route("user/modifyrights/{id}", name="modify_user_rights")
      */
-    public function setRights(Request $request, $id){
 
+    public function setRights(Request $request)
+    {
+        $id = 1;
         $rep = $this->getDoctrine()->getRepository(User::class);
         $user = $rep->find($id);
         $form = $this->CreateForm(RightsType::class, $user);
 
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()) {
-
+        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
 
             $entityManager->persist($user);

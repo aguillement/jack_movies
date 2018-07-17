@@ -39,6 +39,7 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
          - { path: ^/history, roles: ROLE_USER }
+         - { path: ^/deleteAccount, roles: ROLE_USER }
          - { path: ^/history/insert/, roles: ROLE_USER }
          - { path: ^/history/remove/, roles: ROLE_USER }
          - { path: ^/movies/add, roles: ROLE_ADMIN }

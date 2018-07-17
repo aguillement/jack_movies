@@ -2,15 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
+use App\Entity\HistoryMovie;
 use App\Entity\Movie;
-use App\IMDbapi;
 use App\Form\MovieType;
+use App\Form\RateMovieFormType;
 use App\Service\MovieAPI;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Validator\Constraints\DateTime;
 
 class MovieController extends Controller
 {
@@ -22,33 +22,44 @@ class MovieController extends Controller
         $rep = $this->getDoctrine()->getRepository(Movie::class);
         $movies = $rep->findAll();
 
-        foreach($movies as $movie){
+        foreach ($movies as $movie) {
             $movie->getCategories();
 
             $pathImage = $movie->getPicture();
             $movie->setPathPicture($pathImage);
         }
 
-        return $this->render('movie/index.html.twig',compact("movies"));
+        return $this->render('movie/index.html.twig', compact("movies"));
     }
 
     /**
      * @Route("/movie/{id}", name="movie")
      */
-    public function movie($id)
+    public function movie(Request $request, $id)
     {
+        $newRow = new HistoryMovie();
+        $form = $this->createForm(RateMovieFormType::class, $newRow);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            return $this->redirectToRoute('addHistoryRow', [
+                'request' => $request,
+                'id' => $id
+            ], 307);
+        }
+
         $rep = $this->getDoctrine()->getRepository(Movie::class);
         $movie = $rep->find($id);
         return $this->render('movie/movie.html.twig', [
             "movie" => $movie,
+            "rateForm" => $form->createView(),
         ]);
     }
 
     /**
      * @Route("/movies/search", name="search_movie")
      */
-    public function searchMovie(Request $request){
-
+    public function searchMovie(Request $request)
+    {
         $entityManager = $this->getDoctrine()->getManager();
 
         if ('POST' === $request->getMethod()) {
@@ -58,12 +69,12 @@ class MovieController extends Controller
                 ->setParameter('title', '%'.$search.'%')
                 ->getQuery()
                 ->getResult();
-            if(empty($movies)){
+            if (empty($movies)) {
                 $movies = new MovieAPI();
                 $movies = $movies->searchMovie($search);
                 $movies = json_decode($movies);
 
-                foreach($movies as $movie){
+                foreach ($movies as $movie) {
                     $newMovie = new Movie();
                     $newMovie->setTitle($movie->{'title'});
                     $newMovie->setDirector($movie->{'director'});
@@ -72,35 +83,40 @@ class MovieController extends Controller
                     $newMovie->setSynopsis($movie->{'synopsis'});
                     $newMovie->setPicture('http://image.tmdb.org/t/p/w185/'.$movie->{'picture'});
 
+                    foreach ($movie->{'category'} as $categoryOfMovie) {
+                        $category = new Category();
+                        dump($categoryOfMovie);
+                        $category->setLibelle($categoryOfMovie);
+                        $newMovie->addCategory($category);
+                    }
+
                     $entityManager->persist($newMovie);
                 }
                 $entityManager->flush();
-
-                return $this->render('movie/index.html.twig',compact("movies"));
-
+                return $this->render('movie/index.html.twig', compact("movies"));
             }
 
-            foreach($movies as $movie) {
+            foreach ($movies as $movie) {
                 $pathImage = $movie->getPicture();
                 $movie->setPathPicture($pathImage);
             }
         }
 
-        return $this->render('movie/index.html.twig',compact("movies"));
+        return $this->render('movie/add.html.twig', compact("movies"));
     }
 
     /**
      * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/movies/add", name="add_movie")
      */
-    public function addMovie(Request $request){
-
+    public function addMovie(Request $request)
+    {
         $movie = new Movie();
 
         $form = $this->CreateForm(MovieType::class, $movie);
 
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
 
             /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
 
@@ -132,15 +148,15 @@ class MovieController extends Controller
     /**
      * @Route("/movie/modify/{id}", name="modify_movie")
      */
-    public function modifyMovie(Request $request, $id){
-
+    public function modifyMovie(Request $request, $id)
+    {
         $rep = $this->getDoctrine()->getRepository(Movie::class);
         $movie = $rep->find($id);
 
         $form = $this->CreateForm(MovieType::class, $movie);
 
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
 
             /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
 

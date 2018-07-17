@@ -20,7 +20,8 @@ class UserType extends AbstractType
             ->add('password', PasswordType::class);
     }
 
-    public function getBlockPrefix() {
+    public function getBlockPrefix()
+    {
         return null;
     }
 
