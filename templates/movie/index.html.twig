@@ -28,9 +28,15 @@
             {% for movie in movies %}
                 <div class="col-lg-3 col-sm-1 col-md-5 card text-white bg-primary mb-3" onclick="location.href='{{ path("movie", {"id": movie.id }) }}'" style="cursor: pointer; margin-left: 5%;">
                         <div class="card-header">{{ movie.title }}</div>
+                        {% if movie.votecount %}
+                            <div>
+                            <i class="fas fa-star" aria-hidden="true"></i>
+                            {{ movie.voteaverage }}/10 ({{ movie.votecount }} votes)
+                            </div>
+                        {% endif %}
                         <div class="card-body">
                             <img src="{{ movie.pathPicture }}" alt="image" style="width: 200px;">
-                            <h4 class="card-title" style="margin-top: 10px">{{ movie.title }}<h6></h6></h4>
+                            <h4 class="card-title" style="margin-top: 10px">{{ movie.title }}</h4>
                             ({{ movie.releaseDate|date('Y-m-d') }})
                             <p class="card-text">{{ movie.director }}</p>
                             -

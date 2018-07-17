@@ -76,6 +76,26 @@ class Movie
      */
     private $historyMovies;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $video_key;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $video_name;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $vote_average;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $vote_count;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
@@ -219,6 +239,54 @@ class Movie
                 $historyMovie->setMovie(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getVideoKey(): ?string
+    {
+        return $this->video_key;
+    }
+
+    public function setVideoKey(?string $video_key): self
+    {
+        $this->video_key = $video_key;
+
+        return $this;
+    }
+
+    public function getVideoName(): ?string
+    {
+        return $this->video_name;
+    }
+
+    public function setVideoName(?string $video_name): self
+    {
+        $this->video_name = $video_name;
+
+        return $this;
+    }
+
+    public function getVoteAverage(): ?int
+    {
+        return $this->vote_average;
+    }
+
+    public function setVoteAverage(?int $vote_average): self
+    {
+        $this->vote_average = $vote_average;
+
+        return $this;
+    }
+
+    public function getVoteCount(): ?int
+    {
+        return $this->vote_count;
+    }
+
+    public function setVoteCount(?int $vote_count): self
+    {
+        $this->vote_count = $vote_count;
 
         return $this;
     }

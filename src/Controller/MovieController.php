@@ -2,8 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Category;
+
 use App\Entity\HistoryMovie;
+use App\Entity\Category;
 use App\Entity\Movie;
 use App\Form\MovieType;
 use App\Form\RateMovieFormType;
@@ -107,7 +108,7 @@ class MovieController extends Controller
             }
         }
 
-        return $this->render('movie/search.html.twig', compact("movies"));
+        return $this->render('movie/index.html.twig', compact("movies"));
     }
 
     /**

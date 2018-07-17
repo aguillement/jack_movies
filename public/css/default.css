@@ -9,7 +9,7 @@ th:hover{
 tbody tr:hover{
     background: #d6d6d6!important;
 }
-#table_wrapper input, #table_wrapper select{
+.dataTables_wrapper input, .dataTables_wrapper select{
     border: 1px solid #ccc;
     border-radius: 6px;
     height: 30px;
@@ -22,4 +22,7 @@ tbody tr:hover{
     background-position: center;
     background-size: cover;
     background-attachment: fixed;
+  
+.fa-star{
+    color: #F0CA86;
 }

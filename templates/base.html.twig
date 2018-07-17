@@ -47,6 +47,7 @@
     <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('js/script.js') }}"></script>
+
     <script>
         function randombg(){
             var random= Math.floor(Math.random() * 6) + 0;
@@ -60,5 +61,8 @@
         }
     </script>
 </div>
+
+    {% block script %}  {% endblock %}
+
 </body>
 </html>
