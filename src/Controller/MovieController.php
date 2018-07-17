@@ -8,6 +8,9 @@ use App\Entity\Movie;
 use App\Form\MovieType;
 use App\Form\RateMovieFormType;
 use App\Service\MovieAPI;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -17,10 +20,44 @@ class MovieController extends Controller
     /**
      * @Route("/movies", name="movies")
      */
-    public function movies()
+    public function movies(Request $request)
     {
         $rep = $this->getDoctrine()->getRepository(Movie::class);
         $movies = $rep->findAll();
+
+        //Form use for filter categories
+        $formCategory = $this->createFormBuilder()
+            ->add('categories', EntityType::class, array(
+                'class' => Category::class,
+                'choice_label' => 'libelle',
+                'multiple' => false,
+            ))
+            ->getForm();
+
+        $formCategory->handleRequest($request);
+
+        if ($formCategory->isSubmitted() && $formCategory->isValid()) {
+
+            $categories = $formCategory->getData();
+
+            //filter movies by categories
+            $selectedCategory = array_values($categories)[0];;
+            $id = $selectedCategory->getId();
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $query = $entityManager->getRepository("App\Entity\Movie")->createQueryBuilder('m')
+                ->innerjoin("m.categories", "c")->addSelect("c")
+                ->where("c.id = :id")
+                ->setParameter('id', $id)
+                ->getQuery();
+
+            $movies = $query->getResult();
+
+            return $this->render('movie/index.html.twig',[
+                'movies' => $movies,
+                'formCategory' => $formCategory->createView(),
+            ]);
+        }
 
         foreach ($movies as $movie) {
             $movie->getCategories();
@@ -29,7 +66,10 @@ class MovieController extends Controller
             $movie->setPathPicture($pathImage);
         }
 
-        return $this->render('movie/index.html.twig', compact("movies"));
+        return $this->render('movie/index.html.twig',[
+            'movies' => $movies,
+            'formCategory' => $formCategory->createView(),
+            ]);
     }
 
     /**
