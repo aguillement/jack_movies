@@ -76,6 +76,16 @@ class Movie
      */
     private $historyMovies;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $video_key;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $video_name;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
@@ -219,6 +229,30 @@ class Movie
                 $historyMovie->setMovie(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getVideoKey(): ?string
+    {
+        return $this->video_key;
+    }
+
+    public function setVideoKey(?string $video_key): self
+    {
+        $this->video_key = $video_key;
+
+        return $this;
+    }
+
+    public function getVideoName(): ?string
+    {
+        return $this->video_name;
+    }
+
+    public function setVideoName(?string $video_name): self
+    {
+        $this->video_name = $video_name;
 
         return $this;
     }

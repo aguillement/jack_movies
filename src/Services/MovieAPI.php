@@ -44,7 +44,7 @@ class MovieAPI
         foreach ($movies as $movie) {
 
 
-            $res = $this->client->request('GET', 'https://api.themoviedb.org/3/movie/'.$movie->{'id'}.'?append_to_response=credits', [
+            $res = $this->client->request('GET', 'https://api.themoviedb.org/3/movie/'.$movie->{'id'}.'?append_to_response=credits,videos', [
                 'form_params' => [
                     'api_key' => $this->api_key,
                 ],
@@ -53,6 +53,12 @@ class MovieAPI
                 ],
             ]);
             $res = json_decode($res->getBody()->getContents());
+
+            // Video
+            $video = isset($res->{'videos'}->{'results'}[0]) ? $res->{'videos'}->{'results'}[0] : null;
+            $video_name = ($video) ? $video->{'name'} : null;
+            $video_key = ($video) ? $video->{'key'} : null;
+
             $director = (isset($res->{'credits'}->{'crew'}[0]->{'name'})) ? $res->{'credits'}->{'crew'}[0]->{'name'} : "X";
             $duration = ($res->{'runtime'}) ? $res->{'runtime'} : 0;
             $releaseDate = ($res->{'release_date'}) ? $res->{'release_date'} : '2000-01-01';
@@ -72,6 +78,8 @@ class MovieAPI
                 'synopsis' => $synopsis,
                 'picture' => $picture,
                 'category' => $genres,
+                'video_key' => $video_key,
+                'video_name' => $video_name,
             ];
             $moviesList[] = $movie;
         }

@@ -55,7 +55,8 @@ class MovieService
 
     public function recordNewMovies($movies){
 
-        foreach ($movies as $movie) {
+        foreach ($movies as $movie)
+        {
             $newMovie = new Movie();
             $newMovie->setTitle($movie->{'title'});
             $newMovie->setDirector($movie->{'director'});
@@ -63,6 +64,8 @@ class MovieService
             $newMovie->setReleaseDate(\DateTime::createFromFormat('Y-m-d', $movie->{'releaseDate'}));
             $newMovie->setSynopsis($movie->{'synopsis'});
             $newMovie->setPicture('http://image.tmdb.org/t/p/w185/'.$movie->{'picture'});
+            $newMovie->setVideoName($movie->{'video_name'});
+            $newMovie->setVideoKey('https://www.youtube.com/watch?v='.$movie->{'video_key'});
 
             foreach ($movie->{'category'} as $categoryOfMovie) {
                 $category = $this->em->getRepository("App\Entity\Category")->findOneBy(['libelle' => $categoryOfMovie]);
@@ -80,53 +83,4 @@ class MovieService
         }
         return $newMoviesList;
     }
-
-    /*
-           $search = $request->get('search');
-           $movies = $entityManager->getRepository("App\Entity\Movie")->createQueryBuilder('m')
-               ->where('m.title LIKE :title')
-               ->setParameter('title', '%'.$search.'%')
-               ->getQuery()
-               ->getResult();
-
-           if (empty($movies)) {
-               $movieAPI = $movieAPI->searchMovie($search);
-               $movies = json_decode($movieAPI);
-
-               $newMoviesList = [];
-
-               foreach ($movies as $movie) {
-                   $newMovie = new Movie();
-                   $newMovie->setTitle($movie->{'title'});
-                   $newMovie->setDirector($movie->{'director'});
-                   $newMovie->setDuration($movie->{'duration'});
-                   $newMovie->setReleaseDate(\DateTime::createFromFormat('Y-m-d', $movie->{'releaseDate'}));
-                   $newMovie->setSynopsis($movie->{'synopsis'});
-                   $newMovie->setPicture('http://image.tmdb.org/t/p/w185/'.$movie->{'picture'});
-
-                   foreach ($movie->{'category'} as $categoryOfMovie) {
-                       $category = $entityManager->getRepository("App\Entity\Category")->findOneBy(['libelle' => $categoryOfMovie]);
-                       if(!$category){
-                           $category = new Category();
-                           $category->setLibelle($categoryOfMovie);
-                       }
-                       $newMovie->addCategory($category);
-                   }
-
-                   $entityManager->persist($newMovie);
-                   $entityManager->flush();
-                   $newMoviesList[] = $newMovie;
-               }
-
-               return $this->render('movie/search.html.twig', [
-                   'movies' => $newMoviesList,
-               ]);
-           }
-
-           foreach ($movies as $movie) {
-               $pathImage = $movie->getPicture();
-               $movie->setPathPicture($pathImage);
-           }
-           */
-
 }
