@@ -10,10 +10,7 @@ namespace App\Controller;
 
 use App\Entity\Profile;
 use App\Form\ProfileType;
-use App\Repository\ProfileRepository;
 use App\Service\UserService;
-use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\ORM\NoResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
