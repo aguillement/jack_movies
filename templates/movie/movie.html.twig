@@ -14,18 +14,24 @@
         <div class="modal" id="confirmModal">
             <div class="modal-dialog" role="dialog">
                 <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add movie to my history</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                     <div class="row">
-                        {{ form_start(rateForm) }}
-                        <div style="text-align: center;">
-                            {{ form_label(rateForm.note) }}
+                        <div class="col-12">
+                            {{ form_start(rateForm) }}
+                            <div style="text-align: center;">
+                                {{ form_label(rateForm.note) }}
+                                {{ form_widget(rateForm.note) }}
+                            </div>
                         </div>
-                        <p>
-                            {{ form_widget(rateForm.note) }}
-                        </p>
                     </div>
                     <p>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-danger" onclick="location.href='#'">Yes</button>
+                            <button type="submit" class="btn btn-success" onclick="location.href='#'">Yes</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         </div>
                     </p>
@@ -52,27 +58,30 @@
                 </div>
             </div>
             <div class="col-2">
-                <p>
-                    <a class="btn btn-outline-primary" href="{{ movie.videokey }}" role="button" target="_blank">
+
+                    <a class="btn btn-outline-primary" href="{{ movie.videokey }}" role="button" target="_blank" style="white-space: unset;">
                         <i class="fa fa-link" aria-hidden="true"></i>
                         Watch trailer
                     </a>
                 </p>
 
-                <a type="submti" href="#" data-toggle="modal" data-target="#confirmModal">
-                    <i class="fa fa-check" aria-hidden="true"></i>
-                    I have seen this movie
-                </a>
+                <p>
+                    <a class="btn btn-secondary" type="submti" href="#" data-toggle="modal" data-target="#confirmModal" style="white-space: unset;">
+                        <i class="fa fa-check" aria-hidden="true"></i>
+                        I have seen this movie
+                    </a>
+                </p>
+
 
                 <p>
-                    <a class="btn btn-secondary" href='{{ path("add_watchlist", {"id": movie.id }) }}' role="button">
+                    <a class="btn btn-secondary" href='{{ path("add_watchlist", {"id": movie.id }) }}' role="button" style="white-space: unset;">
                         <i class="fa fa-plus" aria-hidden="true"></i>
                         Add to my wishlist
                     </a>
                 </p>
                 <p>
                     {% if is_granted('ROLE_ADMIN')  %}
-                        <a class="btn btn-secondary" href="{{ url('modify_movie', {'id': movie.id}) }}" role="button">
+                        <a class="btn btn-secondary" href="{{ url('modify_movie', {'id': movie.id}) }}" role="button" style="white-space: unset;">
                             <i class="fas fa-file-signature" aria-hidden="true"></i>
                             Modify
                         </a>
