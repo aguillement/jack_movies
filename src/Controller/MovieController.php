@@ -108,7 +108,7 @@ class MovieController extends Controller
             }
         }
 
-        return $this->render('movie/search.html.twig', compact("movies"));
+        return $this->render('movie/index.html.twig', compact("movies"));
     }
 
     /**

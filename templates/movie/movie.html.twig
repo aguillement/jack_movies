@@ -4,8 +4,35 @@
 
 {% block body %}
     {% if(movie != null)  %}
+    <style>
+        .modal-backdrop.in {
+            opacity: 0.4;
+        }
+    </style>
     <br>
     <div class="container">
+        <div class="modal" id="confirmModal">
+            <div class="modal-dialog" role="dialog">
+                <div class="modal-content">
+                    <div class="row">
+                        {{ form_start(rateForm) }}
+                        <div style="text-align: center;">
+                            {{ form_label(rateForm.note) }}
+                        </div>
+                        <p>
+                            {{ form_widget(rateForm.note) }}
+                        </p>
+                    </div>
+                    <p>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-danger" onclick="location.href='#'">Yes</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </p>
+                    {{ form_end(rateForm) }}
+                </div>
+            </div>
+        </div>
 
         <div class="row">
             <div class="col-3">
@@ -14,6 +41,8 @@
             <div class="col-7">
                 <div class="jumbotron">
                     <h1>{{ movie.title }}</h1>
+                    <i class="fas fa-star" aria-hidden="true"></i>
+                    {{ movie.voteaverage }}/10 ({{ movie.votecount }} votes)
                     <h3>{{ movie.releaseDate|date('d-m-Y') }}</h3>
                     <hr>
                     <p>{{ movie.synopsis }}</p>
@@ -23,21 +52,17 @@
                 </div>
             </div>
             <div class="col-2">
+                <p>
+                    <a class="btn btn-outline-primary" href="{{ movie.videokey }}" role="button" target="_blank">
+                        <i class="fa fa-link" aria-hidden="true"></i>
+                        Watch trailer
+                    </a>
+                </p>
 
-                {{ form_start(rateForm) }}
-                <div style="text-align: center;">
-                    {{ form_label(rateForm.note) }}
-                </div>
-                <p>
-                    {{ form_widget(rateForm.note) }}
-                </p>
-                <p>
-                    <button type="submit" class="btn btn-secondary">
-                        <i class="fa fa-check" aria-hidden="true"></i>
-                        I have seen this movie
-                    </button>
-                </p>
-                {{ form_end(rateForm) }}
+                <a type="submti" href="#" data-toggle="modal" data-target="#confirmModal">
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                    I have seen this movie
+                </a>
 
                 <p>
                     <a class="btn btn-secondary" href='{{ path("add_watchlist", {"id": movie.id }) }}' role="button">
