@@ -14,6 +14,7 @@
             <div class="col-7">
                 <div class="jumbotron">
                     <h1>{{ movie.title }}</h1>
+                    ({{ movie.voteaverage }}/10) ({{ movie.votecount }} votes)
                     <h3>{{ movie.releaseDate|date('d-m-Y') }}</h3>
                     <hr>
                     <p>{{ movie.synopsis }}</p>

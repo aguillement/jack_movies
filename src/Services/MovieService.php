@@ -64,8 +64,12 @@ class MovieService
             $newMovie->setReleaseDate(\DateTime::createFromFormat('Y-m-d', $movie->{'releaseDate'}));
             $newMovie->setSynopsis($movie->{'synopsis'});
             $newMovie->setPicture('http://image.tmdb.org/t/p/w185/'.$movie->{'picture'});
+
             $newMovie->setVideoName($movie->{'video_name'});
             $newMovie->setVideoKey('https://www.youtube.com/watch?v='.$movie->{'video_key'});
+
+            $newMovie->setVoteAverage($movie->{'vote_average'});
+            $newMovie->setVoteCount($movie->{'vote_count'});
 
             foreach ($movie->{'category'} as $categoryOfMovie) {
                 $category = $this->em->getRepository("App\Entity\Category")->findOneBy(['libelle' => $categoryOfMovie]);

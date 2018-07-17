@@ -86,6 +86,16 @@ class Movie
      */
     private $video_name;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $vote_average;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $vote_count;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
@@ -253,6 +263,30 @@ class Movie
     public function setVideoName(?string $video_name): self
     {
         $this->video_name = $video_name;
+
+        return $this;
+    }
+
+    public function getVoteAverage(): ?int
+    {
+        return $this->vote_average;
+    }
+
+    public function setVoteAverage(?int $vote_average): self
+    {
+        $this->vote_average = $vote_average;
+
+        return $this;
+    }
+
+    public function getVoteCount(): ?int
+    {
+        return $this->vote_count;
+    }
+
+    public function setVoteCount(?int $vote_count): self
+    {
+        $this->vote_count = $vote_count;
 
         return $this;
     }
