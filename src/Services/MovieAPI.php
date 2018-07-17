@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service;
+namespace App\Services;
 
 use Psr\Log\LoggerInterface;
 
@@ -30,7 +30,6 @@ class MovieAPI
             ]);
 
             $res = json_decode($res->getBody()->getContents())->{'results'};
-
             $res = $this->formatMovie($res);
             return $res;
         } catch (\Exception $e) {
@@ -43,7 +42,9 @@ class MovieAPI
         $moviesList = [];
 
         foreach ($movies as $movie) {
-            $res = $this->client->request('GET', 'https://api.themoviedb.org/3/movie/'.$movie->{'id'}.'/credits', [
+
+
+            $res = $this->client->request('GET', 'https://api.themoviedb.org/3/movie/'.$movie->{'id'}.'?append_to_response=credits', [
                 'form_params' => [
                     'api_key' => $this->api_key,
                 ],
@@ -52,19 +53,7 @@ class MovieAPI
                 ],
             ]);
             $res = json_decode($res->getBody()->getContents());
-            dump($res);
-            $director = (isset($res->{'crew'}[0]->{'name'})) ? $res->{'crew'}[0]->{'name'} : "X";
-
-            $res = $this->client->request('GET', 'https://api.themoviedb.org/3/movie/'.$movie->{'id'}, [
-                'form_params' => [
-                    'api_key' => $this->api_key,
-                ],
-                'curl'  => [
-                    CURLOPT_PROXY => $this->proxy,
-                ],
-            ]);
-
-            $res = json_decode($res->getBody()->getContents());
+            $director = (isset($res->{'credits'}->{'crew'}[0]->{'name'})) ? $res->{'credits'}->{'crew'}[0]->{'name'} : "X";
             $duration = ($res->{'runtime'}) ? $res->{'runtime'} : 0;
             $releaseDate = ($res->{'release_date'}) ? $res->{'release_date'} : '2000-01-01';
             $synopsis = ($res->{'overview'}) ? $res->{'overview'} : "overview";

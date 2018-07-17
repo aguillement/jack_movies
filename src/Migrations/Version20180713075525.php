@@ -23,7 +23,7 @@ final class Version20180713075525 extends AbstractMigration
         $this->addSql('DROP TABLE IF EXISTS `category`;
                             CREATE TABLE IF NOT EXISTS `category` (
                               `id` int(11) NOT NULL AUTO_INCREMENT,
-                              `libelle` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+                              `libelle` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL UNIQUE,
                               PRIMARY KEY (`id`)
                             ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;');
 
