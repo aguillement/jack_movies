@@ -61,6 +61,10 @@ class MovieController extends Controller
                 'formCategory' => $formCategory->createView(),
             ]);
         }
+        foreach ($movies as $movie) {
+            $pathImage = $movie->getPicture();
+            $movie->setPathPicture($pathImage);
+        }
 
         return $this->render('movie/index.html.twig',[
             'movies' => $movies,
