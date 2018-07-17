@@ -7,7 +7,8 @@ use App\Entity\HistoryMovie;
 use App\Entity\Movie;
 use App\Form\MovieType;
 use App\Form\RateMovieFormType;
-use App\Service\MovieAPI;
+use App\Services\MovieAPI;
+use App\Services\MovieService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -58,51 +59,18 @@ class MovieController extends Controller
     /**
      * @Route("/movies/search", name="search_movie")
      */
-    public function searchMovie(Request $request)
+    public function searchMovie(Request $request, MovieService $movieService)
     {
-        $entityManager = $this->getDoctrine()->getManager();
 
         if ('POST' === $request->getMethod()) {
-            $search = $request->get('search');
-            $movies = $entityManager->getRepository("App\Entity\Movie")->createQueryBuilder('m')
-                ->where('m.title LIKE :title')
-                ->setParameter('title', '%'.$search.'%')
-                ->getQuery()
-                ->getResult();
-            if (empty($movies)) {
-                $movies = new MovieAPI();
-                $movies = $movies->searchMovie($search);
-                $movies = json_decode($movies);
-
-                foreach ($movies as $movie) {
-                    $newMovie = new Movie();
-                    $newMovie->setTitle($movie->{'title'});
-                    $newMovie->setDirector($movie->{'director'});
-                    $newMovie->setDuration($movie->{'duration'});
-                    $newMovie->setReleaseDate(\DateTime::createFromFormat('Y-m-d', $movie->{'releaseDate'}));
-                    $newMovie->setSynopsis($movie->{'synopsis'});
-                    $newMovie->setPicture('http://image.tmdb.org/t/p/w185/'.$movie->{'picture'});
-
-                    foreach ($movie->{'category'} as $categoryOfMovie) {
-                        $category = new Category();
-                        dump($categoryOfMovie);
-                        $category->setLibelle($categoryOfMovie);
-                        $newMovie->addCategory($category);
-                    }
-
-                    $entityManager->persist($newMovie);
-                }
-                $entityManager->flush();
-                return $this->render('movie/index.html.twig', compact("movies"));
-            }
-
+            $movies = $movieService->getMovies($request->get('search'));
             foreach ($movies as $movie) {
                 $pathImage = $movie->getPicture();
                 $movie->setPathPicture($pathImage);
             }
         }
 
-        return $this->render('movie/add.html.twig', compact("movies"));
+        return $this->render('movie/search.html.twig', compact("movies"));
     }
 
     /**
@@ -142,7 +110,7 @@ class MovieController extends Controller
 
         return $this->render('movie/add-movie.html.twig', [
                 'addMovieForm' => $form->createView()
-            ]);
+        ]);
     }
 
     /**
