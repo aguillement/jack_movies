@@ -141,8 +141,9 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/user/modifyrights", name="modify_user_rights")
+     * @Route("user/modifyrights/{id}", name="modify_user_rights")
      */
+
     public function setRights(Request $request)
     {
         $id = 1;
@@ -165,6 +166,40 @@ class UserController extends Controller
 
         return $this->render('User/rights.html.twig', [
             'rightsForm' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("user/list", name="list_user")
+     */
+    public function getAll(){
+        $rep = $this->getDoctrine()->getRepository(User::class);
+        $list = $rep->findAll();
+
+        return $this->render('User/list.html.twig', [
+            'list' => $list,
+        ]);
+    }
+
+    /**
+     * @Route("user/remove/{id}", name="remove_user")
+     */
+    public function removeUser($id){
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $rep = $this->getDoctrine()->getRepository(User::class);
+
+        dump($id);
+
+        $user = $rep->find($id);
+
+        $entityManager->remove($user);
+        $entityManager->flush();
+
+        $list = $rep->findAll();
+
+        return $this->render('user/list.html.twig', [
+                'list' => $list,
         ]);
     }
 }
