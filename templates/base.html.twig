@@ -13,7 +13,8 @@
     <link rel="shortcut icon" href="{{ asset('img/logo.ico') }}">
     <title>{% block title %} Home {% endblock %}</title>
 </head>
-<body>
+<body onload="randombg()">
+<div id="random" >
     {% if is_granted('ROLE_ADMIN') %}
         {% include('base/navbar_admin.html.twig') %}
     {% elseif is_granted('ROLE_USER')%}
@@ -41,9 +42,23 @@
     </div>
     {% endblock %}
 
+
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('js/script.js') }}"></script>
+    <script>
+        function randombg(){
+            var random= Math.floor(Math.random() * 6) + 0;
+            var bigSize = ["url('http://image.tmdb.org/t/p/w185//kOVEVeg59E0wsnXmF9nrh6OmWII.jpg')",
+                "url('http://image.tmdb.org/t/p/w185//btTdmkgIvOi0FFip1sPuZI2oQG6.jpg')",
+                "url('http://image.tmdb.org/t/p/w185//4oD6VEccFkorEBTEDXtpLAaz0Rl.jpg')",
+                "url('http://image.tmdb.org/t/p/w185//weUSwMdQIa3NaXVzwUoIIcAi85d.jpg')",
+                "url('http://image.tmdb.org/t/p/w185//xd6yhmtS6mEURZLwUDT5raEMbf.jpg')",
+                "url('http://image.tmdb.org/t/p/w185//yVYTFvIiKyr6vsrPw3o5C6t2eoL.jpg')"];
+            document.getElementById("random").style.backgroundImage=bigSize[random];
+        }
+    </script>
+</div>
 </body>
 </html>
