@@ -10,26 +10,22 @@
     </style>
     <br>
     <div class="container">
-        <div class="row">
-            <div class="col-3">
-                {{ form_start(formCategory) }}
-
-                {{ form_widget(formCategory) }}
+        {% if is_granted('ROLE_ADMIN') %}
+            <div class="row">
+                <div style="margin: 0 auto 20px;">
+                    <a href="{{ path("add_movie") }}" class="btn btn-primary">Add a movie</a>
+                </div>
             </div>
-
-            <div class="col-3">
-                <button type="submit" class="btn btn-primary" style="bottom: 0; position: absolute; margin-bottom: 5%;">Filter</button>
-            </div>
-
-            {{ form_end(formCategory) }}
-        </div>
-        <hr>
+        {% endif %}
         <div class="row">
-            {% for movie in movies %}
-                <div class="col-lg-3 col-sm-1 col-md-5 card text-white bg-primary mb-3" onclick="location.href='{{ path("movie", {"id": movie.id }) }}'" style="cursor: pointer; margin-left: 5%;">
+            {% if movies %}
+                {% for movie in movies %}
+                    <div class="col-lg-3 col-sm-1 col-md-5 card text-white bg-primary mb-3" onclick="location.href='{{ path("movie", {"id": movie.id }) }}'" style="cursor: pointer; margin-left: 5%;">
                         <div class="card-header">{{ movie.title }}</div>
                         <div class="card-body">
-                            <img src="{{ movie.pathPicture }}" alt="image" style="width: 200px;">
+                            {% if movie.pathPicture %}
+                                <img src="{{ movie.pathPicture }}" alt="image" style="width: 200px;">
+                            {% endif %}
                             <h4 class="card-title" style="margin-top: 10px">{{ movie.title }}<h6></h6></h4>
                             ({{ movie.releaseDate|date('Y-m-d') }})
                             <p class="card-text">{{ movie.director }}</p>
@@ -44,8 +40,9 @@
                                 {% endfor %}
                             </p>
                         </div>
-                </div>
-            {% endfor %}
+                    </div>
+                {% endfor %}
+            {% endif %}
         </div>
     </div>
 {% endblock %}
