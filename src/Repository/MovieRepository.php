@@ -23,11 +23,6 @@ class MovieRepository extends ServiceEntityRepository
      * @return Movie[] Return an array of Movie objects
      */
     public function searchTitle($value){
-        dump($this->createQueryBuilder('m')
-            ->where('m.title LIKE :title')
-            ->setParameter('title', '%'.$value.'%')
-            ->getQuery()
-            ->getResult());
         return $this->createQueryBuilder('m')
             ->where('m.title LIKE :title')
             ->setParameter('title', '%'.$value.'%')
