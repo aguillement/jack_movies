@@ -6,7 +6,7 @@
  * Time: 10:22
  */
 
-namespace App\Service;
+namespace App\Services;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManager;
