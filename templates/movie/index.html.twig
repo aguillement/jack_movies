@@ -11,6 +11,20 @@
     <br>
     <div class="container">
         <div class="row">
+            <div class="col-3">
+                {{ form_start(formCategory) }}
+
+                {{ form_widget(formCategory) }}
+            </div>
+
+            <div class="col-3">
+                <button type="submit" class="btn btn-primary" style="bottom: 0; position: absolute; margin-bottom: 5%;">Filter</button>
+            </div>
+
+            {{ form_end(formCategory) }}
+        </div>
+        <hr>
+        <div class="row">
             {% for movie in movies %}
                 <div class="col-lg-3 col-sm-1 col-md-5 card text-white bg-primary mb-3" onclick="location.href='{{ path("movie", {"id": movie.id }) }}'" style="cursor: pointer; margin-left: 5%;">
                         <div class="card-header">{{ movie.title }}</div>

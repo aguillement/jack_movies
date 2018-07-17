@@ -4,50 +4,157 @@
 
 {% block body %}
 
-    <div class="shadow  p-3 mb-5 bg-white rounded container col-4" style="margin-top: 50px">
+    <div class="container">
 
-        <div class="card">
-            <div style="text-align: center">
-                <img class="rounded-circle" src="{{ asset(pathImage) }}" alt="image" style="width:35%; margin-bottom: 20px">
+        <div class="row">
+
+            <div class="shadow  p-3 mb-5 bg-white rounded container col-8" style="margin-top: 50px">
+
+                <div class="card">
+                    <div class="row">
+                        <div class="col-6">
+                            <div style="text-align: center">
+                                <img class="rounded-circle" src="{{ asset(pathImage) }}" alt="image" style="width:35%; margin-bottom: 20px">
+                            </div>
+                            <div style="text-align: center">
+                                <div class="row">
+                                    <div style="margin: 0 auto;">
+                                        <label style="text-align: center; display:inline-block"> Username: </label>
+                                        <p style="text-align: center; display:inline-block">{{ user.username }}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div style="margin: 0 auto;">
+                                        <label style="text-align: center; display:inline-block"> Email: </label>
+                                        <p style="text-align: center; display:inline-block">{{ user.email }}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div style="margin: 0 auto;">
+                                        <label style="text-align: center; display:inline-block"> First name: </label>
+                                        <p style="text-align: center; display:inline-block">{{ user.profile.firstname }}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div style="margin: 0 auto;">
+                                        <label style="text-align: center; display:inline-block"> Last name: </label>
+                                        <p style="text-align: center; display:inline-block">{{ user.profile.lastname }}</p>
+                                    </div>
+                                </div>
+                                <a style="margin: 10px;" href="{{ url('profile_modify') }}" style="margin-top: 20px;margin-bottom: 50px" class="btn btn-primary">Modify my profile</a>
+                                <div class="row">
+                                    <div style="margin: 10px auto;">
+                                        <a style="margin: 0;" href="{{ url('deleteAccount') }}" style="margin-top: 20px;margin-bottom: 50px" class="btn btn-sm btn-outline-danger">Delete my account</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <div style="text-align: center; margin-top: 30px;">
+                                <h4>Statistics</h4>
+                            </div>
+                            <div class="row">
+                                <div style="margin: 10px auto;">
+                                    <label style="text-align: center; display:inline-block"> Time watch: </label>
+                                    <p style="text-align: center; display:inline-block">{{ stats.timeSeen }} minuts</p>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div style="margin: 10px auto;">
+                                    <label style="text-align: center; display:inline-block"> Movies watch: </label>
+                                    <p style="text-align: center; display:inline-block">{{ stats.numberFilmSeen }}</p>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div style="margin: 10px auto;">
+                                    <label style="text-align: center; display:inline-block"> Rating: </label>
+                                    <p style="text-align: center; display:inline-block">{{ stats.rating }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
             </div>
-            <div style="text-align: center">
-                <div class="row">
-                    <div style="margin: 0 auto;">
-                        <label style="text-align: center; display:inline-block"> Username: </label>
-                        <p style="text-align: center; display:inline-block">{{ user.username }}</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div style="margin: 0 auto;">
-                        <label style="text-align: center; display:inline-block"> Email: </label>
-                        <p style="text-align: center; display:inline-block">{{ user.email }}</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div style="margin: 0 auto;">
-                        <label style="text-align: center; display:inline-block"> First name: </label>
-                        <p style="text-align: center; display:inline-block">{{ user.profile.firstname }}</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div style="margin: 0 auto;">
-                        <label style="text-align: center; display:inline-block"> Last name: </label>
-                        <p style="text-align: center; display:inline-block">{{ user.profile.lastname }}</p>
-                    </div>
-                </div>
-                <a style="margin: 10px;" href="{{ url('profile_modify') }}" style="margin-top: 20px;margin-bottom: 50px" class="btn btn-primary">Modify my profile</a>
-                <div class="row">
-                    <div style="margin: 10px auto;">
-                        <a style="margin: 0;" href="{{ url('deleteAccount') }}" style="margin-top: 20px;margin-bottom: 50px" class="btn btn-sm btn-outline-danger">Delete my account</a>
-                    </div>
-                </div>
-            </div>
-
-
 
         </div>
+
+        <div class="row">
+            <div class="col-6">
+                    <div class="card bg-light">
+                        <div class="card-header"><h4 class="card-title">Movie by category in the history</h4></div>
+                        <div class="card-body">
+
+                            <table class="table table-striped table-bordered " id="table_hisotry">
+                                <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Category</th>
+                                    <th scope="col">Number</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for row in stats.stats_history %}
+                                    <tr>
+                                        <td>{{ row.id }}</td>
+                                        <td>{{ row.libelle }}</td>
+                                        <td>{{ row.number }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+            </div>
+
+            <div class="col-6">
+                    <div class="card bg-light">
+                        <div class="card-header"><h4 class="card-title">Movie by category in the watchlist</h4></div>
+                        <div class="card-body">
+
+                            <table class="table table-striped table-bordered " id="table_watchlist">
+                                <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Category</th>
+                                    <th scope="col">Number</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for row in stats.stats_watchlist %}
+                                    <tr>
+                                        <td>{{ row.id }}</td>
+                                        <td>{{ row.libelle }}</td>
+                                        <td>{{ row.number }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+            </div>
+        </div>
+
 
 
     </div>
 
+{% endblock %}
+
+{% block script %}
+    <script>
+        $('#table_hisotry').DataTable({
+            "pageLength": 3,
+            "lengthChange": false
+        });
+        $('#table_watchlist').DataTable({
+            "pageLength": 3,
+            "lengthChange": false
+        });
+    </script>
 {% endblock %}
