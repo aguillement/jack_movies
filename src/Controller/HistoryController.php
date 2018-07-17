@@ -32,7 +32,6 @@ class HistoryController extends Controller
                 ->getQuery()
                 ->getSingleResult();
             $row->setMovie($movie);
-            dump($row);
         }
 
         return $this->render('History/history.html.twig',compact("history"));
