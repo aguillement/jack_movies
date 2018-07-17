@@ -16,21 +16,17 @@ class CategoryController extends Controller
     public function addCategory(Request $request)
     {
         $category = new Category();
-
         $form = $this->CreateForm(CategoryType::class, $category);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-
             $entityManager->persist($category);
-
             $entityManager->flush();
 
             $this->addFlash('success', 'The category has been created!');
             return $this->redirectToRoute('categories');
         }
-
 
         return $this->render('category/add.html.twig', [
             'addCategoryForm' => $form->createView()

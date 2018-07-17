@@ -6,7 +6,7 @@
  * Time: 10:22
  */
 
-namespace App\Service;
+namespace App\Services;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManager;
@@ -35,7 +35,9 @@ class UserService
         foreach ($historyMovies as $row) {
             $noteTotal += $row->getNote();
         }
-        $noteTotal = round($noteTotal / count($historyMovies));
+        if($noteTotal!=0){
+            $noteTotal = round($noteTotal / count($historyMovies));
+        }
 
         return $noteTotal;
     }

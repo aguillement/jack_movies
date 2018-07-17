@@ -23,7 +23,6 @@ class HistoryController extends Controller
     public function history()
     {
         $em = $this->container->get('doctrine')->getEntityManager();
-
         $history = $this->getUser()->getHistory();
 
         $historyMovies = $history->getHistoryMovies();

@@ -10,7 +10,7 @@ namespace App\Controller;
 
 use App\Entity\Profile;
 use App\Form\ProfileType;
-use App\Service\UserService;
+use App\Services\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -29,13 +29,12 @@ class ProfileController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
 
             /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
-
             $file = $form->get('picture')->getData();
-
-            $fileName = md5(uniqid()).'.'.$file->guessExtension();
-
-            $file->move($this->getParameter('pictures_profile_directory'), $fileName);
-
+            $fileName = "default_user.png";
+            if($file!=null){
+                $fileName = md5(uniqid()).'.'.$file->guessExtension();
+                $file->move($this->getParameter('pictures_profile_directory'), $fileName);
+            }
             // updates the 'picture' property to store the PDF file name
             // instead of its contents
             $profile->setPicture($fileName);
@@ -46,7 +45,7 @@ class ProfileController extends Controller
 
             $entityManager->flush();
 
-            return $this->redirectToRoute('movies');
+            return $this->redirectToRoute('my_profile');
         }
 
         return $this->render(
