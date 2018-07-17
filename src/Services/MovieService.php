@@ -21,39 +21,44 @@ class MovieService
 
     public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->em   = $entityManager;
+        $this->em = $entityManager;
     }
 
-    public function getMovies(string $search){
+    public function getMovies(string $search)
+    {
 
         $movies = $this->getMoviesDB($search);
 
-        if(empty($movies)){
+        if (empty($movies)) {
             $movies = $this->getMoviesAPI($search);
         }
+
         return $movies;
     }
 
 
-    public function getMoviesDB(string $search){
+    public function getMoviesDB(string $search)
+    {
         $rep = $this->em->getRepository(Movie::class);
         $movies = $rep->searchTitle($search);
 
         return $movies;
     }
 
-    public function getMoviesAPI(string $search){
-
+    public function getMoviesAPI(string $search)
+    {
         $movieAPI = new MovieAPI();
         $movies = $movieAPI->searchMovie($search);
         dump($movies);
         $movies = json_decode($movies);
 
         $movies = $this->recordNewMovies($movies);
+
         return $movies;
     }
 
-    public function recordNewMovies($movies){
+    public function recordNewMovies($movies)
+    {
 
         foreach ($movies as $movie) {
             $newMovie = new Movie();
@@ -66,7 +71,7 @@ class MovieService
 
             foreach ($movie->{'category'} as $categoryOfMovie) {
                 $category = $this->em->getRepository("App\Entity\Category")->findOneBy(['libelle' => $categoryOfMovie]);
-                if(!$category){
+                if (!$category) {
                     $category = new Category();
                     $category->setLibelle($categoryOfMovie);
                 }
@@ -78,6 +83,7 @@ class MovieService
             $newMovie->setId($newMovie->getId());
             $newMoviesList[] = $newMovie;
         }
+
         return $newMoviesList;
     }
 

@@ -149,11 +149,23 @@ final class Version20180713075525 extends AbstractMigration
                               `username` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
                               `email` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
                               `password` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
-                              `history_id` int(11) DEFAULT NULL,
+                              `roles` json DEFAULT NULL COMMENT '(DC2Type:json_array)',
                               PRIMARY KEY (`id`),
-                              UNIQUE KEY `UNIQ_8D93D649CCFA12B8` (`profile_id`),
-                              UNIQUE KEY `UNIQ_8D93D6491E058452` (`history_id`)
-                            ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
+                              UNIQUE KEY `UNIQ_8D93D649CCFA12B8` (`profile_id`)
+                            ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+                            
+                            --
+                            -- Déchargement des données de la table `user`
+                            --
+                            
+                            INSERT INTO `user` (`id`, `profile_id`, `username`, `email`, `password`, `roles`) VALUES
+                            (1, 2, 'alex', 'alex@gmail.com', '$2y$13$qlckaO8KH1LWnNhPDwq6BukBJms3HqRcfYwegpTejB8fKDd06smoS', '[\\ROLE_ADMIN\\']'');                            
+                            
+                            --
+                            -- Contraintes pour la table `user`
+                            --
+                            ALTER TABLE `user`
+                              ADD CONSTRAINT `FK_8D93D649CCFA12B8` FOREIGN KEY (`profile_id`) REFERENCES `profile` (`id`)");
 
         $this->addSql("ALTER TABLE `movie_category`
                               ADD CONSTRAINT `FK_DABA824C12469DE2` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE CASCADE,
