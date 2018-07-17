@@ -19,6 +19,7 @@ class MovieAPI
     public function searchMovie(string $search)
     {
         try {
+//            die("sdg");
             $res = $this->client->request('POST', 'https://api.themoviedb.org/3/search/movie', [
                 'form_params' => [
                     'query' => $search,
@@ -28,10 +29,14 @@ class MovieAPI
                     CURLOPT_PROXY => $this->proxy,
                 ],
             ]);
-
+//
+//
+//            throw new \Exception();
+//
             $res = json_decode($res->getBody()->getContents())->{'results'};
             $res = $this->formatMovie($res);
             return $res;
+//            return [];
         } catch (\Exception $e) {
             return $e;
         }
