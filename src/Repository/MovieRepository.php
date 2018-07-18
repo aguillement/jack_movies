@@ -91,14 +91,10 @@ class MovieRepository extends ServiceEntityRepository
     public function paginate($dql, $page = 1, $limit = 9)
     {
         $paginator = new Paginator($dql);
-
+        
         $paginator->getQuery()
             ->setFirstResult($limit * ($page - 1))// Offset
             ->setMaxResults($limit); // Limit
-
-        dump($limit * ($page - 1));
-        dump($limit);
-        dump($paginator->getQuery());
 
         return $paginator;
     }

@@ -36,6 +36,7 @@ class MovieController extends Controller
             //pagination
             /** @var MovieRepository $repository */
             $paginator =  $repository->paginate($query, $page);
+            $limit = 9;
             $maxPages = ceil($paginator->count() / $limit);
             $thisPage = $page;
 
@@ -50,6 +51,7 @@ class MovieController extends Controller
         //pagination
         /** @var MovieRepository $repository */
         $paginator =  $repository->getAllPosts($page);
+        $limit = 9;
         $maxPages = ceil($paginator->count() / $limit);
         $thisPage = $page;
 

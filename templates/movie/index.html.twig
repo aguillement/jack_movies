@@ -7,6 +7,8 @@
         .checked {
             color: orange;
         }
+
+
     </style>
     <br>
     <div class="container">
@@ -56,25 +58,36 @@
             {% endfor %}
         </div>
 
+        <style>
+            a:hover {
+                color: #0d6aad;
+            }
+        </style>
         {% if maxPages > 1 %}
-            <ul class="pagination pagination-sm">
-                {# `«` arrow  #}
-                <li {{ thisPage == 1 ? 'class="disabled"' }}>
-                    <a href="{{ path('movies', {page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>
-                </li>
-
-                {# Render each page number #}
-                {% for i in 1..maxPages %}
-                    <li {{ thisPage == i ? 'class="active"' }}>
-                        <a href="{{ path('movies', {page: i}) }}">{{ i }}</a>
+        <div class="row">
+            <div class="col-5"></div>
+            <div class="col-2" style="font-size: medium">
+                <ul class="pagination pagination-sm">
+                    {# `«` arrow  #}
+                    <li {{ thisPage == 1 ? 'class="disabled"' }} style="margin-left: 5%">
+                        <a href="{{ path('movies', {page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>
                     </li>
-                {% endfor %}
 
-                {# `»` arrow #}
-                <li {{ thisPage == maxPages ? 'class="disabled"' }}>
-                    <a href="{{ path('movies', {page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>
-                </li>
-            </ul>
+                    {# Render each page number #}
+                    {% for i in 1..maxPages %}
+                        <li {{ thisPage == i ? 'class="active"' }} style="margin-left: 5%">
+                            <a href="{{ path('movies', {page: i}) }}">{{ i }}</a>
+                        </li>
+                    {% endfor %}
+
+                    {# `»` arrow #}
+                    <li {{ thisPage == maxPages ? 'class="disabled"' }} style="margin-left: 5%">
+                        <a href="{{ path('movies', {page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>
+                    </li>
+                </ul></div>
+            <div class="col-5"></div>
+
+        </div>
         {% endif %}
     </div>
 
