@@ -29,7 +29,7 @@ class Profile
     /**
      * @ORM\Column(type="string", length=200, nullable=true)
      */
-    private $picture;
+    private $picture = "default_user.png";
 
     public function getId()
     {
