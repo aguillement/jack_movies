@@ -22,7 +22,8 @@ class MovieRepository extends ServiceEntityRepository
     /**
      * @return Movie[] Return an array of Movie objects
      */
-    public function searchTitle($value){
+    public function searchTitle($value)
+    {
         return $this->createQueryBuilder('m')
             ->where('m.title LIKE :title')
             ->setParameter('title', '%'.$value.'%')
@@ -48,12 +49,17 @@ class MovieRepository extends ServiceEntityRepository
      */
     public function filterMovies($selectedCategory){
         $id = $selectedCategory->getId();
-        return $this->createQueryBuilder('m')
+        $movies = $this->createQueryBuilder('m')
             ->innerjoin("m.categories", "c")->addSelect("c")
             ->where("c.id = :id")
             ->setParameter('id', $id)
             ->getQuery()
             ->getResult();
+
+        foreach ($movies as $movie) {
+            $movie->setPathPicture($movie->getPicture());
+        }
+        return $movies;
     }
 
 //    /**

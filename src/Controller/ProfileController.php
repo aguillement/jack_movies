@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: adelaunay2017
  * Date: 12/07/2018
- * Time: 09:10
+ * Time: 09:10.
  */
 
 namespace App\Controller;
@@ -27,7 +27,6 @@ class ProfileController extends Controller
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
             /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
             $file = $form->get('picture')->getData();
             $fileName = "default_user.png";
@@ -48,12 +47,11 @@ class ProfileController extends Controller
 
         return $this->render(
             'profile/modify.html.twig',
-            array('addProfileForm' => $form->createView())
+            ['addProfileForm' => $form->createView()]
         );
     }
 
     /**
-
      * @Route("/profile/myprofile", name="my_profile")
      */
     public function getMyProfile()
@@ -69,7 +67,7 @@ class ProfileController extends Controller
 
         return $this->render('profile/my-profile.html.twig', [
             'user' => $user,
-            'pathImage' => "img/profile/" . $profile->getPicture(),
+            'pathImage' => 'img/profile/'.$profile->getPicture(),
             'stats' => $stats,
         ]);
     }

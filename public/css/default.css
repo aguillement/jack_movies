@@ -16,13 +16,14 @@ tbody tr:hover{
     padding: 5px 10px;
 }
 
-#random{
+#random {
     background: url('http://image.tmdb.org/t/p/w185//btTdmkgIvOi0FFip1sPuZI2oQG6.jpg');
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
     background-attachment: fixed;
-  
+}
+
 .fa-star{
     color: #F0CA86;
 }

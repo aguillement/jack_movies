@@ -21,14 +21,13 @@ class MovieType extends AbstractType
             ->add('director')
             ->add('release_date', DateType::class)
             ->add('duration')
-            ->add('picture', FileType::class, array('data_class' => null))
+            ->add('picture', FileType::class, ['data_class' => null])
             ->add('synopsis', TextareaType::class)
-            ->add('categories', EntityType::class, array(
+            ->add('categories', EntityType::class, [
                 'class' => Category::class,
                 'choice_label' => 'libelle',
                 'multiple' => true,
-            ));
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

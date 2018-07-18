@@ -29,7 +29,7 @@ class Profile
     /**
      * @ORM\Column(type="string", length=200, nullable=true)
      */
-    private $picture = "default_user.png";
+    private $picture = 'default_user.png';
 
     public function getId()
     {
@@ -73,5 +73,10 @@ class Profile
         $this->picture = $picture;
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getFirstname()." ".$this->getLastname();
     }
 }

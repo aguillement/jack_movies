@@ -44,7 +44,6 @@ class Movie
     private $picture;
 
     /**
-     *
      * @ORM\ManyToMany(targetEntity="App\Entity\Category", inversedBy="movies", cascade={"persist"})
      */
     private $categories;
@@ -71,6 +70,7 @@ class Movie
     {
         $this->pathPicture = $pathPicture;
     }
+
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\HistoryMovie", mappedBy="movie")
      */

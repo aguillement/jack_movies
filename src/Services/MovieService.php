@@ -3,11 +3,10 @@
  * Created by PhpStorm.
  * User: aguillement2017
  * Date: 17/07/2018
- * Time: 09:59
+ * Time: 09:59.
  */
 
 namespace App\Services;
-
 
 use App\Entity\Category;
 use App\Entity\Movie;
@@ -19,15 +18,17 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class MovieService
 {
-
+    private $movieAPI;
     private $em;
 
     /**
      * MovieService constructor.
      * @param EntityManagerInterface $entityManager
+     * @param MovieAPI $movieAPI
      */
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, MovieAPI $movieAPI)
     {
+        $this->movieAPI = $movieAPI;
         $this->em = $entityManager;
     }
 
@@ -64,8 +65,7 @@ class MovieService
      */
     public function getMoviesAPI(string $search)
     {
-        $movieAPI = new MovieAPI();
-        $movies = $movieAPI->searchMovie($search);
+        $movies = $this->movieAPI->searchMovie($search);
         $movies = json_decode($movies);
         $movies = $this->recordNewMovies($movies);
 
@@ -78,9 +78,7 @@ class MovieService
      */
     public function recordNewMovies($movies)
     {
-
-        foreach ($movies as $movie)
-        {
+        foreach ($movies as $movie) {
             $newMovie = new Movie();
             $newMovie->setTitle($movie->{'title'});
             $newMovie->setDirector($movie->{'director'});
