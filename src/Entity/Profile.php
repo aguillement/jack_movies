@@ -71,4 +71,9 @@ class Profile
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return $this->getFirstname()." ".$this->getLastname();
+    }
 }
