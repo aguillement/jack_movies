@@ -13,7 +13,9 @@
     <link rel="shortcut icon" href="{{ asset('img/logo.ico') }}">
     <title>{% block title %} Home {% endblock %}</title>
 </head>
-<body background="img/avengers_background.png" style="background-attachment: fixed;">
+
+{# <body background="img/avengers_background.png" style="background-attachment: fixed;"> #}
+<body>
 
     {% if is_granted('ROLE_ADMIN') %}
         {% include('base/navbar_admin.html.twig') %}
