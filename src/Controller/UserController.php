@@ -8,10 +8,9 @@
 
 namespace App\Controller;
 
-use App\Entity\History;
-use App\Entity\Profile;
-use App\Entity\Watchlist;
 use App\Form\RightsType;
+use App\Services\UserService;
+use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use App\Entity\User;
 use App\Form\UserType;
@@ -34,52 +33,29 @@ class UserController extends Controller
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $service = new UserService($this->container->get('doctrine')->getEntityManager());
             // récupération des données du formulaire
             $user = $form->getData();
             $password = $passwordEncoder->encodePassword($user, $user->getPassword());
             $user->setPassword($password);
 
-            $entityManager = $this->getDoctrine()->getManager();
-
-            //Create profile
-            $profile = new Profile();
-            $entityManager->persist($profile);
-            $entityManager->flush();
-
-            //Create user
-            $user->setRoles(['ROLE_USER']);
-            $user->setProfile($profile);
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            //Create watchlist
-            $watchlist = new Watchlist();
-            $watchlist->setUser($user);
-            $watchlist->setDateCreate(new \DateTime());
-            $entityManager->persist($watchlist);
-            $entityManager->flush();
-
-            //Create history
-            $history = new History();
-            $history->setUser($user);
-            $history->setDate(new \DateTime());
-            $entityManager->persist($history);
-            $entityManager->flush();
-
-            // auto connect
-            $token = new UsernamePasswordToken(
-                $user,
-                $user->getPassword(),
-                'main',
-                $user->getRoles()
-            );
-
-            $this->get('security.token_storage')->setToken($token);
-            $this->get('session')->set('_security_main', serialize($token));
-
-            $this->addFlash('success', 'You are now successfully registered!');
-
-            return $this->redirect($this->generateUrl('movies'));
+            try {
+                $user = $service->createUser($user);
+                // auto connect
+                $token = new UsernamePasswordToken(
+                    $user,
+                    $user->getPassword(),
+                    'main',
+                    $user->getRoles()
+                );
+                $this->get('security.token_storage')->setToken($token);
+                $this->get('session')->set('_security_main', serialize($token));
+                $this->addFlash('success', 'You are now successfully registered!');
+                return $this->redirect($this->generateUrl('movies'));
+            } catch (ORMException $e) {
+                $service->removeUser($user);
+                $this->addFlash('danger', 'We can\'t create your account! '.$e->getMessage());
+            }
         }
 
         return $this->render(
@@ -89,12 +65,11 @@ class UserController extends Controller
     }
 
     /**
-     * @param Request $request
      * @param AuthenticationUtils $authenticationUtils
      * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/login", name="login")
      */
-    public function login(Request $request, AuthenticationUtils $authenticationUtils)
+    public function login(AuthenticationUtils $authenticationUtils)
     {
         $form = $this->createFormBuilder()
             ->add('_username')
@@ -130,10 +105,8 @@ class UserController extends Controller
 
         $this->get('security.token_storage')->setToken(null);
 
-        $entityManager = $this->getDoctrine()->getManager();
-
-        $entityManager->remove($user);
-        $entityManager->flush();
+        $service = new UserService($this->container->get('doctrine')->getEntityManager());
+        $service->removeUser($user);
 
         $this->addFlash('success', 'You have delete your account!');
 
@@ -143,10 +116,8 @@ class UserController extends Controller
     /**
      * @Route("user/modifyrights/{id}", name="modify_user_rights")
      */
-
-    public function setRights(Request $request)
+    public function setRights(Request $request, $id)
     {
-        $id = 1;
         $rep = $this->getDoctrine()->getRepository(User::class);
         $user = $rep->find($id);
         $form = $this->CreateForm(RightsType::class, $user);
@@ -156,9 +127,6 @@ class UserController extends Controller
             $entityManager = $this->getDoctrine()->getManager();
 
             $entityManager->persist($user);
-
-            dump($user);
-
             $entityManager->flush();
 
             $this->redirect('movies');
@@ -185,21 +153,13 @@ class UserController extends Controller
      * @Route("user/remove/{id}", name="remove_user")
      */
     public function removeUser($id){
-
-        $entityManager = $this->getDoctrine()->getManager();
         $rep = $this->getDoctrine()->getRepository(User::class);
-
-        dump($id);
 
         $user = $rep->find($id);
 
-        $entityManager->remove($user);
-        $entityManager->flush();
+        $service = new UserService($this->container->get('doctrine')->getEntityManager());
+        $service->removeUser($user);
 
-        $list = $rep->findAll();
-
-        return $this->render('user/list.html.twig', [
-                'list' => $list,
-        ]);
+        return $this->redirect($this->generateUrl('list_user'));
     }
 }

@@ -30,6 +30,32 @@ class MovieRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * @return Movie[] Return an array of mivie objects with their categories
+     */
+    public function customFindAll(){
+        $movies = $this->findAll();
+        foreach ($movies as $movie) {
+            $movie->getCategories();
+            $movie->setPathPicture($movie->getPicture());
+        }
+        return $movies;
+    }
+
+    /**
+     * @param $selectedCategory
+     * @return mixed Return an array of movies objects filtred by category
+     */
+    public function filterMovies($selectedCategory){
+        $id = $selectedCategory->getId();
+        return $this->createQueryBuilder('m')
+            ->innerjoin("m.categories", "c")->addSelect("c")
+            ->where("c.id = :id")
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Movie[] Returns an array of Movie objects
 //     */

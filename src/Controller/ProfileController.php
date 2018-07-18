@@ -40,9 +40,7 @@ class ProfileController extends Controller
             $profile->setPicture($fileName);
 
             $entityManager = $this->getDoctrine()->getManager();
-
             $entityManager->persist($profile);
-
             $entityManager->flush();
 
             return $this->redirectToRoute('my_profile');
@@ -62,7 +60,7 @@ class ProfileController extends Controller
     {
         // initialize
         $rep = $this->getDoctrine()->getRepository(Profile::class);
-        $service = new UserService($rep,$this->container->get('doctrine')->getEntityManager());
+        $service = new UserService($this->container->get('doctrine')->getEntityManager(), $rep);
 
         // init variables
         $user = $this->getUser();

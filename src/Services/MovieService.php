@@ -11,32 +11,44 @@ namespace App\Services;
 
 use App\Entity\Category;
 use App\Entity\Movie;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 
+/**
+ * Class MovieService
+ * @package App\Services
+ */
 class MovieService
 {
 
     private $em;
 
+    /**
+     * MovieService constructor.
+     * @param EntityManagerInterface $entityManager
+     */
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->em = $entityManager;
     }
 
+    /**
+     * @param string $search
+     * @return array|\Exception|mixed|\Psr\Http\Message\ResponseInterface|string
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function getMovies(string $search)
     {
-
         $movies = $this->getMoviesDB($search);
-
         if (empty($movies)) {
             $movies = $this->getMoviesAPI($search);
         }
-
         return $movies;
     }
 
-
+    /**
+     * @param string $search
+     * @return mixed
+     */
     public function getMoviesDB(string $search)
     {
         $rep = $this->em->getRepository(Movie::class);
@@ -45,18 +57,25 @@ class MovieService
         return $movies;
     }
 
+    /**
+     * @param string $search
+     * @return array|\Exception|mixed|\Psr\Http\Message\ResponseInterface|string
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function getMoviesAPI(string $search)
     {
         $movieAPI = new MovieAPI();
         $movies = $movieAPI->searchMovie($search);
-        dump($movies);
         $movies = json_decode($movies);
-
         $movies = $this->recordNewMovies($movies);
 
         return $movies;
     }
 
+    /**
+     * @param $movies
+     * @return array
+     */
     public function recordNewMovies($movies)
     {
 

@@ -4,11 +4,10 @@ namespace App\Controller;
 
 
 use App\Entity\HistoryMovie;
-use App\Entity\Category;
 use App\Entity\Movie;
+use App\Form\FilterMoviesType;
 use App\Form\MovieType;
 use App\Form\RateMovieFormType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Services\MovieService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,47 +21,21 @@ class MovieController extends Controller
     public function movies(Request $request)
     {
         $rep = $this->getDoctrine()->getRepository(Movie::class);
-        $movies = $rep->findAll();
+        $movies = $rep->customFindAll();
 
         //Form use for filter categories
-        $formCategory = $this->createFormBuilder()
-            ->add('categories', EntityType::class, array(
-                'class' => Category::class,
-                'choice_label' => 'libelle',
-                'multiple' => false,
-            ))
-            ->getForm();
+        $formCategory = $this->CreateForm(FilterMoviesType::class);
 
         $formCategory->handleRequest($request);
-
         if ($formCategory->isSubmitted() && $formCategory->isValid()) {
-
-            $categories = $formCategory->getData();
-
             //filter movies by categories
-            $selectedCategory = array_values($categories)[0];;
-            $id = $selectedCategory->getId();
-
-            $entityManager = $this->getDoctrine()->getManager();
-            $query = $entityManager->getRepository("App\Entity\Movie")->createQueryBuilder('m')
-                ->innerjoin("m.categories", "c")->addSelect("c")
-                ->where("c.id = :id")
-                ->setParameter('id', $id)
-                ->getQuery();
-
-            $movies = $query->getResult();
+            $selectedCategory = array_values($formCategory->getData())[0];;
+            $movies = $rep->filterMovies($selectedCategory);
 
             return $this->render('movie/index.html.twig',[
                 'movies' => $movies,
                 'formCategory' => $formCategory->createView(),
             ]);
-        }
-
-        foreach ($movies as $movie) {
-            $movie->getCategories();
-
-            $pathImage = $movie->getPicture();
-            $movie->setPathPicture($pathImage);
         }
 
         return $this->render('movie/index.html.twig',[
@@ -120,26 +93,17 @@ class MovieController extends Controller
         $movie = new Movie();
 
         $form = $this->CreateForm(MovieType::class, $movie);
-
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
-
             /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
-
             $file = $form->get('picture')->getData();
-
             $fileName = md5(uniqid()).'.'.$file->guessExtension();
-
             $file->move($this->getParameter('pictures_movie_directory'), $fileName);
-
-            // updates the 'picture' property to store the PDF file name
-            // instead of its contents
             $movie->setPicture($fileName);
 
             $entityManager = $this->getDoctrine()->getManager();
-
             $entityManager->persist($movie);
-
             $entityManager->flush();
 
             return $this->redirectToRoute('movies');
@@ -160,29 +124,22 @@ class MovieController extends Controller
         $movie = $rep->find($id);
 
         $form = $this->CreateForm(MovieType::class, $movie);
-
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
 
             /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
-
             $file = $form->get('picture')->getData();
-
             $fileName = md5(uniqid()).'.'.$file->guessExtension();
-
             $file->move($this->getParameter('pictures_movie_directory'), $fileName);
-
             $movie->setPicture($fileName);
 
             $entityManager = $this->getDoctrine()->getManager();
-
             $entityManager->persist($movie);
-
             $entityManager->flush();
 
             return $this->redirectToRoute('movies');
         }
-
 
         return $this->render('movie/modify-movie.html.twig', [
             'modifyMovieForm' => $form->createView()

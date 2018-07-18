@@ -3,8 +3,18 @@
 {% block title %}Movies{% endblock %}
 
 {% block body %}
-<div class="shadow  p-3 mb-5 bg-white rounded container col-3" style="margin-top: 50px">
 
+<div class="shadow  p-3 mb-5 bg-white rounded container col-3" style="margin-top: 50px">
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
+    {% endfor %}
     {{ form_start(registerForm) }}
 
     {{ form_label(registerForm.email) }}
