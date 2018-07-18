@@ -29,14 +29,16 @@ class ProfileRepository extends ServiceEntityRepository
     {
         $conn = $this->getEntityManager()->getConnection();
 
-        $sql = 'SELECT Count(movie.id) AS number, category.id, category.libelle
-        from history INNER JOIN
-            history_movie ON history_movie.history_id=history.id INNER JOIN
-            movie ON history_movie.movie_id = movie.id INNER JOIN
-            movie_category ON movie_category.movie_id=movie.id INNER JOIN
-            category ON movie_category.category_id = category.id
-        WHERE history.user_id = ?
-        group by category.libelle ';
+        $sql = $conn->createQueryBuilder()
+            ->select('Count(m.id) AS number','c.id','c.libelle')
+            ->from('history','h')
+            ->innerJoin('h','history_movie', 'hm','hm.history_id=h.id')
+            ->innerJoin('hm','movie', 'm','hm.movie_id=m.id')
+            ->innerJoin('m','movie_category', 'mc','mc.movie_id=m.id')
+            ->innerJoin('mc','category', 'c','mc.category_id=c.id')
+            ->where('h.user_id = ?')
+            ->groupBy('c.libelle')
+            ->getSQL();
 
         $stat = null;
 
@@ -44,9 +46,9 @@ class ProfileRepository extends ServiceEntityRepository
             $stmt = $conn->prepare($sql);
             $stmt->bindValue(1, $id);
             $stmt->execute();
-
             $stat = $stmt->fetchAll();
         } catch (DBALException $e) {
+
         }
 
         return $stat;
@@ -61,14 +63,16 @@ class ProfileRepository extends ServiceEntityRepository
     {
         $conn = $this->getEntityManager()->getConnection();
 
-        $sql = 'SELECT Count(movie.id) AS number, category.id, category.libelle
-        from watchlist INNER JOIN
-            watchlist_movie ON watchlist_movie.watchlist_id=watchlist.id INNER JOIN
-            movie ON watchlist_movie.movie_id = movie.id INNER JOIN
-            movie_category ON movie_category.movie_id=movie.id INNER JOIN
-            category ON movie_category.category_id = category.id
-        WHERE watchlist.user_id = ?
-        group by category.libelle ';
+        $sql = $conn->createQueryBuilder()
+            ->select('Count(m.id) AS number','c.id','c.libelle')
+            ->from('watchlist','w')
+            ->innerJoin('w','watchlist_movie', 'wm','wm.watchlist_id=w.id')
+            ->innerJoin('wm','movie', 'm','wm.movie_id=m.id')
+            ->innerJoin('m','movie_category', 'mc','mc.movie_id=m.id')
+            ->innerJoin('mc','category', 'c','mc.category_id=c.id')
+            ->where('w.user_id = ?')
+            ->groupBy('c.libelle')
+            ->getSQL();
 
         $stat = null;
 

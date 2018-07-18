@@ -22,6 +22,9 @@ security:
         logout:
           path: logout
           target: home
+        access_denied_url: access_denied
+
+
 
     encoders:
         App\Entity\User:
@@ -39,15 +42,24 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
          - { path: ^/admin, roles: ROLE_ADMIN }
-         - { path: ^/history, roles: ROLE_USER }
-         - { path: ^/deleteAccount, roles: ROLE_USER }
-         - { path: ^/history/insert/, roles: ROLE_USER }
-         - { path: ^/history/remove/, roles: ROLE_USER }
+         - { path: ^/admin/category/add, roles: ROLE_ADMIN }
+         - { path: ^/admin/categories, roles: ROLE_ADMIN }
          - { path: ^/movies/add, roles: ROLE_ADMIN }
          - { path: ^/movie/modify/, roles: ROLE_ADMIN }
+         - { path: ^/user/modifyrights/, roles: ROLE_ADMIN }
+         - { path: ^/user/list, roles: ROLE_ADMIN }
+         - { path: ^/user/remove/, roles: ROLE_ADMIN }
+
+         - { path: ^/history, roles: ROLE_USER }
+         - { path: ^/history/insert/, roles: ROLE_USER }
+         - { path: ^/history/remove/, roles: ROLE_USER }
+
          - { path: ^/profile/modify, roles: ROLE_USER }
          - { path: ^/profile/myprofile, roles: ROLE_USER }
-         - { path: ^/user/modifyrights, roles: ROLE_ADMIN }
+
+         - { path: ^/deleteAccount, roles: ROLE_USER }
+         - { path: ^/logout, roles: ROLE_USER }
+
          - { path: ^/watchlist, roles: ROLE_USER }
          - { path: ^/watchlist/insert/, roles: ROLE_USER }
          - { path: ^/watchlist/remove/, roles: ROLE_USER }

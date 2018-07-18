@@ -20,4 +20,20 @@ class MainController extends Controller
     {
         return $this->render('base.html.twig');
     }
+
+    /**
+     * @Route("/404", name="404")
+     */
+    public function get404()
+    {
+        return $this->render('error/404.html.twig');
+    }
+
+    /**
+     * @Route("/accessDenied", name="access_denied")
+     */
+    public function accessDenied()
+    {
+        return $this->redirectToRoute('404');
+    }
 }

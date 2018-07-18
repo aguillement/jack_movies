@@ -23,18 +23,18 @@ use Doctrine\ORM\ORMException;
  */
 class UserService
 {
-    private $_repository;
-    private $_entityManager;
+    private $repository;
+    private $entityManager;
 
     /**
      * UserService constructor.
      * @param EntityManager $entityManager
      * @param ObjectRepository|null $repesitory
      */
-    public function __construct(EntityManager  $entityManager, ObjectRepository $repesitory = null)
+    public function __construct(EntityManager  $entityManager, ObjectRepository $repository = null)
     {
-        $this->_repository = $repesitory;
-        $this->_entityManager = $entityManager;
+        $this->repository = $repository;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -84,7 +84,7 @@ class UserService
         $historyMovies = $history->getHistoryMovies();
         $time = 0;
         foreach ($historyMovies as $row) {
-            $movie = $this->_entityManager->getRepository("App\Entity\Movie")->createQueryBuilder('m')
+            $movie = $this->entityManager->getRepository("App\Entity\Movie")->createQueryBuilder('m')
                 ->where('m.id = :id')
                 ->setParameter('id', $row->getMovie()->getId())
                 ->getQuery()
@@ -109,8 +109,8 @@ class UserService
         } catch (NonUniqueResultException $e) {
         }
         $stats = [
-            'stats_history' => $this->_repository->getStatHistory($user->getId()),
-            'stats_watchlist' => $this->_repository->getStatWatchlist($user->getId()),
+            'stats_history' => $this->repository->getStatHistory($user->getId()),
+            'stats_watchlist' => $this->repository->getStatWatchlist($user->getId()),
             'rating' => $this->getRating($user),
             'numberFilmSeen' => $this->getNumberFilmSeen($user),
             'timeSeen' => $timeSeen,
@@ -125,8 +125,8 @@ class UserService
      */
     public function createProfile(){
         $profile = new Profile();
-        $this->_entityManager->flush();
-        $this->_entityManager->persist($profile);
+        $this->entityManager->flush();
+        $this->entityManager->persist($profile);
 
         return $profile;
     }
@@ -142,8 +142,8 @@ class UserService
         $user->setRoles(['ROLE_USER']);
         $user->setProfile($profile);
 
-        $this->_entityManager->persist($user);
-        $this->_entityManager->flush();
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
 
         $this->createWatchlist($user);
         $this->createHistory($user);
@@ -161,8 +161,8 @@ class UserService
         $watchlist = new Watchlist();
         $watchlist->setUser($user);
         $watchlist->setDateCreate(new \DateTime());
-        $this->_entityManager->persist($watchlist);
-        $this->_entityManager->flush();
+        $this->entityManager->persist($watchlist);
+        $this->entityManager->flush();
         return $watchlist;
     }
 
@@ -176,8 +176,8 @@ class UserService
         $history = new History();
         $history->setUser($user);
         $history->setDate(new \DateTime());
-        $this->_entityManager->persist($history);
-        $this->_entityManager->flush();
+        $this->entityManager->persist($history);
+        $this->entityManager->flush();
         return $history;
     }
 
@@ -186,8 +186,8 @@ class UserService
      */
     public function removeUser($user){
         try {
-            $this->_entityManager->remove($user);
-            $this->_entityManager->flush();
+            $this->entityManager->remove($user);
+            $this->entityManager->flush();
         } catch (ORMException $e) {
 
         }
