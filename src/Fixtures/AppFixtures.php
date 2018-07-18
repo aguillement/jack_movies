@@ -2,7 +2,6 @@
 
 namespace App\Fixtures;
 
-
 use App\Entity\Profile;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -18,9 +17,8 @@ class AppFixtures extends Fixture
         $this->encoder = $passwordEncoder;
     }
 
-
-    public function load(ObjectManager $manager){
-
+    public function load(ObjectManager $manager)
+    {
         //Create profile Admin
         $profileAdmin = new Profile();
         $profileAdmin->setFirstname('Jack');
@@ -57,5 +55,4 @@ class AppFixtures extends Fixture
         $manager->persist($user);
         $manager->flush();
     }
-
 }

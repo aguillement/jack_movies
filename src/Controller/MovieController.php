@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-
 use App\Entity\HistoryMovie;
 use App\Entity\Category;
 use App\Entity\Movie;
@@ -26,33 +25,32 @@ class MovieController extends Controller
 
         //Form use for filter categories
         $formCategory = $this->createFormBuilder()
-            ->add('categories', EntityType::class, array(
+            ->add('categories', EntityType::class, [
                 'class' => Category::class,
                 'choice_label' => 'libelle',
                 'multiple' => false,
-            ))
+            ])
             ->getForm();
 
         $formCategory->handleRequest($request);
 
         if ($formCategory->isSubmitted() && $formCategory->isValid()) {
-
             $categories = $formCategory->getData();
 
             //filter movies by categories
-            $selectedCategory = array_values($categories)[0];;
+            $selectedCategory = array_values($categories)[0];
             $id = $selectedCategory->getId();
 
             $entityManager = $this->getDoctrine()->getManager();
             $query = $entityManager->getRepository("App\Entity\Movie")->createQueryBuilder('m')
-                ->innerjoin("m.categories", "c")->addSelect("c")
-                ->where("c.id = :id")
+                ->innerjoin('m.categories', 'c')->addSelect('c')
+                ->where('c.id = :id')
                 ->setParameter('id', $id)
                 ->getQuery();
 
             $movies = $query->getResult();
 
-            return $this->render('movie/index.html.twig',[
+            return $this->render('movie/index.html.twig', [
                 'movies' => $movies,
                 'formCategory' => $formCategory->createView(),
             ]);
@@ -65,7 +63,7 @@ class MovieController extends Controller
             $movie->setPathPicture($pathImage);
         }
 
-        return $this->render('movie/index.html.twig',[
+        return $this->render('movie/index.html.twig', [
             'movies' => $movies,
             'formCategory' => $formCategory->createView(),
             ]);
@@ -82,15 +80,16 @@ class MovieController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             return $this->redirectToRoute('addHistoryRow', [
                 'request' => $request,
-                'id' => $id
+                'id' => $id,
             ], 307);
         }
 
         $rep = $this->getDoctrine()->getRepository(Movie::class);
         $movie = $rep->find($id);
+
         return $this->render('movie/movie.html.twig', [
-            "movie" => $movie,
-            "rateForm" => $form->createView(),
+            'movie' => $movie,
+            'rateForm' => $form->createView(),
         ]);
     }
 
@@ -99,7 +98,6 @@ class MovieController extends Controller
      */
     public function searchMovie(Request $request, MovieService $movieService)
     {
-
         if ('POST' === $request->getMethod()) {
             $movies = $movieService->getMovies($request->get('search'));
             foreach ($movies as $movie) {
@@ -108,7 +106,7 @@ class MovieController extends Controller
             }
         }
 
-        return $this->render('movie/index.html.twig', compact("movies"));
+        return $this->render('movie/index.html.twig', compact('movies'));
     }
 
     /**
@@ -123,9 +121,7 @@ class MovieController extends Controller
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
             /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
-
             $file = $form->get('picture')->getData();
 
             $fileName = md5(uniqid()).'.'.$file->guessExtension();
@@ -145,9 +141,8 @@ class MovieController extends Controller
             return $this->redirectToRoute('movies');
         }
 
-
         return $this->render('movie/add-movie.html.twig', [
-                'addMovieForm' => $form->createView()
+                'addMovieForm' => $form->createView(),
         ]);
     }
 
@@ -163,9 +158,7 @@ class MovieController extends Controller
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
             /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
-
             $file = $form->get('picture')->getData();
 
             $fileName = md5(uniqid()).'.'.$file->guessExtension();
@@ -183,9 +176,8 @@ class MovieController extends Controller
             return $this->redirectToRoute('movies');
         }
 
-
         return $this->render('movie/modify-movie.html.twig', [
-            'modifyMovieForm' => $form->createView()
+            'modifyMovieForm' => $form->createView(),
         ]);
     }
 }

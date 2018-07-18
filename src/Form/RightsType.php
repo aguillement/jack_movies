@@ -3,13 +3,12 @@
  * Created by PhpStorm.
  * User: adelaunay2017
  * Date: 16/07/2018
- * Time: 09:46
+ * Time: 09:46.
  */
 
 namespace App\Form;
 
 use App\Entity\User;
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -22,12 +21,12 @@ class RightsType extends AbstractType
     {
         $builder
             ->add('username')
-            ->add('roles', ChoiceType::class, array(
-                'choices'  => array(
+            ->add('roles', ChoiceType::class, [
+                'choices' => [
                     'Admin' => 'ROLE_ADMIN',
                     'User' => 'ROLE_USER',
-                ),
-            ))
+                ],
+            ])
             ->get('roles')
             ->addModelTransformer(new CallbackTransformer(
                 function ($tagsAsArray) {
@@ -39,7 +38,6 @@ class RightsType extends AbstractType
                     return explode(', ', $tagsAsString);
                 }
             ));
-
     }
 
     public function getBlockPrefix()

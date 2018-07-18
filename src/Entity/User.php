@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -122,8 +121,6 @@ class User implements UserInterface
         $this->roles = $roles;
     }
 
-
-
     public function getSalt()
     {
         // TODO: Implement getSalt() method.
@@ -133,7 +130,6 @@ class User implements UserInterface
     {
         // TODO: Implement eraseCredentials() method.
     }
-
 
     public function getWatchlist(): ?Watchlist
     {
@@ -145,7 +141,7 @@ class User implements UserInterface
         $this->watchlist = $watchlist;
 
         // set (or unset) the owning side of the relation if necessary
-        $newUser = $watchlist === null ? null : $this;
+        $newUser = null === $watchlist ? null : $this;
         if ($newUser !== $watchlist->getUser()) {
             $watchlist->setUser($newUser);
         }
@@ -163,7 +159,7 @@ class User implements UserInterface
         $this->history = $history;
 
         // set (or unset) the owning side of the relation if necessary
-        $newUser = $history === null ? null : $this;
+        $newUser = null === $history ? null : $this;
         if ($newUser !== $history->getUser()) {
             $history->setUser($newUser);
         }
