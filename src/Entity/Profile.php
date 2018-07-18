@@ -67,6 +67,9 @@ class Profile
 
     public function setPicture(?string $picture): self
     {
+        if($picture==null){
+            $picture = "default_user.png";
+        }
         $this->picture = $picture;
 
         return $this;

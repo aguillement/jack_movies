@@ -2,27 +2,29 @@
 
 namespace App\Form;
 
-use App\Entity\Profile;
+use App\Entity\Category;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ProfileType extends AbstractType
+class FilterMoviesType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('firstname')
-            ->add('lastname')
-            ->add('picture', FileType::class, array('data_class' => null, 'required' => false));
+            ->add('categories', EntityType::class, array(
+                'class' => Category::class,
+                'choice_label' => 'libelle',
+                'multiple' => false,
+            ))
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Profile::class,
+            // Configure your form options here
         ]);
     }
 }

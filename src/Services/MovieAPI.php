@@ -2,8 +2,13 @@
 
 namespace App\Services;
 
+
 use GuzzleHttp\Client;
 
+/**
+ * Class MovieAPI
+ * @package App\Services
+ */
 class MovieAPI
 {
     private $url = 'http://api.themoviedb.org/3/';
@@ -11,11 +16,19 @@ class MovieAPI
     private $api_key = 'bfff8381b65e5601a54e534afd05b540';
     private $client;
 
+    /**
+     * MovieAPI constructor.
+     */
     public function __construct(Client $client)
     {
         $this->client = $client;
     }
 
+    /**
+     * @param string $search
+     * @return \Exception|mixed|\Psr\Http\Message\ResponseInterface|string
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function searchMovie(string $search)
     {
         try {
@@ -43,6 +56,11 @@ class MovieAPI
         }
     }
 
+    /**
+     * @param $movies
+     * @return string
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function formatMovie($movies)
     {
         $moviesList = [];
@@ -57,7 +75,6 @@ class MovieAPI
                 ],
             ]);
             $res = json_decode($res->getBody()->getContents());
-            dump($res);
             // Video
             $video = isset($res->{'videos'}->{'results'}[0]) ? $res->{'videos'}->{'results'}[0] : null;
             $video_name = ($video) ? $video->{'name'} : null;

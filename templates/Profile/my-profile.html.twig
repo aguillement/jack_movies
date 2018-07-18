@@ -3,8 +3,33 @@
 {% block title %}{{ app.user.username }}{% endblock %}
 
 {% block body %}
-
+    <style>
+        .modal-backdrop.in {
+            opacity: 0.4;
+        }
+    </style>
     <div class="container">
+        {# MODAL #}
+        <div class="modal" id="confirmModal">
+            <div class="modal-dialog" role="dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Delete your account</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure to delete your account ?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" onclick="location.href='{{ url("deleteAccount") }}'">Yes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {# END MODAL#}
 
         <div class="row">
 
@@ -41,10 +66,10 @@
                                         <p style="text-align: center; display:inline-block">{{ user.profile.lastname }}</p>
                                     </div>
                                 </div>
-                                <a style="margin: 10px;" href="{{ url('profile_modify') }}" style="margin-top: 20px;margin-bottom: 50px" class="btn btn-primary">Modify my profile</a>
+                                <a href="{{ url('profile_modify') }}" style="margin-top: 10px;margin-bottom: 50px" class="btn btn-primary">Modify my profile</a>
                                 <div class="row">
                                     <div style="margin: 10px auto;">
-                                        <a style="margin: 0;" href="{{ url('deleteAccount') }}" style="margin-top: 20px;margin-bottom: 50px" class="btn btn-sm btn-outline-danger">Delete my account</a>
+                                        <a data-toggle="modal" data-target="#confirmModal"  style="margin-bottom: 50px" class="btn btn-sm btn-outline-danger">Delete my account</a>
                                     </div>
                                 </div>
                             </div>
