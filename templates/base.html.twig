@@ -13,7 +13,8 @@
     <link rel="shortcut icon" href="{{ asset('img/logo.ico') }}">
     <title>{% block title %} Home {% endblock %}</title>
 </head>
-<body>
+<body background="img/avengers_background.png" style="background-attachment: fixed;">
+
     {% if is_granted('ROLE_ADMIN') %}
         {% include('base/navbar_admin.html.twig') %}
     {% elseif is_granted('ROLE_USER')%}
@@ -21,7 +22,6 @@
     {% else %}
         {% include('base/navbar_offline.html.twig') %}
     {% endif %}
-
     {% block body %}
     <div class="container-fluid mt-5">
         <div class="row">
@@ -42,6 +42,8 @@
     {% endblock %}
 
 
+
+
     <script src="https://bootswatch.com/_vendor/jquery/dist/jquery.min.js"></script>
     <script src="https://bootswatch.com/_vendor/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
@@ -51,7 +53,12 @@
     <script>
         function randombg(){
             var random= Math.floor(Math.random() * 6) + 0;
-            var bigSize = ["url(https://images.pexels.com/photos/1146134/pexels-photo-1146134.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260')"];
+            var bigSize = ["{{ asset('img/avengers_background.jpg') }}",
+                "{{ asset('img/avengers_background.jpg') }}",
+                "{{ asset('img/avengers_background.jpg') }}",
+                "{{ asset('img/avengers_background.jpg') }}",
+                "{{ asset('img/avengers_background.jpg') }}",
+                "{{ asset('img/avengers_background.jpg') }}"];
             document.getElementById("random").style.backgroundImage=bigSize[random];
         }
     </script>
