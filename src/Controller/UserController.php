@@ -188,9 +188,6 @@ class UserController extends Controller
 
         $entityManager = $this->getDoctrine()->getManager();
         $rep = $this->getDoctrine()->getRepository(User::class);
-
-        dump($id);
-
         $user = $rep->find($id);
 
         $entityManager->remove($user);
