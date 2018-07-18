@@ -96,6 +96,11 @@ class Movie
      */
     private $vote_count;
 
+    /**
+     * @ORM\Column(type="string", length=500, nullable=true)
+     */
+    private $official_website;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
@@ -287,6 +292,18 @@ class Movie
     public function setVoteCount(?int $vote_count): self
     {
         $this->vote_count = $vote_count;
+
+        return $this;
+    }
+
+    public function getOfficialWebsite(): ?string
+    {
+        return $this->official_website;
+    }
+
+    public function setOfficialWebsite(?string $official_website): self
+    {
+        $this->official_website = $official_website;
 
         return $this;
     }

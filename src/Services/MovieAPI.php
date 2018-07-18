@@ -66,7 +66,7 @@ class MovieAPI
         $moviesList = [];
 
         foreach ($movies as $movie) {
-            $res = $this->client->request('GET', 'https://api.themoviedb.org/3/movie/'.$movie->{'id'}.'?append_to_response=credits,videos', [
+            $res = $this->client->request('GET', 'https://api.themoviedb.org/3/movie/'.$movie->{'id'}.'?append_to_response=credits,videos,similar', [
                 'form_params' => [
                     'api_key' => $this->api_key,
                 ],
@@ -75,6 +75,9 @@ class MovieAPI
                 ],
             ]);
             $res = json_decode($res->getBody()->getContents());
+
+            $official_website = $res->{'homepage'};
+
             // Video
             $video = $res->{'videos'}->{'results'}[0] ?? null;
             $video_name = $video->{'name'} ?? null;
@@ -106,6 +109,7 @@ class MovieAPI
                 'video_name' => $video_name,
                 'vote_average' => $vote_average,
                 'vote_count' => $vote_count,
+                'official_website' => $official_website,
             ];
             $moviesList[] = $movie;
         }
