@@ -86,11 +86,10 @@ class MovieController extends Controller
     }
 
     /**
-     * @Route("/movies/search", name="search_movie")
+     * @Route("/search/movie", name="search_movie")
      */
     public function searchMovie(Request $request, MovieService $movieService)
     {
-
         if ('POST' === $request->getMethod()) {
             $movies = $movieService->getMovies($request->get('search'));
             foreach ($movies as $movie) {
@@ -99,7 +98,7 @@ class MovieController extends Controller
             }
         }
 
-        return $this->render('movie/index.html.twig', compact('movies'));
+        return $this->render('movie/search.html.twig', compact('movies'));
     }
 
     /**
