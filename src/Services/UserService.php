@@ -112,8 +112,8 @@ class UserService
         }
 
         $stats = [
-            'stats_history' => $this->_repository->getStatHistory($user->getId()) ?? [],
-            'stats_watchlist' => $this->_repository->getStatWatchlist($user->getId()) ?? [],
+            'stats_history' => $this->repository->getStatHistory($user->getId()) ?? [],
+            'stats_watchlist' => $this->repository->getStatWatchlist($user->getId()) ?? [],
             'rating' => $this->getRating($user),
             'numberFilmSeen' => $this->getNumberFilmSeen($user),
             'timeSeen' => $timeSeen,
