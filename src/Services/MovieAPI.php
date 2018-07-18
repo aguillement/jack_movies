@@ -66,7 +66,7 @@ class MovieAPI
         $moviesList = [];
 
         foreach ($movies as $movie) {
-            $res = $this->client->request('GET', 'https://api.themoviedb.org/3/movie/'.$movie->{'id'}.'?append_to_response=credits,videos', [
+            $res = $this->client->request('GET', 'https://api.themoviedb.org/3/movie/'.$movie->{'id'}.'?append_to_response=credits,videos,similar', [
                 'form_params' => [
                     'api_key' => $this->api_key,
                 ],
@@ -75,19 +75,22 @@ class MovieAPI
                 ],
             ]);
             $res = json_decode($res->getBody()->getContents());
+
+            $official_website = $res->{'homepage'};
+
             // Video
-            $video = isset($res->{'videos'}->{'results'}[0]) ? $res->{'videos'}->{'results'}[0] : null;
-            $video_name = ($video) ? $video->{'name'} : null;
-            $video_key = ($video) ? $video->{'key'} : null;
+            $video = $res->{'videos'}->{'results'}[0] ?? null;
+            $video_name = $video->{'name'} ?? null;
+            $video_key = $video->{'key'} ?? null;
 
-            $director = (isset($res->{'credits'}->{'crew'}[0]->{'name'})) ? $res->{'credits'}->{'crew'}[0]->{'name'} : 'X';
-            $duration = isset($res->{'runtime'}) ? $res->{'runtime'} : 0;
-            $releaseDate = isset($res->{'release_date'}) ? $res->{'release_date'} : '2000-01-01';
-            $synopsis = isset($res->{'overview'}) ? $res->{'overview'} : 'overview';
-            $picture = isset($res->{'poster_path'}) ? $res->{'poster_path'} : null;
+            $director = $res->{'credits'}->{'crew'}[0]->{'name'} ?? 'X';
+            $duration = $res->{'runtime'} ?? 0;
+            $releaseDate = $res->{'release_date'} ?? '2000-01-01';
+            $synopsis = $res->{'overview'} ?? 'overview';
+            $picture = $res->{'poster_path'} ?? null;
 
-            $vote_average = isset($res->{'vote_average'}) ? $res->{'vote_average'} : null;
-            $vote_count = isset($res->{'vote_count'}) ? $res->{'vote_count'} : null;
+            $vote_average = $res->{'vote_average'} ?? null;
+            $vote_count = $res->{'vote_count'} ?? null;
 
             $genres = [];
             foreach ($res->{'genres'} as $genre) {
@@ -106,6 +109,7 @@ class MovieAPI
                 'video_name' => $video_name,
                 'vote_average' => $vote_average,
                 'vote_count' => $vote_count,
+                'official_website' => $official_website,
             ];
             $moviesList[] = $movie;
         }

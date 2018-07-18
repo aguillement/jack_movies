@@ -36,6 +36,7 @@ class MovieController extends Controller
             //pagination
             /** @var MovieRepository $repository */
             $paginator =  $repository->paginate($query, $page);
+            $limit = 9;
             $maxPages = ceil($paginator->count() / $limit);
             $thisPage = $page;
 
@@ -50,6 +51,7 @@ class MovieController extends Controller
         //pagination
         /** @var MovieRepository $repository */
         $paginator =  $repository->getAllPosts($page);
+        $limit = 9;
         $maxPages = ceil($paginator->count() / $limit);
         $thisPage = $page;
 
@@ -103,7 +105,7 @@ class MovieController extends Controller
 
     /**
      * @return \Symfony\Component\HttpFoundation\Response
-     * @Route("/movies/add", name="add_movie")
+     * @Route("/test/add", name="add_movie")
      */
     public function addMovie(Request $request)
     {
@@ -111,6 +113,7 @@ class MovieController extends Controller
 
         $form = $this->CreateForm(MovieType::class, $movie);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
             $file = $form->get('picture')->getData();
@@ -124,6 +127,8 @@ class MovieController extends Controller
 
             return $this->redirectToRoute('movies');
         }
+
+        dump("toto");
 
         return $this->render('movie/add-movie.html.twig', [
                 'addMovieForm' => $form->createView(),

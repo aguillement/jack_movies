@@ -2,8 +2,10 @@
 
 namespace App\Fixtures;
 
+use App\Entity\History;
 use App\Entity\Profile;
 use App\Entity\User;
+use App\Entity\Watchlist;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -37,6 +39,14 @@ class AppFixtures extends Fixture
         $manager->persist($userAdmin);
         $manager->flush();
 
+        // Add history to user admin
+        $history = new History();
+        $history->setUser($userAdmin);
+        $history->setDate(\DateTime::createFromFormat('Y-m-d', "2018-07-19"));
+
+        $manager->persist($history);
+        $manager->flush();
+
         //Create profile User
         $profile = new Profile();
         $profile->setFirstname('Forrest');
@@ -54,5 +64,32 @@ class AppFixtures extends Fixture
 
         $manager->persist($user);
         $manager->flush();
+
+        // Add history to user
+        $history = new History();
+        $history->setUser($user);
+        $history->setDate(\DateTime::createFromFormat('Y-m-d', "2018-07-19"));
+
+        $manager->persist($history);
+        $manager->flush();
+
+
+
+        // Add history to user
+        $history = new Watchlist();
+        $history->setUser($user);
+        $history->setDateCreate(\DateTime::createFromFormat('Y-m-d', "2018-07-19"));
+
+        $manager->persist($history);
+        $manager->flush();
+
+        // Add history to user
+        $history = new Watchlist();
+        $history->setUser($userAdmin);
+        $history->setDateCreate(\DateTime::createFromFormat('Y-m-d', "2018-07-19"));
+
+        $manager->persist($history);
+        $manager->flush();
+
     }
 }

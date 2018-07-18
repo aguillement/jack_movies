@@ -50,7 +50,7 @@ class UserService
         foreach ($historyMovies as $row) {
             $noteTotal += $row->getNote();
         }
-        if($noteTotal!=0){
+        if($noteTotal>0){
             $noteTotal = round($noteTotal / count($historyMovies));
         }
 
@@ -102,15 +102,18 @@ class UserService
      */
     public function getAllstat($user)
     {
-        $timeSeen = 0;
+
         try {
             $timeSeen = $this->getNumberTimeSeen($user);
         } catch (NoResultException $e) {
+            $timeSeen = 0;
         } catch (NonUniqueResultException $e) {
+            $timeSeen = 0;
         }
+
         $stats = [
-            'stats_history' => $this->repository->getStatHistory($user->getId()),
-            'stats_watchlist' => $this->repository->getStatWatchlist($user->getId()),
+            'stats_history' => $this->_repository->getStatHistory($user->getId()) ?? [],
+            'stats_watchlist' => $this->_repository->getStatWatchlist($user->getId()) ?? [],
             'rating' => $this->getRating($user),
             'numberFilmSeen' => $this->getNumberFilmSeen($user),
             'timeSeen' => $timeSeen,

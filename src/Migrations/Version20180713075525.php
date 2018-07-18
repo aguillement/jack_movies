@@ -126,17 +126,7 @@ final class Version20180713075525 extends AbstractMigration
                             (26, 6),
                             (27, 9);');
 
-        $this->addSql('DROP TABLE IF EXISTS `profile`;
-                            CREATE TABLE IF NOT EXISTS `profile` (
-                              `id` int(11) NOT NULL AUTO_INCREMENT,
-                              `firstname` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-                              `lastname` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-                              `picture` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-                              PRIMARY KEY (`id`)
-                            ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;');
-
-        $this->addSql('DROP TABLE IF EXISTS `profile`;
-                            CREATE TABLE IF NOT EXISTS `profile` (
+        $this->addSql('CREATE TABLE IF NOT EXISTS `profile` (
                               `id` int(11) NOT NULL AUTO_INCREMENT,
                               `firstname` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
                               `lastname` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -161,13 +151,23 @@ final class Version20180713075525 extends AbstractMigration
                             --
                             
                             INSERT INTO `user` (`id`, `profile_id`, `username`, `email`, `password`, `roles`) VALUES
-                            (1, 2, 'alex', 'alex@gmail.com', '$2y$13$qlckaO8KH1LWnNhPDwq6BukBJms3HqRcfYwegpTejB8fKDd06smoS', '[\\ROLE_ADMIN\\']'');                            
+                            (1, 1, 'alex', 'alex@gmail.com', '$2y$13\$qlckaO8KH1LWnNhPDwq6BukBJms3HqRcfYwegpTejB8fKDd06smoS', '[\"ROLE_ADMIN\"]');
                             
                             --
                             -- Contraintes pour la table `user`
                             --
                             ALTER TABLE `user`
                               ADD CONSTRAINT `FK_8D93D649CCFA12B8` FOREIGN KEY (`profile_id`) REFERENCES `profile` (`id`)");
+
+
+
+
+        $this->addSql("INSERT INTO `profile` (`id`, `firstname`, `lastname`, `picture`) VALUES
+                            (1, 'Georges', 'Abitbol', null);");
+
+
+        $this->addSql("INSERT INTO `history` (`id`, `date`, `user_id`) VALUES
+                            (1, '2018-07-18 00:00:00', 1, null);");
 
         $this->addSql('ALTER TABLE `movie_category`
                               ADD CONSTRAINT `FK_DABA824C12469DE2` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE CASCADE,

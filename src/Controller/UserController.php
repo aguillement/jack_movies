@@ -156,7 +156,6 @@ class UserController extends Controller
     public function removeUser($id)
     {
         $rep = $this->getDoctrine()->getRepository(User::class);
-
         $user = $rep->find($id);
 
         $service = new UserService($this->container->get('doctrine')->getEntityManager());

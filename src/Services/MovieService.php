@@ -83,7 +83,11 @@ class MovieService
             $newMovie->setTitle($movie->{'title'});
             $newMovie->setDirector($movie->{'director'});
             $newMovie->setDuration($movie->{'duration'});
+
+            $movie->{'releaseDate'} = empty($movie->{'releaseDate'}) ? "2000-01-01" : $movie->{'releaseDate'};
+
             $newMovie->setReleaseDate(\DateTime::createFromFormat('Y-m-d', $movie->{'releaseDate'}));
+
             $newMovie->setSynopsis($movie->{'synopsis'});
             $newMovie->setPicture('http://image.tmdb.org/t/p/w185/'.$movie->{'picture'});
 
@@ -92,6 +96,8 @@ class MovieService
 
             $newMovie->setVoteAverage($movie->{'vote_average'});
             $newMovie->setVoteCount($movie->{'vote_count'});
+
+            $newMovie->setOfficialWebsite($movie->{'official_website'});
 
             foreach ($movie->{'category'} as $categoryOfMovie) {
                 $category = $this->em->getRepository("App\Entity\Category")->findOneBy(['libelle' => $categoryOfMovie]);
