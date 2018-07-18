@@ -31,6 +31,7 @@ class MovieRepository extends ServiceEntityRepository
      *
      * @return \Doctrine\ORM\Tools\Pagination\Paginator
      */
+  
     public function getAllPosts($currentPage = 1)
     {
         // Create our query

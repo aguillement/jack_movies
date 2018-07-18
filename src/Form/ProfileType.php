@@ -15,8 +15,7 @@ class ProfileType extends AbstractType
         $builder
             ->add('firstname')
             ->add('lastname')
-            ->add('picture', FileType::class, array('data_class' => null));
-        ;
+            ->add('picture', FileType::class, ['data_class' => null]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

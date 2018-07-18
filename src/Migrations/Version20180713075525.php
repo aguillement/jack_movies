@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace DoctrineMigrations;
 
@@ -10,15 +12,15 @@ use Doctrine\Migrations\AbstractMigration;
  */
 final class Version20180713075525 extends AbstractMigration
 {
-    public function up(Schema $schema) : void
+    public function up(Schema $schema): void
     {
-        $this->addSql("DROP TABLE IF EXISTS `movie_category`;
+        $this->addSql('DROP TABLE IF EXISTS `movie_category`;
                             DROP TABLE IF EXISTS `profile`;
                             DROP TABLE IF EXISTS `watchlist_movie`;
                             DROP TABLE IF EXISTS `watchlist`;
                             DROP TABLE IF EXISTS `user`;
                             DROP TABLE IF EXISTS `movie`;
-                            DROP TABLE IF EXISTS `history`");
+                            DROP TABLE IF EXISTS `history`');
 
         $this->addSql('DROP TABLE IF EXISTS `category`;
                             CREATE TABLE IF NOT EXISTS `category` (
@@ -38,14 +40,14 @@ final class Version20180713075525 extends AbstractMigration
                             (8, 'Science-Fiction'),
                             (9, 'Adventure');");
 
-        $this->addSql("CREATE TABLE IF NOT EXISTS `history` (
+        $this->addSql('CREATE TABLE IF NOT EXISTS `history` (
                               `id` int(11) NOT NULL AUTO_INCREMENT,
                               `date` datetime NOT NULL,
                               `note` varchar(250) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
                               PRIMARY KEY (`id`)
-                            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
+                            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;');
 
-        $this->addSql("CREATE TABLE IF NOT EXISTS `movie` (
+        $this->addSql('CREATE TABLE IF NOT EXISTS `movie` (
                               `id` int(11) NOT NULL AUTO_INCREMENT,
                               `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
                               `director` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -54,7 +56,7 @@ final class Version20180713075525 extends AbstractMigration
                               `picture` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
                               `synopsis` varchar(455) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
                               PRIMARY KEY (`id`)
-                            ) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
+                            ) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;');
 
         $this->addSql("INSERT INTO `movie` (`id`, `title`, `director`, `release_date`, `duration`, `picture`, `synopsis`) VALUES
                             (1, 'Paranoïa', 'Steven Soderbergh', '2018-03-21 00:00:00', 120, 'f557038cefea7fad86429795d40d5eb9.jpeg', 'Paranoïa est un film d\'horreur américain réalisé par Steven Soderbergh, sorti en 2018. En 2018, Il est présenté hors-compétition au festival international du film de Berlin.'),
@@ -87,16 +89,16 @@ final class Version20180713075525 extends AbstractMigration
                             (29, 'Gladiator', 'Riddley Scott', '2017-05-06 00:00:00', 110, 'e5742fed7e09b14a04470c37b1343728.jpeg', 'Le général romain Maximus est le plus fidèle soutien de l\'empereur Marc Aurèle, qu\'il a conduit de victoire en victoire. Jaloux du prestige de Maximus, et plus encore de l\'amour que lui voue l\'empereur, le fils de Marc Aurèle, Commode, s\'arroge brutalement le pouvoir, puis ordonne l\'arrestation du général et son exécution.');
                             ");
 
-        $this->addSql("DROP TABLE IF EXISTS `movie_category`;
+        $this->addSql('DROP TABLE IF EXISTS `movie_category`;
                             CREATE TABLE IF NOT EXISTS `movie_category` (
                               `movie_id` int(11) NOT NULL,
                               `category_id` int(11) NOT NULL,
                               PRIMARY KEY (`movie_id`,`category_id`),
                               KEY `IDX_DABA824C8F93B6FC` (`movie_id`),
                               KEY `IDX_DABA824C12469DE2` (`category_id`)
-                            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
+                            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;');
 
-        $this->addSql("INSERT INTO `movie_category` (`movie_id`, `category_id`) VALUES
+        $this->addSql('INSERT INTO `movie_category` (`movie_id`, `category_id`) VALUES
                             (2, 6),
                             (3, 8),
                             (4, 8),
@@ -122,25 +124,25 @@ final class Version20180713075525 extends AbstractMigration
                             (24, 2),
                             (25, 7),
                             (26, 6),
-                            (27, 9);");
+                            (27, 9);');
 
-        $this->addSql("DROP TABLE IF EXISTS `profile`;
+        $this->addSql('DROP TABLE IF EXISTS `profile`;
                             CREATE TABLE IF NOT EXISTS `profile` (
                               `id` int(11) NOT NULL AUTO_INCREMENT,
                               `firstname` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
                               `lastname` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
                               `picture` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
                               PRIMARY KEY (`id`)
-                            ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
+                            ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;');
 
-        $this->addSql("DROP TABLE IF EXISTS `profile`;
+        $this->addSql('DROP TABLE IF EXISTS `profile`;
                             CREATE TABLE IF NOT EXISTS `profile` (
                               `id` int(11) NOT NULL AUTO_INCREMENT,
                               `firstname` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
                               `lastname` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
                               `picture` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
                               PRIMARY KEY (`id`)
-                            ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
+                            ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;');
 
         $this->addSql("DROP TABLE IF EXISTS `user`;
                             CREATE TABLE IF NOT EXISTS `user` (
@@ -167,16 +169,16 @@ final class Version20180713075525 extends AbstractMigration
                             ALTER TABLE `user`
                               ADD CONSTRAINT `FK_8D93D649CCFA12B8` FOREIGN KEY (`profile_id`) REFERENCES `profile` (`id`)");
 
-        $this->addSql("ALTER TABLE `movie_category`
+        $this->addSql('ALTER TABLE `movie_category`
                               ADD CONSTRAINT `FK_DABA824C12469DE2` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE CASCADE,
                               ADD CONSTRAINT `FK_DABA824C8F93B6FC` FOREIGN KEY (`movie_id`) REFERENCES `movie` (`id`) ON DELETE CASCADE;
                             ALTER TABLE `user`
                               ADD CONSTRAINT `FK_8D93D6491E058452` FOREIGN KEY (`history_id`) REFERENCES `history` (`id`),
                               ADD CONSTRAINT `FK_8D93D649CCFA12B8` FOREIGN KEY (`profile_id`) REFERENCES `profile` (`id`);
-                            COMMIT;");
+                            COMMIT;');
     }
 
-    public function down(Schema $schema) : void
+    public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
     }

@@ -17,9 +17,8 @@ class WatchlistController extends Controller
         $watchlist = $this->getUser()->getWatchlist();
         $watchlist->getMovies();
 
-
         return $this->render('watchlist/watchlist.html.twig', [
-            "watchlist" => $watchlist,
+            'watchlist' => $watchlist,
         ]);
     }
 
@@ -40,7 +39,7 @@ class WatchlistController extends Controller
         $entityManager->flush();
 
         return $this->render('watchlist/watchlist.html.twig', [
-            "watchlist" => $watchlist,
+            'watchlist' => $watchlist,
         ]);
     }
 
@@ -61,7 +60,7 @@ class WatchlistController extends Controller
         $entityManager->flush();
 
         return $this->render('watchlist/watchlist.html.twig', [
-            "watchlist" => $watchlist,
+            'watchlist' => $watchlist,
         ]);
     }
 }

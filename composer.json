@@ -5,6 +5,7 @@
         "php": "^7.2.4",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "easycorp/easyadmin-bundle": "^1.17",
         "friendsofphp/php-cs-fixer": "^2.12",
         "guzzlehttp/guzzle": "^6.3",
         "symfony/annotations-pack": "^1.0",
@@ -12,22 +13,24 @@
         "symfony/asset": "^4.1",
         "symfony/console": "^4.1",
         "symfony/debug-pack": "^1.0",
+        "symfony/dotenv": "^4.1",
         "symfony/flex": "^1.0",
         "symfony/form": "^4.1",
         "symfony/framework-bundle": "^4.1",
         "symfony/lts": "^4@dev",
         "symfony/maker-bundle": "^1.5",
+        "symfony/monolog-bundle": "^3.3",
         "symfony/orm-pack": "^1.0",
         "symfony/requirements-checker": "^1.1",
         "symfony/security-bundle": "^4.1",
         "symfony/twig-bundle": "^4.1",
         "symfony/validator": "^4.1",
-        "symfony/var-dumper": "^4.1",
-        "symfony/yaml": "^4.1"
+        "symfony/yaml": "^4.1",
+        "doctrine/doctrine-fixtures-bundle": "^3.0"
     },
     "require-dev": {
-        "doctrine/doctrine-fixtures-bundle": "^3.0",
-        "symfony/dotenv": "^4.1"
+        "symfony/var-dumper": "^4.1",
+        "friendsofphp/php-cs-fixer": "^2.12"
     },
     "config": {
         "preferred-install": {
