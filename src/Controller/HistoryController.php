@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: adelaunay2017
  * Date: 12/07/2018
- * Time: 14:42
+ * Time: 14:42.
  */
 
 namespace App\Controller;
@@ -36,7 +36,7 @@ class HistoryController extends Controller
             $row->setMovie($movie);
         }
 
-        return $this->render('History/history.html.twig', compact("history"));
+        return $this->render('History/history.html.twig', compact('history'));
     }
 
     /**
@@ -63,7 +63,7 @@ class HistoryController extends Controller
         $entityManager->persist($newRow);
         $entityManager->flush();
 
-        return $this->redirectToRoute("history");
+        return $this->redirectToRoute('history');
     }
 
     /**
@@ -78,6 +78,6 @@ class HistoryController extends Controller
         $entityManager->remove($rep->find($id));
         $entityManager->flush();
 
-        return $this->redirectToRoute("history");
+        return $this->redirectToRoute('history');
     }
 }

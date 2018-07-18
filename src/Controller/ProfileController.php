@@ -3,14 +3,14 @@
  * Created by PhpStorm.
  * User: adelaunay2017
  * Date: 12/07/2018
- * Time: 09:10
+ * Time: 09:10.
  */
 
 namespace App\Controller;
 
 use App\Entity\Profile;
 use App\Form\ProfileType;
-use App\Service\UserService;
+use App\Services\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -27,9 +27,7 @@ class ProfileController extends Controller
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
             /** @var Symfony\Component\HttpFoundation\File\UploadedFile $file */
-
             $file = $form->get('picture')->getData();
 
             $fileName = md5(uniqid()).'.'.$file->guessExtension();
@@ -51,19 +49,18 @@ class ProfileController extends Controller
 
         return $this->render(
             'profile/modify.html.twig',
-            array('addProfileForm' => $form->createView())
+            ['addProfileForm' => $form->createView()]
         );
     }
 
     /**
-
      * @Route("/profile/myprofile", name="my_profile")
      */
     public function getMyProfile()
     {
         // initialize
         $rep = $this->getDoctrine()->getRepository(Profile::class);
-        $service = new UserService($rep,$this->container->get('doctrine')->getEntityManager());
+        $service = new UserService($rep, $this->container->get('doctrine')->getEntityManager());
 
         // init variables
         $user = $this->getUser();
@@ -72,7 +69,7 @@ class ProfileController extends Controller
 
         return $this->render('profile/my-profile.html.twig', [
             'user' => $user,
-            'pathImage' => "img/profile/" . $profile->getPicture(),
+            'pathImage' => 'img/profile/'.$profile->getPicture(),
             'stats' => $stats,
         ]);
     }

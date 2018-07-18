@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use Psr\Log\LoggerInterface;
+use GuzzleHttp\Client;
 
 class MovieAPI
 {
@@ -11,9 +11,9 @@ class MovieAPI
     private $api_key = 'bfff8381b65e5601a54e534afd05b540';
     private $client;
 
-    public function __construct()
+    public function __construct(Client $client)
     {
-        $this->client = new \GuzzleHttp\Client();
+        $this->client = $client;
     }
 
     public function searchMovie(string $search)
@@ -25,7 +25,7 @@ class MovieAPI
                     'query' => $search,
                     'api_key' => $this->api_key,
                 ],
-                'curl'  => [
+                'curl' => [
                     CURLOPT_PROXY => $this->proxy,
                 ],
             ]);
@@ -35,6 +35,7 @@ class MovieAPI
 //
             $res = json_decode($res->getBody()->getContents())->{'results'};
             $res = $this->formatMovie($res);
+
             return $res;
 //            return [];
         } catch (\Exception $e) {
@@ -47,13 +48,11 @@ class MovieAPI
         $moviesList = [];
 
         foreach ($movies as $movie) {
-
-
             $res = $this->client->request('GET', 'https://api.themoviedb.org/3/movie/'.$movie->{'id'}.'?append_to_response=credits,videos', [
                 'form_params' => [
                     'api_key' => $this->api_key,
                 ],
-                'curl'  => [
+                'curl' => [
                     CURLOPT_PROXY => $this->proxy,
                 ],
             ]);
@@ -64,10 +63,10 @@ class MovieAPI
             $video_name = ($video) ? $video->{'name'} : null;
             $video_key = ($video) ? $video->{'key'} : null;
 
-            $director = (isset($res->{'credits'}->{'crew'}[0]->{'name'})) ? $res->{'credits'}->{'crew'}[0]->{'name'} : "X";
+            $director = (isset($res->{'credits'}->{'crew'}[0]->{'name'})) ? $res->{'credits'}->{'crew'}[0]->{'name'} : 'X';
             $duration = isset($res->{'runtime'}) ? $res->{'runtime'} : 0;
             $releaseDate = isset($res->{'release_date'}) ? $res->{'release_date'} : '2000-01-01';
-            $synopsis = isset($res->{'overview'}) ? $res->{'overview'} : "overview";
+            $synopsis = isset($res->{'overview'}) ? $res->{'overview'} : 'overview';
             $picture = isset($res->{'poster_path'}) ? $res->{'poster_path'} : null;
 
             $vote_average = isset($res->{'vote_average'}) ? $res->{'vote_average'} : null;
@@ -93,6 +92,7 @@ class MovieAPI
             ];
             $moviesList[] = $movie;
         }
+
         return json_encode($moviesList);
     }
 }

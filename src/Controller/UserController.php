@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: adelaunay2017
  * Date: 12/07/2018
- * Time: 08:54
+ * Time: 08:54.
  */
 
 namespace App\Controller;
@@ -84,13 +84,14 @@ class UserController extends Controller
 
         return $this->render(
             'user/register.html.twig',
-            array('registerForm' => $form->createView())
+            ['registerForm' => $form->createView()]
         );
     }
 
     /**
-     * @param Request $request
+     * @param Request             $request
      * @param AuthenticationUtils $authenticationUtils
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/login", name="login")
      */
@@ -107,11 +108,11 @@ class UserController extends Controller
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('security/login.html.twig', array(
-            'loginForm'     => $form->createView(),
+        return $this->render('security/login.html.twig', [
+            'loginForm' => $form->createView(),
             'last_username' => $lastUsername,
-            'error'         => $error,
-        ));
+            'error' => $error,
+        ]);
     }
 
     /**
@@ -143,7 +144,6 @@ class UserController extends Controller
     /**
      * @Route("user/modifyrights/{id}", name="modify_user_rights")
      */
-
     public function setRights(Request $request)
     {
         $id = 1;
@@ -165,14 +165,15 @@ class UserController extends Controller
         }
 
         return $this->render('User/rights.html.twig', [
-            'rightsForm' => $form->createView()
+            'rightsForm' => $form->createView(),
         ]);
     }
 
     /**
      * @Route("user/list", name="list_user")
      */
-    public function getAll(){
+    public function getAll()
+    {
         $rep = $this->getDoctrine()->getRepository(User::class);
         $list = $rep->findAll();
 
@@ -184,8 +185,8 @@ class UserController extends Controller
     /**
      * @Route("user/remove/{id}", name="remove_user")
      */
-    public function removeUser($id){
-
+    public function removeUser($id)
+    {
         $entityManager = $this->getDoctrine()->getManager();
         $rep = $this->getDoctrine()->getRepository(User::class);
 

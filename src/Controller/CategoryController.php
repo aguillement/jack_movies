@@ -28,12 +28,12 @@ class CategoryController extends Controller
             $entityManager->flush();
 
             $this->addFlash('success', 'The category has been created!');
+
             return $this->redirectToRoute('categories');
         }
 
-
         return $this->render('category/add.html.twig', [
-            'addCategoryForm' => $form->createView()
+            'addCategoryForm' => $form->createView(),
         ]);
     }
 
@@ -46,7 +46,7 @@ class CategoryController extends Controller
         $categories = $rep->findAll();
 
         return $this->render('category/categories.html.twig', [
-            'categories' => $categories
+            'categories' => $categories,
         ]);
     }
 }

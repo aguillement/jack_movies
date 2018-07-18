@@ -11,17 +11,19 @@
     <br>
     <div class="container">
         <div class="row">
-            <div class="col-3">
-                {{ form_start(formCategory) }}
+            {% if formCategory is defined %}
+                <div class="col-3">
+                    {{ form_start(formCategory) }}
 
-                {{ form_widget(formCategory) }}
-            </div>
+                    {{ form_widget(formCategory) }}
+                </div>
 
-            <div class="col-3">
-                <button type="submit" class="btn btn-primary" style="bottom: 0; position: absolute; margin-bottom: 5%;">Filter</button>
-            </div>
+                <div class="col-3">
+                    <button type="submit" class="btn btn-primary" style="bottom: 0; position: absolute; margin-bottom: 5%;">Filter</button>
+                </div>
 
-            {{ form_end(formCategory) }}
+                {{ form_end(formCategory) }}
+            {% endif %}
         </div>
         <hr>
         <div class="row">

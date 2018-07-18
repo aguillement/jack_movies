@@ -3,10 +3,10 @@
  * Created by PhpStorm.
  * User: agauvrit2017
  * Date: 17/07/2018
- * Time: 10:22
+ * Time: 10:22.
  */
 
-namespace App\Service;
+namespace App\Services;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManager;
@@ -18,7 +18,7 @@ class UserService
     private $_repository;
     private $_entityManager;
 
-    public function __construct(ObjectRepository $repesitory,EntityManager  $entityManager)
+    public function __construct(ObjectRepository $repesitory, EntityManager  $entityManager)
     {
         $this->_repository = $repesitory;
         $this->_entityManager = $entityManager;
@@ -26,9 +26,11 @@ class UserService
 
     /**
      * @param $user
+     *
      * @return float|int
      */
-    public function getRating($user){
+    public function getRating($user)
+    {
         $history = $user->getHistory();
         $historyMovies = $history->getHistoryMovies();
         $noteTotal = 0;
@@ -42,9 +44,11 @@ class UserService
 
     /**
      * @param $user
+     *
      * @return int
      */
-    public function getNumberFilmSeen($user){
+    public function getNumberFilmSeen($user)
+    {
         $history = $user->getHistory();
         $historyMovies = $history->getHistoryMovies();
 
@@ -53,11 +57,14 @@ class UserService
 
     /**
      * @param $user
+     *
      * @return int
+     *
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function getNumberTimeSeen($user){
+    public function getNumberTimeSeen($user)
+    {
         $history = $user->getHistory();
         $historyMovies = $history->getHistoryMovies();
         $time = 0;
@@ -69,29 +76,30 @@ class UserService
                 ->getSingleResult();
             $time += $movie->getDuration();
         }
+
         return $time;
     }
 
     /**
      * @param $user
+     *
      * @return array
      */
-    public function getAllstat($user){
+    public function getAllstat($user)
+    {
         $timeSeen = 0;
         try {
             $timeSeen = $this->getNumberTimeSeen($user);
         } catch (NoResultException $e) {
-
         } catch (NonUniqueResultException $e) {
-
         }
-        $stats = array(
-            "stats_history" => $this->_repository->getStatHistory($user->getId()),
-            "stats_watchlist" => $this->_repository->getStatWatchlist($user->getId()),
-            "rating" => $this->getRating($user),
-            "numberFilmSeen" => $this->getNumberFilmSeen($user),
-            "timeSeen" => $timeSeen
-        );
+        $stats = [
+            'stats_history' => $this->_repository->getStatHistory($user->getId()),
+            'stats_watchlist' => $this->_repository->getStatWatchlist($user->getId()),
+            'rating' => $this->getRating($user),
+            'numberFilmSeen' => $this->getNumberFilmSeen($user),
+            'timeSeen' => $timeSeen,
+        ];
 
         return $stats;
     }
