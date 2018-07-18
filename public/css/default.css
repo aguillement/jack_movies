@@ -15,11 +15,3 @@ tbody tr:hover{
     height: 30px;
     padding: 5px 10px;
 }
-
-#random{
-    background: url('http://image.tmdb.org/t/p/w185//btTdmkgIvOi0FFip1sPuZI2oQG6.jpg');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    background-attachment: fixed;
-}
