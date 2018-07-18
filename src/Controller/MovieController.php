@@ -7,6 +7,7 @@ use App\Entity\Movie;
 use App\Form\FilterMoviesType;
 use App\Form\MovieType;
 use App\Form\RateMovieFormType;
+use App\Repository\MovieRepository;
 use App\Services\MovieService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,12 +16,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class MovieController extends Controller
 {
     /**
-     * @Route("/movies", name="movies")
+     * @Route("/movies/{page}", name="movies")
      */
-    public function movies(Request $request)
+    public function movies(Request $request, $page = 1)
     {
-        $rep = $this->getDoctrine()->getRepository(Movie::class);
-        $movies = $rep->customFindAll();
+        $repository = $this->getDoctrine()->getRepository(Movie::class);
+        $movies = $repository->customFindAll();
+        $limit = 5;
 
         //Form use for filter categories
         $formCategory = $this->CreateForm(FilterMoviesType::class);
@@ -29,16 +31,33 @@ class MovieController extends Controller
         if ($formCategory->isSubmitted() && $formCategory->isValid()) {
             //filter movies by categories
             $selectedCategory = array_values($formCategory->getData())[0];;
-            $movies = $rep->filterMovies($selectedCategory);
+            $query = $repository->filterMovies($selectedCategory);
 
-            return $this->render('movie/index.html.twig', [
-                'movies' => $movies,
+            //pagination
+            /** @var MovieRepository $repository */
+            $paginator =  $repository->paginate($query, $page);
+            $maxPages = ceil($paginator->count() / $limit);
+            $thisPage = $page;
+
+            return $this->render('movie/index.html.twig',[
+                'movies' => $paginator,
                 'formCategory' => $formCategory->createView(),
+                'maxPages' => $maxPages,
+                'thisPage' => $thisPage,
             ]);
         }
+
+        //pagination
+        /** @var MovieRepository $repository */
+        $paginator =  $repository->getAllPosts($page);
+        $maxPages = ceil($paginator->count() / $limit);
+        $thisPage = $page;
+
         return $this->render('movie/index.html.twig',[
-            'movies' => $movies,
+            'movies' => $paginator,
             'formCategory' => $formCategory->createView(),
+            'maxPages' => $maxPages,
+            'thisPage' => $thisPage,
             ]);
     }
 
@@ -71,6 +90,7 @@ class MovieController extends Controller
      */
     public function searchMovie(Request $request, MovieService $movieService)
     {
+
         if ('POST' === $request->getMethod()) {
             $movies = $movieService->getMovies($request->get('search'));
             foreach ($movies as $movie) {

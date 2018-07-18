@@ -13,8 +13,7 @@
     <link rel="shortcut icon" href="{{ asset('img/logo.ico') }}">
     <title>{% block title %} Home {% endblock %}</title>
 </head>
-<body onload="randombg()">
-<div id="random" >
+<body>
     {% if is_granted('ROLE_ADMIN') %}
         {% include('base/navbar_admin.html.twig') %}
     {% elseif is_granted('ROLE_USER')%}
@@ -55,9 +54,12 @@
             document.getElementById("random").style.backgroundImage=bigSize[random];
         }
     </script>
+<<<<<<< HEAD
+=======
 </div>
 
     {% block script %}  {% endblock %}
 
+>>>>>>> 8efa56879eb1f9f237b95a0888a7db79007ca966
 </body>
 </html>
