@@ -5237,9 +5237,7 @@
                 "zf2"
             ],
             "time": "2018-04-25T15:33:34+00:00"
-        }
-    ],
-    "packages-dev": [
+        },
         {
             "name": "doctrine/data-fixtures",
             "version": "v1.3.1",
@@ -5361,6 +5359,9 @@
             ],
             "time": "2017-12-04T20:26:38+00:00"
         }
+    ],
+    "packages-dev": [
+
     ],
     "aliases": [],
     "minimum-stability": "stable",
