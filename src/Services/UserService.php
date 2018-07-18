@@ -102,11 +102,13 @@ class UserService
      */
     public function getAllstat($user)
     {
-        $timeSeen = 0;
+
         try {
             $timeSeen = $this->getNumberTimeSeen($user);
         } catch (NoResultException $e) {
+            $timeSeen = 0;
         } catch (NonUniqueResultException $e) {
+            $timeSeen = 0;
         }
 
         $stats = [
