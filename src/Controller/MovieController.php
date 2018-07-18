@@ -59,6 +59,7 @@ class MovieController extends Controller
             /** @var MovieRepository $repository */
             $repository = $this->getDoctrine()->getRepository(Movie::class);
             $paginator =  $repository->paginate($query, $page);
+            $limit = 9;
             $maxPages = ceil($paginator->count() / $limit);
             $thisPage = $page;
 
@@ -85,7 +86,7 @@ class MovieController extends Controller
         /** @var MovieRepository $repository */
         $repository = $this->getDoctrine()->getRepository(Movie::class);
         $paginator =  $repository->getAllPosts($page);
-        $limit = 5;
+        $limit = 9;
         $maxPages = ceil($paginator->count() / $limit);
         $thisPage = $page;
 
@@ -135,7 +136,7 @@ class MovieController extends Controller
             }
         }
 
-        return $this->render('movie/index.html.twig', compact('movies'));
+        return $this->render('movie/index.html.twig', ['movies']);
     }
 
     /**
