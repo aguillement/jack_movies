@@ -50,7 +50,7 @@ class UserService
         foreach ($historyMovies as $row) {
             $noteTotal += $row->getNote();
         }
-        if($noteTotal!=0){
+        if($noteTotal>0){
             $noteTotal = round($noteTotal / count($historyMovies));
         }
 
