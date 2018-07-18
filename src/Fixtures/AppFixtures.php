@@ -2,6 +2,7 @@
 
 namespace App\Fixtures;
 
+use App\Entity\History;
 use App\Entity\Profile;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -35,6 +36,14 @@ class AppFixtures extends Fixture
         $userAdmin->setProfile($profileAdmin);
 
         $manager->persist($userAdmin);
+        $manager->flush();
+
+        // Add history to user admin
+        $history = new History();
+        $history->setUser($userAdmin);
+        $history->setDate(\DateTime::createFromFormat('Y-m-d', "2018-07-19"));
+
+        $manager->persist($history);
         $manager->flush();
 
         //Create profile User
