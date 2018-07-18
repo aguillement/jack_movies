@@ -1,5 +1,0 @@
-easy_admin:
-    entities:
-        - App\Entity\User
-        - App\Entity\Movie
-        - App\Entity\Category
