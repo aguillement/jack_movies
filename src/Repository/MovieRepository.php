@@ -37,7 +37,6 @@ class MovieRepository extends ServiceEntityRepository
         $query = $this->createQueryBuilder('m')
             ->orderBy('m.id', 'DESC')
             ->getQuery();
-        // No need to manually get get the result ($query->getResult())
 
         $paginator = $this->paginate($query, $currentPage);
 
@@ -91,7 +90,7 @@ class MovieRepository extends ServiceEntityRepository
     public function paginate($dql, $page = 1, $limit = 9)
     {
         $paginator = new Paginator($dql);
-        
+
         $paginator->getQuery()
             ->setFirstResult($limit * ($page - 1))// Offset
             ->setMaxResults($limit); // Limit
