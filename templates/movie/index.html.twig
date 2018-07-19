@@ -70,19 +70,19 @@
                 <ul class="pagination pagination-sm">
                     {# `«` arrow  #}
                     <li {{ thisPage == 1 ? 'class="disabled"' }} style="margin-left: 5%">
-                        <a href="{{ path('movies', {page: thisPage-1 < 1 ? 1 : thisPage-1}) }}" style=" color:white;">«</a>
+                        <a href="{{ path('movies', {page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>
                     </li>
 
                     {# Render each page number #}
                     {% for i in 1..maxPages %}
                         <li {{ thisPage == i ? 'class="active"' }} style="margin-left: 5%">
-                            <a href="{{ path('movies', {page: i}) }}" style=" color:white;">{{ i }}</a>
+                            <a href="{{ path('movies', {page: i}) }}" >{{ i }}</a>
                         </li>
                     {% endfor %}
 
                     {# `»` arrow #}
                     <li {{ thisPage == maxPages ? 'class="disabled"' }} style="margin-left: 5%">
-                        <a href="{{ path('movies', {page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}"  style=" color:white;">»</a>
+                        <a href="{{ path('movies', {page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>
                     </li>
                 </ul></div>
             <div class="col-2"></div>
