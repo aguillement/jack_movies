@@ -128,8 +128,6 @@ class MovieController extends Controller
             return $this->redirectToRoute('movies');
         }
 
-        dump("toto");
-
         return $this->render('movie/add-movie.html.twig', [
                 'addMovieForm' => $form->createView(),
         ]);
