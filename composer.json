@@ -5,6 +5,7 @@
         "php": "^7.2.4",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "doctrine/doctrine-fixtures-bundle": "^3.0",
         "easycorp/easyadmin-bundle": "^1.17",
         "friendsofphp/php-cs-fixer": "^2.12",
         "guzzlehttp/guzzle": "^6.3",
@@ -25,8 +26,7 @@
         "symfony/security-bundle": "^4.1",
         "symfony/twig-bundle": "^4.1",
         "symfony/validator": "^4.1",
-        "symfony/yaml": "^4.1",
-        "doctrine/doctrine-fixtures-bundle": "^3.0"
+        "symfony/yaml": "^4.1"
     },
     "require-dev": {
         "symfony/var-dumper": "^4.1",

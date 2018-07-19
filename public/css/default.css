@@ -16,12 +16,17 @@ tbody tr:hover{
     padding: 5px 10px;
 }
 
-#random {
-    background: url('http://image.tmdb.org/t/p/w185//btTdmkgIvOi0FFip1sPuZI2oQG6.jpg');
-    background-repeat: no-repeat;
-    background-position: center;
+#random{
+    /* BOX MODEL */
+    width: 100%;
+    height: 450px;
+    border: 1px solid black;
+
+    /* ENHANCEMENT */
+    background-image: url('../img/avengers_background.png');
+    background-position: center center;
     background-size: cover;
-    background-attachment: fixed;
+    background-repeat: no-repeat;
 }
 
 .fa-star{
