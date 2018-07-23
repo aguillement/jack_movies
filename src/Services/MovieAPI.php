@@ -32,8 +32,7 @@ class MovieAPI
     public function searchMovie(string $search)
     {
         try {
-//            die("sdg");
-            $res = $this->client->request('POST', 'https://api.themoviedb.org/3/search/movie', [
+            $res = $this->client->request('POST', $this->url.'search/movie', [
                 'form_params' => [
                     'query' => $search,
                     'api_key' => $this->api_key,
@@ -42,15 +41,11 @@ class MovieAPI
                     CURLOPT_PROXY => $this->proxy,
                 ],
             ]);
-//
-//
-//            throw new \Exception();
-//
+
             $res = json_decode($res->getBody()->getContents())->{'results'};
             $res = $this->formatMovie($res);
 
             return $res;
-//            return [];
         } catch (\Exception $e) {
             return $e;
         }
@@ -66,7 +61,7 @@ class MovieAPI
         $moviesList = [];
 
         foreach ($movies as $movie) {
-            $res = $this->client->request('GET', 'https://api.themoviedb.org/3/movie/'.$movie->{'id'}.'?append_to_response=credits,videos,similar', [
+            $res = $this->client->request('GET', $this->url.movie/'.$movie->{'id'}.'?append_to_response=credits,videos,similar', [
                 'form_params' => [
                     'api_key' => $this->api_key,
                 ],
@@ -78,6 +73,7 @@ class MovieAPI
 
             $official_website = $res->{'homepage'};
 
+            //TODO remove default value, set default value in database (entity)
             // Video
             $video = $res->{'videos'}->{'results'}[0] ?? null;
             $video_name = $video->{'name'} ?? null;
