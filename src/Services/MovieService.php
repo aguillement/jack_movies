@@ -88,6 +88,7 @@ class MovieService
 
             $newMovie->setReleaseDate(\DateTime::createFromFormat('Y-m-d', $movie->{'releaseDate'}));
 
+            //TODO use constents for urls
             $newMovie->setSynopsis($movie->{'synopsis'});
             $newMovie->setPicture('http://image.tmdb.org/t/p/w185/'.$movie->{'picture'});
 
